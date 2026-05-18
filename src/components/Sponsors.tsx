@@ -1,56 +1,31 @@
-import { Radar } from "lucide-react";
+import { Shield, Award, Clock, Heart, Users, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
 
-interface SponsorProps {
-  icon: JSX.Element;
-  name: string;
-}
-
-const sponsors: SponsorProps[] = [
-  {
-    icon: <Radar size={34} />,
-    name: "Sponsor 1",
-  },
-  {
-    icon: <Radar size={34} />,
-    name: "Sponsor 2",
-  },
-  {
-    icon: <Radar size={34} />,
-    name: "Sponsor 3",
-  },
-  {
-    icon: <Radar size={34} />,
-    name: "Sponsor 4",
-  },
-  {
-    icon: <Radar size={34} />,
-    name: "Sponsor 5",
-  },
-  {
-    icon: <Radar size={34} />,
-    name: "Sponsor 6",
-  },
+const badges = [
+  { icon: <Shield className="w-5 h-5" />, text: "10+ Years" },
+  { icon: <Users className="w-5 h-5" />, text: "5,000+ Patients" },
+  { icon: <Award className="w-5 h-5" />, text: "4.9 Rating" },
+  { icon: <Heart className="w-5 h-5" />, text: "Pain-Free" },
+  { icon: <Clock className="w-5 h-5" />, text: "Same Day" },
+  { icon: <Sparkles className="w-5 h-5" />, text: "Modern Tech" },
 ];
 
 export const Sponsors = () => {
   return (
-    <section
-      id="sponsors"
-      className="container pt-24 sm:py-32"
-    >
-      <h2 className="text-center text-md lg:text-xl font-bold mb-8 text-primary">
-        Investors and founders
-      </h2>
-
+    <section id="sponsors" className="container pt-12 pb-8">
       <div className="flex flex-wrap justify-center items-center gap-4 md:gap-8">
-        {sponsors.map(({ icon, name }: SponsorProps) => (
-          <div
-            key={name}
-            className="flex items-center gap-1 text-muted-foreground/60"
+        {badges.map(({ icon, text }, i) => (
+          <motion.div
+            key={text}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: i * 0.08 }}
+            viewport={{ once: true }}
+            className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
           >
-            <span>{icon}</span>
-            <h3 className="text-xl  font-bold">{name}</h3>
-          </div>
+            {icon}
+            <span className="text-sm font-medium">{text}</span>
+          </motion.div>
         ))}
       </div>
     </section>

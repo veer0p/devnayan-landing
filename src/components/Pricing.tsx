@@ -1,146 +1,149 @@
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Check } from "lucide-react";
+import { Clock, Phone, Mail, MapPin } from "lucide-react";
+import { motion } from "framer-motion";
+import { SlideUp, SlideRight, SlideLeft } from "@/lib/animation";
 
-enum PopularPlanType {
-  NO = 0,
-  YES = 1,
-}
+const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+const today = days[new Date().getDay()];
 
-interface PricingProps {
-  title: string;
-  popular: PopularPlanType;
-  price: number;
-  description: string;
-  buttonText: string;
-  benefitList: string[];
-}
-
-const pricingList: PricingProps[] = [
-  {
-    title: "Free",
-    popular: 0,
-    price: 0,
-    description:
-      "Lorem ipsum dolor sit, amet ipsum consectetur adipisicing elit.",
-    buttonText: "Get Started",
-    benefitList: [
-      "1 Team member",
-      "2 GB Storage",
-      "Upto 4 pages",
-      "Community support",
-      "lorem ipsum dolor",
-    ],
-  },
-  {
-    title: "Premium",
-    popular: 1,
-    price: 5,
-    description:
-      "Lorem ipsum dolor sit, amet ipsum consectetur adipisicing elit.",
-    buttonText: "Start Free Trial",
-    benefitList: [
-      "4 Team member",
-      "4 GB Storage",
-      "Upto 6 pages",
-      "Priority support",
-      "lorem ipsum dolor",
-    ],
-  },
-  {
-    title: "Enterprise",
-    popular: 0,
-    price: 40,
-    description:
-      "Lorem ipsum dolor sit, amet ipsum consectetur adipisicing elit.",
-    buttonText: "Contact US",
-    benefitList: [
-      "10 Team member",
-      "8 GB Storage",
-      "Upto 10 pages",
-      "Priority support",
-      "lorem ipsum dolor",
-    ],
-  },
+const schedule = [
+  { day: "Monday", time: "9am - 1pm & 3pm - 8pm" },
+  { day: "Tuesday", time: "9am - 1pm & 3pm - 8pm" },
+  { day: "Wednesday", time: "9am - 1pm & 3pm - 8pm" },
+  { day: "Thursday", time: "9am - 1pm & 3pm - 8pm" },
+  { day: "Friday", time: "9am - 1pm & 3pm - 8pm" },
+  { day: "Saturday", time: "9am - 1pm & 3pm - 8pm" },
+  { day: "Sunday", time: "Closed" },
 ];
 
 export const Pricing = () => {
   return (
-    <section
-      id="pricing"
-      className="container py-24 sm:py-32"
-    >
-      <h2 className="text-3xl md:text-4xl font-bold text-center">
-        Get
-        <span className="bg-gradient-to-b from-primary/60 to-primary text-transparent bg-clip-text">
-          {" "}
-          Unlimited{" "}
-        </span>
-        Access
-      </h2>
-      <h3 className="text-xl text-center text-muted-foreground pt-4 pb-8">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias
-        reiciendis.
-      </h3>
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {pricingList.map((pricing: PricingProps) => (
-          <Card
-            key={pricing.title}
-            className={
-              pricing.popular === PopularPlanType.YES
-                ? "drop-shadow-xl shadow-black/10 dark:shadow-white/10"
-                : ""
-            }
-          >
+    <section id="contact" className="container py-24 sm:py-32">
+      <motion.div
+        variants={SlideUp(0.2)}
+        whileInView="animate"
+        initial="initial"
+        viewport={{ once: true }}
+        className="text-center mb-10"
+      >
+        <h2 className="text-3xl md:text-4xl font-bold mb-4">
+          Visit{" "}
+          <span className="bg-gradient-to-b from-primary/60 to-primary text-transparent bg-clip-text">
+            Us
+          </span>
+        </h2>
+        <p className="text-muted-foreground text-xl md:w-3/4 mx-auto">
+          Devnayan Dental Clinic &mdash; Advance Dental Care Hospital
+        </p>
+      </motion.div>
+
+      <div className="grid md:grid-cols-2 gap-8">
+        {/* Hours */}
+        <motion.div
+          variants={SlideRight(0.3)}
+          whileInView="animate"
+          initial="initial"
+          viewport={{ once: true }}
+        >
+          <Card className="h-full">
             <CardHeader>
-              <CardTitle className="flex item-center justify-between">
-                {pricing.title}
-                {pricing.popular === PopularPlanType.YES ? (
-                  <Badge
-                    variant="secondary"
-                    className="text-sm text-primary"
-                  >
-                    Most popular
-                  </Badge>
-                ) : null}
+              <CardTitle className="flex items-center gap-2">
+                <Clock className="w-5 h-5 text-primary" />
+                Clinic Hours
               </CardTitle>
-              <div>
-                <span className="text-3xl font-bold">${pricing.price}</span>
-                <span className="text-muted-foreground"> /month</span>
-              </div>
-
-              <CardDescription>{pricing.description}</CardDescription>
             </CardHeader>
-
-            <CardContent>
-              <Button className="w-full">{pricing.buttonText}</Button>
-            </CardContent>
-
-            <hr className="w-4/5 m-auto mb-4" />
-
-            <CardFooter className="flex">
-              <div className="space-y-4">
-                {pricing.benefitList.map((benefit: string) => (
-                  <span
-                    key={benefit}
-                    className="flex"
+            <CardContent className="space-y-0">
+              {schedule.map((row) => {
+                const isToday = row.day === today;
+                return (
+                  <div
+                    key={row.day}
+                    className={`flex justify-between py-3 border-b last:border-b-0 ${
+                      isToday ? "border-l-2 border-l-primary pl-3 bg-primary/5 -mx-2 px-5 rounded" : ""
+                    }`}
                   >
-                    <Check className="text-green-500" />{" "}
-                    <h3 className="ml-2">{benefit}</h3>
-                  </span>
-                ))}
-              </div>
-            </CardFooter>
+                    <span className={`${isToday ? "font-semibold" : "text-muted-foreground"}`}>
+                      {row.day}
+                      {isToday && (
+                        <span className="text-primary text-xs ml-2 uppercase tracking-wider">Today</span>
+                      )}
+                    </span>
+                    <span className={row.time === "Closed" ? "text-muted-foreground" : ""}>
+                      {row.time}
+                    </span>
+                  </div>
+                );
+              })}
+            </CardContent>
           </Card>
-        ))}
+        </motion.div>
+
+        {/* Contact */}
+        <motion.div
+          variants={SlideLeft(0.3)}
+          whileInView="animate"
+          initial="initial"
+          viewport={{ once: true }}
+        >
+          <Card className="h-full">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Phone className="w-5 h-5 text-primary" />
+                Contact Details
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="flex items-start gap-3">
+                <Phone className="w-5 h-5 text-primary mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-sm text-muted-foreground">Phone</p>
+                  <a href="tel:+912622227071" className="hover:text-primary transition-colors font-medium">
+                    02622-227071
+                  </a>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <Phone className="w-5 h-5 text-primary mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-sm text-muted-foreground">WhatsApp / Mobile</p>
+                  <a href="tel:+919913520707" className="hover:text-primary transition-colors font-medium">
+                    99135 20707
+                  </a>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <Mail className="w-5 h-5 text-primary mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-sm text-muted-foreground">Email</p>
+                  <a href="mailto:sayaniachintan@gmail.com" className="hover:text-primary transition-colors font-medium break-all">
+                    sayaniachintan@gmail.com
+                  </a>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <MapPin className="w-5 h-5 text-primary mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-sm text-muted-foreground">Address</p>
+                  <a
+                    href="https://maps.app.goo.gl/aEDX8fUtLXwMdm1m7"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-medium hover:text-primary transition-colors"
+                  >
+                    B 394601, 6-7, Lal Bahadur Shastri Rd,<br />
+                    Rushikesh Nagar, Radhabaug Society,<br />
+                    Bardoli, Gujarat 394601
+                  </a>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
       </div>
     </section>
   );

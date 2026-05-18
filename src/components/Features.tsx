@@ -6,92 +6,102 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import image from "../assets/growth.png";
-import image3 from "../assets/reflecting.png";
-import image4 from "../assets/looking-ahead.png";
+import { Check } from "lucide-react";
+import { motion } from "framer-motion";
+import { SlideUp } from "@/lib/animation";
 
 interface FeatureProps {
   title: string;
   description: string;
-  image: string;
 }
 
 const features: FeatureProps[] = [
   {
-    title: "Responsive Design",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi nesciunt est nostrum omnis ab sapiente.",
-    image: image4,
+    title: "Modern Equipment",
+    description: "Digital X-rays, laser dentistry, and precision instruments for accurate diagnosis.",
   },
   {
-    title: "Intuitive user interface",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi nesciunt est nostrum omnis ab sapiente.",
-    image: image3,
+    title: "Painless Procedures",
+    description: "Advanced anesthesia and a calming clinic environment for stress-free visits.",
   },
   {
-    title: "AI-Powered insights",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi nesciunt est nostrum omnis ab sapiente.",
-    image: image,
+    title: "Family Friendly",
+    description: "From your child's first tooth to your parents' implants — we care for everyone.",
   },
 ];
 
-const featureList: string[] = [
-  "Dark/Light theme",
-  "Reviews",
-  "Features",
-  "Pricing",
-  "Contact form",
-  "Our team",
-  "Responsive design",
-  "Newsletter",
-  "Minimalist",
+const featureChecks: string[] = [
+  "Same-day emergency appointments",
+  "Transparent pricing with no hidden costs",
+  "Sterilized, hygienic environment",
+  "Latest digital dental technology",
+  "Personalized treatment plans",
+  "Gentle care for anxious patients",
 ];
 
 export const Features = () => {
   return (
-    <section
-      id="features"
-      className="container py-24 sm:py-32 space-y-8"
-    >
-      <h2 className="text-3xl lg:text-4xl font-bold md:text-center">
-        Many{" "}
+    <section id="features" className="container py-24 sm:py-32 space-y-8">
+      <motion.h2
+        variants={SlideUp(0.2)}
+        whileInView="animate"
+        initial="initial"
+        viewport={{ once: true }}
+        className="text-3xl lg:text-4xl font-bold md:text-center"
+      >
+        Why{" "}
         <span className="bg-gradient-to-b from-primary/60 to-primary text-transparent bg-clip-text">
-          Great Features
+          Choose{" "}
         </span>
-      </h2>
+        Devnayan Dental
+      </motion.h2>
 
-      <div className="flex flex-wrap md:justify-center gap-4">
-        {featureList.map((feature: string) => (
-          <div key={feature}>
-            <Badge
-              variant="secondary"
-              className="text-sm"
-            >
-              {feature}
+      <motion.div
+        variants={SlideUp(0.3)}
+        whileInView="animate"
+        initial="initial"
+        viewport={{ once: true }}
+        className="flex flex-wrap md:justify-center gap-4"
+      >
+        {featureChecks.map((text, i) => (
+          <motion.div
+            key={text}
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2 + i * 0.08, duration: 0.4 }}
+            viewport={{ once: true }}
+            className="flex items-center gap-2"
+          >
+            <Badge variant="secondary" className="text-sm">
+              <Check className="w-3 h-3 mr-1 text-primary" />
+              {text}
             </Badge>
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {features.map(({ title, description, image }: FeatureProps) => (
-          <Card key={title}>
-            <CardHeader>
-              <CardTitle>{title}</CardTitle>
-            </CardHeader>
-
-            <CardContent>{description}</CardContent>
-
-            <CardFooter>
-              <img
-                src={image}
-                alt="About feature"
-                className="w-[200px] lg:w-[300px] mx-auto"
-              />
-            </CardFooter>
-          </Card>
+        {features.map(({ title, description }, i) => (
+          <motion.div
+            key={title}
+            initial={{ opacity: 0, x: i % 2 === 0 ? -60 : 60 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.15 + i * 0.1, duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
+            viewport={{ once: true }}
+            whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
+          >
+            <Card className="border hover:border-primary/50 hover:shadow-lg transition-all duration-300 h-full">
+              <CardHeader>
+                <CardTitle>{title}</CardTitle>
+              </CardHeader>
+              <CardContent className="text-muted-foreground">
+                {description}
+              </CardContent>
+              <CardFooter>
+                <span className="text-primary text-sm font-medium">Learn more &rarr;</span>
+              </CardFooter>
+            </Card>
+          </motion.div>
         ))}
       </div>
     </section>

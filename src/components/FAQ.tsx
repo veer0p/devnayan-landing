@@ -4,6 +4,8 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { motion } from "framer-motion";
+import { SlideUp } from "@/lib/animation";
 
 interface FAQProps {
   question: string;
@@ -13,79 +15,86 @@ interface FAQProps {
 
 const FAQList: FAQProps[] = [
   {
-    question: "Is this template free?",
-    answer: "Yes. It is a free ChadcnUI template.",
+    question: "Is the first consultation free?",
+    answer: "Yes! Your initial consultation with Dr. Chintan is completely free. We believe in building trust before treatment.",
     value: "item-1",
   },
   {
-    question: "Lorem ipsum dolor sit amet consectetur adipisicing elit?",
-    answer:
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint labore quidem quam? Consectetur sapiente iste rerum reiciendis animi nihil nostrum sit quo, modi quod.",
+    question: "Are your treatments really pain-free?",
+    answer: "We use advanced anesthesia techniques and modern equipment to ensure minimal discomfort. Most patients tell us they barely felt a thing.",
     value: "item-2",
   },
   {
-    question:
-      "Lorem ipsum dolor sit amet  Consectetur natus dolores minus quibusdam?",
-    answer:
-      "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Labore qui nostrum reiciendis veritatis necessitatibus maxime quis ipsa vitae cumque quo?",
+    question: "Do you treat children?",
+    answer: "Absolutely! We offer specialized pediatric dentistry in a friendly, comfortable environment that helps kids feel at ease.",
     value: "item-3",
   },
   {
-    question: "Lorem ipsum dolor sit amet, consectetur adipisicing elit?",
-    answer: "Lorem ipsum dolor sit amet consectetur, adipisicing elit.",
+    question: "What payment methods do you accept?",
+    answer: "We accept cash, UPI, cards, and bank transfers. We also offer flexible payment plans for major treatments like implants.",
     value: "item-4",
   },
   {
-    question:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur natus?",
-    answer:
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint labore quidem quam? Consectetur sapiente iste rerum reiciendis animi nihil nostrum sit quo, modi quod.",
+    question: "How do I book an appointment?",
+    answer: "You can book via WhatsApp at 99135 20707, call us at 02622-227071, or simply walk in during clinic hours (Mon-Sat, 9am-1pm & 3pm-8pm).",
     value: "item-5",
+  },
+  {
+    question: "Where exactly is the clinic located?",
+    answer: "We are located at B 394601, 6-7, Lal Bahadur Shastri Rd, Rushikesh Nagar, Radhabaug Society, Bardoli, Gujarat 394601. Easily accessible from the main road.",
+    value: "item-6",
   },
 ];
 
 export const FAQ = () => {
   return (
-    <section
-      id="faq"
-      className="container py-24 sm:py-32"
-    >
-      <h2 className="text-3xl md:text-4xl font-bold mb-4">
+    <section id="faq" className="container py-24 sm:py-32">
+      <motion.h2
+        variants={SlideUp(0.2)}
+        whileInView="animate"
+        initial="initial"
+        viewport={{ once: true }}
+        className="text-3xl md:text-4xl font-bold mb-4"
+      >
         Frequently Asked{" "}
         <span className="bg-gradient-to-b from-primary/60 to-primary text-transparent bg-clip-text">
           Questions
         </span>
-      </h2>
+      </motion.h2>
 
-      <Accordion
-        type="single"
-        collapsible
-        className="w-full AccordionRoot"
+      <motion.div
+        variants={SlideUp(0.3)}
+        whileInView="animate"
+        initial="initial"
+        viewport={{ once: true }}
       >
-        {FAQList.map(({ question, answer, value }: FAQProps) => (
-          <AccordionItem
-            key={value}
-            value={value}
-          >
-            <AccordionTrigger className="text-left">
-              {question}
-            </AccordionTrigger>
+        <Accordion type="single" collapsible className="w-full AccordionRoot">
+          {FAQList.map(({ question, answer, value }) => (
+            <AccordionItem key={value} value={value}>
+              <AccordionTrigger className="text-left">{question}</AccordionTrigger>
+              <AccordionContent>{answer}</AccordionContent>
+            </AccordionItem>
+          ))}
+        </Accordion>
+      </motion.div>
 
-            <AccordionContent>{answer}</AccordionContent>
-          </AccordionItem>
-        ))}
-      </Accordion>
-
-      <h3 className="font-medium mt-4">
+      <motion.h3
+        variants={SlideUp(0.5)}
+        whileInView="animate"
+        initial="initial"
+        viewport={{ once: true }}
+        className="font-medium mt-8"
+      >
         Still have questions?{" "}
         <a
-          rel="noreferrer noopener"
-          href="#"
-          className="text-primary transition-all border-primary hover:border-b-2"
+          href="https://wa.me/919913520707?text=Hi%20Dr.%20Chintan%2C%20I%20have%20a%20question."
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-primary border-primary hover:border-b-2 transition-all"
         >
-          Contact us
+          WhatsApp us
         </a>
-      </h3>
+      </motion.h3>
     </section>
   );
 };
