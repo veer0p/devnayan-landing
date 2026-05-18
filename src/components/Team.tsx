@@ -9,6 +9,8 @@ import {
 
 import imgArun from "@/assets/doctors/dr-arun.jpg";
 import imgKavita from "@/assets/doctors/dr-kavita.jpg";
+import imgRajesh from "@/assets/doctors/dr-rajesh.jpg";
+import imgPriya from "@/assets/doctors/dr-priya.jpg";
 
 interface DoctorProps {
   name: string;
@@ -18,7 +20,7 @@ interface DoctorProps {
   rating: string;
   experience: string;
   color: string;
-  img?: string;
+  img: string;
 }
 
 const doctors: DoctorProps[] = [
@@ -50,6 +52,7 @@ const doctors: DoctorProps[] = [
     rating: "4.9",
     experience: "15+ yrs",
     color: "from-blue-500/80 to-blue-500/40",
+    img: imgRajesh,
   },
   {
     name: "Dr. Priya Nair",
@@ -59,6 +62,7 @@ const doctors: DoctorProps[] = [
     rating: "4.8",
     experience: "7+ yrs",
     color: "from-rose-500/80 to-rose-500/40",
+    img: imgPriya,
   },
 ];
 
@@ -92,7 +96,7 @@ export const Team = () => {
       </motion.div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {doctors.map(({ name, initials, role, description, rating, experience, color, img }, i) => (
+        {doctors.map(({ name, role, description, rating, experience, color, img }, i) => (
           <motion.div
             key={name}
             initial={{ opacity: 0, y: 50 }}
@@ -102,34 +106,15 @@ export const Team = () => {
             whileHover={{ y: -8, transition: { duration: 0.25 } }}
           >
             <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 h-full group cursor-pointer border-0 shadow-sm">
-              {/* Header area - photo or gradient avatar */}
+              {/* Header area - photo */}
               <div className="relative h-56 overflow-hidden">
-                {img ? (
-                  <>
-                    <img
-                      src={img}
-                      alt={name}
-                      className="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-500"
-                      loading="lazy"
-                    />
-                    <div className={`absolute inset-0 bg-gradient-to-t ${color} opacity-20`} />
-                  </>
-                ) : (
-                  <div className={`w-full h-full bg-gradient-to-br ${color} flex items-center justify-center`}>
-                    {/* Decorative circles */}
-                    <div className="absolute top-4 right-4 w-20 h-20 border border-white/10 rounded-full" />
-                    <div className="absolute -bottom-6 -left-6 w-28 h-28 border border-white/10 rounded-full" />
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 border border-white/5 rounded-full" />
-                    {/* Initials */}
-                    <motion.div
-                      className="w-24 h-24 bg-background/15 backdrop-blur-sm rounded-2xl flex items-center justify-center border-2 border-white/20 shadow-lg z-10"
-                      whileHover={{ scale: 1.1, rotate: 5 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      <span className="text-4xl font-bold text-white">{initials}</span>
-                    </motion.div>
-                  </div>
-                )}
+                <img
+                  src={img}
+                  alt={name}
+                  className="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-500"
+                  loading="lazy"
+                />
+                <div className={`absolute inset-0 bg-gradient-to-t ${color} opacity-20`} />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
 
                 {/* Experience badge */}
