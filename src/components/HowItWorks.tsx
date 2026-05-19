@@ -1,78 +1,101 @@
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
-import { Phone, ClipboardCheck, Stethoscope, Smile } from "lucide-react";
 import { motion } from "framer-motion";
-import { SlideUp } from "@/lib/animation";
+import { MessageCircle, ClipboardCheck, Stethoscope, Smile } from "lucide-react";
+
+const ease = [0.22, 1, 0.36, 1] as const;
 
 interface StepProps {
-  icon: JSX.Element;
+  icon: typeof MessageCircle;
+  num: string;
   title: string;
-  description: string;
+  body: string;
 }
 
 const steps: StepProps[] = [
   {
-    icon: <Phone className="w-8 h-8 text-primary" />,
-    title: "Book Appointment",
-    description: "Call, WhatsApp, or walk in. We make booking effortless.",
+    icon: MessageCircle,
+    num: "01",
+    title: "Reach out",
+    body: "Send a WhatsApp, call us, or walk in. We'll find you a slot within the same day.",
   },
   {
-    icon: <ClipboardCheck className="w-8 h-8 text-primary" />,
-    title: "Consultation",
-    description: "Thorough examination with honest, transparent diagnosis.",
+    icon: ClipboardCheck,
+    num: "02",
+    title: "Free consultation",
+    body: "A relaxed exam and a clear plan. We explain what's needed in plain words — and what isn't.",
   },
   {
-    icon: <Stethoscope className="w-8 h-8 text-primary" />,
-    title: "Treatment",
-    description: "Pain-free treatment using modern equipment and techniques.",
+    icon: Stethoscope,
+    num: "03",
+    title: "Painless treatment",
+    body: "Modern tools, gentle pacing, and the work done well the first time. You set the pace.",
   },
   {
-    icon: <Smile className="w-8 h-8 text-primary" />,
-    title: "Your Best Smile",
-    description: "Walk out confident with a healthier, brighter smile.",
+    icon: Smile,
+    num: "04",
+    title: "Aftercare",
+    body: "A WhatsApp check-in 48 hours later. Follow-ups when your plan asks — nothing more.",
   },
 ];
 
 export const HowItWorks = () => {
   return (
-    <section id="howItWorks" className="container text-center py-24 sm:py-32">
-      <motion.div
-        variants={SlideUp(0.2)}
-        whileInView="animate"
-        initial="initial"
-        viewport={{ once: true }}
-      >
-        <h2 className="text-3xl md:text-4xl font-bold">
-          How It{" "}
-          <span className="bg-gradient-to-b from-primary/60 to-primary text-transparent bg-clip-text">
-            Works
-          </span>
-        </h2>
-        <p className="md:w-3/4 mx-auto mt-4 mb-8 text-xl text-muted-foreground">
-          From booking to your best smile — we keep it simple.
-        </p>
-      </motion.div>
+    <section id="howItWorks" className="relative py-20 sm:py-28 bg-foreground/[0.02]">
+      <div className="container">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.8, ease }}
+          className="max-w-3xl mb-12 md:mb-16"
+        >
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 mb-5">
+            <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+            <span className="text-[11px] font-semibold uppercase tracking-widest2 text-primary">
+              How a visit works
+            </span>
+          </div>
+          <h2 className="font-display font-bold text-[32px] md:text-[44px] lg:text-[52px] leading-[1.1] tracking-[-0.02em] text-foreground">
+            Four unhurried steps,{" "}
+            <span className="text-primary">start to finish.</span>
+          </h2>
+        </motion.div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-        {steps.map(({ icon, title, description }, i) => (
-          <motion.div
-            key={title}
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: i * 0.15, ease: [0.25, 0.1, 0.25, 1] }}
-            viewport={{ once: true }}
-            whileHover={{ y: -6, transition: { duration: 0.2 } }}
-          >
-            <Card className="bg-muted/50 border text-center hover:shadow-lg transition-shadow duration-300 h-full">
-              <CardHeader>
-                <div className="flex justify-center mb-2">{icon}</div>
-                <CardTitle>{title}</CardTitle>
-              </CardHeader>
-              <CardContent className="text-muted-foreground">
-                {description}
-              </CardContent>
-            </Card>
-          </motion.div>
-        ))}
+        {/* Steps */}
+        <div className="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6">
+          {/* Dotted connector line on desktop */}
+          <div className="hidden lg:block absolute top-12 left-[8%] right-[8%] h-px border-t border-dashed border-foreground/15 -z-0" />
+
+          {steps.map((s, i) => {
+            const Icon = s.icon;
+            return (
+              <motion.div
+                key={s.num}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.8, delay: i * 0.1, ease }}
+                className="relative z-10 group"
+              >
+                <div className="flex flex-col items-start gap-4">
+                  <span className="relative w-14 h-14 rounded-2xl bg-background border border-foreground/10 flex items-center justify-center shadow-sm group-hover:border-primary/40 group-hover:bg-primary/[0.04] transition-colors">
+                    <Icon className="w-5 h-5 text-primary" strokeWidth={2} />
+                    <span className="absolute -top-1.5 -right-1.5 w-6 h-6 rounded-full bg-primary text-primary-foreground text-[10px] font-bold flex items-center justify-center">
+                      {s.num}
+                    </span>
+                  </span>
+                  <div>
+                    <h3 className="font-display font-semibold text-[19px] md:text-[20px] leading-tight tracking-tight text-foreground">
+                      {s.title}
+                    </h3>
+                    <p className="mt-2 text-[14px] leading-[1.65] text-foreground/65">
+                      {s.body}
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
       </div>
     </section>
   );

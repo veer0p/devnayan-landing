@@ -5,7 +5,9 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { motion } from "framer-motion";
-import { SlideUp } from "@/lib/animation";
+import { MessageCircle } from "lucide-react";
+
+const ease = [0.22, 1, 0.36, 1] as const;
 
 interface FAQProps {
   question: string;
@@ -15,86 +17,134 @@ interface FAQProps {
 
 const FAQList: FAQProps[] = [
   {
-    question: "Is the first consultation free?",
-    answer: "Yes! Your initial consultation with Dr. Chintan is completely free. We believe in building trust before treatment.",
+    question: "Is the first consultation really free?",
+    answer:
+      "Yes — your initial consultation with Dr. Chintan is complimentary. We believe a thorough conversation should come before any treatment plan. There is no obligation to book anything that follows.",
     value: "item-1",
   },
   {
-    question: "Are your treatments really pain-free?",
-    answer: "We use advanced anesthesia techniques and modern equipment to ensure minimal discomfort. Most patients tell us they barely felt a thing.",
+    question: "Are your treatments actually pain-free?",
+    answer:
+      "Modern anesthesia, careful pacing, and the right tools mean most patients feel only the gentle pressure of work being done. We always pause if you ask us to.",
     value: "item-2",
   },
   {
     question: "Do you treat children?",
-    answer: "Absolutely! We offer specialized pediatric dentistry in a friendly, comfortable environment that helps kids feel at ease.",
+    answer:
+      "Absolutely. Pediatric care is one of our specialities — the clinic is designed to feel calm rather than clinical, and we take time to explain everything in language a child can follow.",
     value: "item-3",
   },
   {
     question: "What payment methods do you accept?",
-    answer: "We accept cash, UPI, cards, and bank transfers. We also offer flexible payment plans for major treatments like implants.",
+    answer:
+      "Cash, UPI, cards, and bank transfers. For longer treatment plans like implants or orthodontics, we offer staged payment so cost can be spread across the duration of care.",
     value: "item-4",
   },
   {
     question: "How do I book an appointment?",
-    answer: "You can book via WhatsApp at 99135 20707, call us at 02622-227071, or simply walk in during clinic hours (Mon-Sat, 9am-1pm & 3pm-8pm).",
+    answer:
+      "WhatsApp 99135 20707, call 02622-227071, or walk in during clinic hours (Mon–Sat, 9 AM – 1 PM and 3 PM – 8 PM). We'll confirm your slot within minutes.",
     value: "item-5",
   },
   {
     question: "Where exactly is the clinic located?",
-    answer: "We are located at B 394601, 6-7, Lal Bahadur Shastri Rd, Rushikesh Nagar, Radhabaug Society, Bardoli, Gujarat 394601. Easily accessible from the main road.",
+    answer:
+      "B 394601, 6-7, Lal Bahadur Shastri Rd, Rushikesh Nagar, Radhabaug Society, Bardoli, Gujarat 394601. Easily accessible from the main road.",
     value: "item-6",
   },
 ];
 
 export const FAQ = () => {
   return (
-    <section id="faq" className="container py-24 sm:py-32">
-      <motion.h2
-        variants={SlideUp(0.2)}
-        whileInView="animate"
-        initial="initial"
-        viewport={{ once: true }}
-        className="text-3xl md:text-4xl font-bold mb-4"
-      >
-        Frequently Asked{" "}
-        <span className="bg-gradient-to-b from-primary/60 to-primary text-transparent bg-clip-text">
-          Questions
-        </span>
-      </motion.h2>
-
-      <motion.div
-        variants={SlideUp(0.3)}
-        whileInView="animate"
-        initial="initial"
-        viewport={{ once: true }}
-      >
-        <Accordion type="single" collapsible className="w-full AccordionRoot">
-          {FAQList.map(({ question, answer, value }) => (
-            <AccordionItem key={value} value={value}>
-              <AccordionTrigger className="text-left">{question}</AccordionTrigger>
-              <AccordionContent>{answer}</AccordionContent>
-            </AccordionItem>
-          ))}
-        </Accordion>
-      </motion.div>
-
-      <motion.h3
-        variants={SlideUp(0.5)}
-        whileInView="animate"
-        initial="initial"
-        viewport={{ once: true }}
-        className="font-medium mt-8"
-      >
-        Still have questions?{" "}
-        <a
-          href="https://wa.me/919913520707?text=Hi%20Dr.%20Chintan%2C%20I%20have%20a%20question."
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-primary border-primary hover:border-b-2 transition-all"
+    <section id="faq" className="relative py-20 sm:py-28 bg-background">
+      <div className="container">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.8, ease }}
+          className="max-w-3xl mb-12 md:mb-14"
         >
-          WhatsApp us
-        </a>
-      </motion.h3>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 mb-5">
+            <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+            <span className="text-[11px] font-semibold uppercase tracking-widest2 text-primary">
+              Frequently asked
+            </span>
+          </div>
+          <h2 className="font-display font-bold text-[32px] md:text-[44px] lg:text-[52px] leading-[1.1] tracking-[-0.02em] text-foreground">
+            Quick answers,{" "}
+            <span className="text-primary">straight up.</span>
+          </h2>
+        </motion.div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+          {/* Accordion */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.8, ease }}
+            className="lg:col-span-8"
+          >
+            <Accordion
+              type="single"
+              collapsible
+              defaultValue="item-1"
+              className="w-full"
+            >
+              {FAQList.map(({ question, answer, value }) => (
+                <AccordionItem
+                  key={value}
+                  value={value}
+                  className="border border-foreground/10 rounded-xl mb-3 bg-background hover:border-foreground/20 data-[state=open]:border-primary/30 data-[state=open]:bg-primary/[0.02] transition-colors"
+                >
+                  <AccordionTrigger className="px-5 py-4 text-left hover:no-underline">
+                    <span className="font-display font-semibold text-[16px] md:text-[17px] text-foreground/90">
+                      {question}
+                    </span>
+                  </AccordionTrigger>
+                  <AccordionContent className="px-5 pb-5">
+                    <p className="text-[14px] md:text-[15px] leading-[1.7] text-foreground/65">
+                      {answer}
+                    </p>
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </motion.div>
+
+          {/* "Still curious?" sticky help card */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.8, delay: 0.1, ease }}
+            className="lg:col-span-4 lg:sticky lg:top-28 rounded-2xl border border-foreground/10 bg-foreground/[0.02] p-6"
+          >
+            <div className="w-11 h-11 rounded-2xl bg-primary/15 flex items-center justify-center mb-4">
+              <MessageCircle
+                className="w-5 h-5 text-primary"
+                strokeWidth={2}
+              />
+            </div>
+            <h3 className="font-display font-semibold text-[18px] text-foreground">
+              Still have a question?
+            </h3>
+            <p className="mt-2 text-[14px] leading-[1.65] text-foreground/65">
+              Send us a quick message. Dr. Chintan or the front desk usually
+              reply within minutes during clinic hours.
+            </p>
+            <a
+              href="https://wa.me/919913520707?text=Hi%20Dr.%20Chintan%2C%20I%20have%20a%20question."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-5 inline-flex items-center gap-2 px-5 py-3 rounded-full bg-primary text-primary-foreground text-[13px] font-semibold hover:scale-[1.02] transition-transform shadow-md shadow-primary/20"
+            >
+              Ask on WhatsApp
+            </a>
+          </motion.div>
+        </div>
+      </div>
     </section>
   );
 };

@@ -1,9 +1,4 @@
-import { useState } from "react";
-import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuList,
-} from "@/components/ui/navigation-menu";
+import { useEffect, useState } from "react";
 import {
   Sheet,
   SheetContent,
@@ -11,8 +6,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { buttonVariants } from "./ui/button";
-import { Menu, Phone } from "lucide-react";
+import { Menu, Phone, ArrowUpRight } from "lucide-react";
 import { motion } from "framer-motion";
 
 interface RouteProps {
@@ -21,107 +15,132 @@ interface RouteProps {
 }
 
 const routeList: RouteProps[] = [
-  { href: "#services", label: "Services" },
+  { href: "#services", label: "Treatments" },
   { href: "#about", label: "About" },
-  { href: "#testimonials", label: "Testimonials" },
-  { href: "#contact", label: "Contact" },
+  { href: "#testimonials", label: "Reviews" },
+  { href: "#contact", label: "Visit" },
   { href: "#faq", label: "FAQ" },
 ];
 
 export const Navbar = () => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
     <motion.header
-      initial={{ opacity: 0, y: -100 }}
+      initial={{ opacity: 0, y: -16 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: 0.3 }}
-      className="sticky border-b-[1px] top-0 z-40 w-full bg-background/95 backdrop-blur-sm dark:border-b-primary/10"
+      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        scrolled
+          ? "bg-background/85 backdrop-blur-md border-b border-border/60 shadow-sm"
+          : "bg-transparent"
+      }`}
     >
-      <NavigationMenu className="mx-auto">
-        <NavigationMenuList className="container h-14 px-4 w-screen flex justify-between">
-          <NavigationMenuItem className="font-bold flex">
-            <a href="/" className="ml-2 font-bold text-xl flex items-center gap-2">
-              <span className="text-primary">DEVNAYAN</span>
-            </a>
-          </NavigationMenuItem>
-
-          {/* mobile */}
-          <span className="flex md:hidden gap-2">
-            <a
-              href="tel:+919913520707"
-              className={`${buttonVariants({ variant: "default", size: "sm" })}`}
-            >
-              <Phone className="w-4 h-4 mr-1" />
-              Call
-            </a>
-            <Sheet open={isOpen} onOpenChange={setIsOpen}>
-              <SheetTrigger className="px-2">
-                <Menu className="flex md:hidden h-5 w-5" onClick={() => setIsOpen(true)}>
-                  <span className="sr-only">Menu Icon</span>
-                </Menu>
-              </SheetTrigger>
-              <SheetContent side="left">
-                <SheetHeader>
-                  <SheetTitle className="font-bold text-xl">
-                    DEVNAYAN
-                  </SheetTitle>
-                </SheetHeader>
-                <nav className="flex flex-col justify-center items-center gap-2 mt-4">
-                  {routeList.map(({ href, label }: RouteProps) => (
-                    <a
-                      key={label}
-                      href={href}
-                      onClick={() => setIsOpen(false)}
-                      className={buttonVariants({ variant: "ghost" })}
-                    >
-                      {label}
-                    </a>
-                  ))}
-                  <a
-                    href="https://wa.me/919913520707?text=Hello%20Dr.%20Chintan%2C%20I%20would%20like%20to%20book%20an%20appointment."
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`w-full ${buttonVariants({ variant: "default" })}`}
-                  >
-                    Book on WhatsApp
-                  </a>
-                </nav>
-              </SheetContent>
-            </Sheet>
+      <div className="container h-[72px] flex items-center justify-between gap-6">
+        {/* Wordmark — sans, clean */}
+        <a href="/" className="flex items-center gap-2.5 select-none">
+          <span className="w-9 h-9 rounded-xl bg-primary/15 flex items-center justify-center">
+            <svg viewBox="0 0 24 24" className="w-4 h-4 text-primary" fill="currentColor">
+              <path d="M12 2C8.5 2 6.5 3.5 6 5.5c-.3 1.2.1 2.6 1 4 1.4 2.2 2 4.6 2.3 7 .2 1.4.6 2.8 1.4 3.4.4.3 1 .5 1.3 0 .6-1 .6-2.6.9-4 .2-1.4.5-2.4 1.1-2.4s.9 1 1.1 2.4c.3 1.4.3 3 .9 4 .3.5.9.3 1.3 0 .8-.6 1.2-2 1.4-3.4.3-2.4.9-4.8 2.3-7 .9-1.4 1.3-2.8 1-4C17.5 3.5 15.5 2 12 2z"/>
+            </svg>
           </span>
+          <span className="font-display font-bold text-[17px] tracking-tight text-foreground leading-none">
+            Devnayan{" "}
+            <span className="text-foreground/55 font-medium">Dental</span>
+          </span>
+        </a>
 
-          {/* desktop */}
-          <nav className="hidden md:flex gap-2">
-            {routeList.map((route: RouteProps, i) => (
+        {/* Center nav */}
+        <nav className="hidden md:flex items-center gap-1">
+          {routeList.map((r) => (
+            <a
+              key={r.href}
+              href={r.href}
+              className="relative px-3 py-2 text-[14px] font-medium text-foreground/70 hover:text-foreground transition-colors"
+            >
+              {r.label}
+            </a>
+          ))}
+        </nav>
+
+        {/* Right side */}
+        <div className="hidden md:flex items-center gap-3">
+          <a
+            href="tel:+919913520707"
+            className="flex items-center gap-2 px-4 py-2 rounded-full border border-foreground/15 text-[13.5px] font-medium text-foreground/80 hover:text-foreground hover:border-foreground/40 transition-colors"
+          >
+            <Phone className="w-3.5 h-3.5" strokeWidth={2} />
+            <span>99135 20707</span>
+          </a>
+          <a
+            href="https://wa.me/919913520707?text=Hello%20Dr.%20Chintan%2C%20I%20would%20like%20to%20book%20an%20appointment."
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group inline-flex items-center gap-1.5 pl-4 pr-3.5 py-2 rounded-full bg-primary text-primary-foreground text-[13.5px] font-semibold transition-transform duration-300 hover:scale-[1.03] shadow-md shadow-primary/20"
+          >
+            Book a Visit
+            <ArrowUpRight
+              className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+              strokeWidth={2}
+            />
+          </a>
+        </div>
+
+        {/* Mobile */}
+        <div className="md:hidden flex items-center gap-2">
+          <a
+            href="tel:+919913520707"
+            aria-label="Call clinic"
+            className="w-9 h-9 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-sm"
+          >
+            <Phone className="w-4 h-4" strokeWidth={2} />
+          </a>
+          <Sheet open={isOpen} onOpenChange={setIsOpen}>
+            <SheetTrigger className="w-9 h-9 rounded-full border border-border flex items-center justify-center text-foreground">
+              <Menu className="w-4 h-4" strokeWidth={2} />
+              <span className="sr-only">Open menu</span>
+            </SheetTrigger>
+            <SheetContent side="right" className="bg-background border-l border-border/60">
+              <SheetHeader>
+                <SheetTitle className="font-display font-bold text-xl tracking-tight text-left">
+                  Devnayan{" "}
+                  <span className="text-foreground/55 font-medium">Dental</span>
+                </SheetTitle>
+              </SheetHeader>
+              <nav className="flex flex-col mt-8 -mx-2">
+                {routeList.map((r) => (
+                  <a
+                    key={r.href}
+                    href={r.href}
+                    onClick={() => setIsOpen(false)}
+                    className="px-2 py-4 border-b border-border/60 text-[16px] font-medium text-foreground/85 hover:text-foreground transition-colors"
+                  >
+                    {r.label}
+                  </a>
+                ))}
+              </nav>
               <a
-                href={route.href}
-                key={i}
-                className={`text-[17px] ${buttonVariants({ variant: "ghost" })}`}
+                href="https://wa.me/919913520707?text=Hello%20Dr.%20Chintan%2C%20I%20would%20like%20to%20book%20an%20appointment."
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setIsOpen(false)}
+                className="mt-8 flex items-center justify-between px-5 py-3.5 rounded-full bg-primary text-primary-foreground text-[14px] font-semibold"
               >
-                {route.label}
+                Book on WhatsApp
+                <ArrowUpRight className="w-4 h-4" strokeWidth={2} />
               </a>
-            ))}
-          </nav>
-
-          <div className="hidden md:flex gap-2">
-            <a
-              href="tel:+919913520707"
-              className={`${buttonVariants({ variant: "outline" })}`}
-            >
-              <Phone className="mr-2 w-4 h-4" />
-              99135 20707
-            </a>
-            <a
-              href="https://wa.me/919913520707?text=Hello%20Dr.%20Chintan%2C%20I%20would%20like%20to%20book%20an%20appointment."
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`${buttonVariants({ variant: "default" })}`}
-            >
-              Book Appointment
-            </a>
-          </div>
-        </NavigationMenuList>
-      </NavigationMenu>
+            </SheetContent>
+          </Sheet>
+        </div>
+      </div>
     </motion.header>
   );
 };

@@ -1,37 +1,34 @@
 import { useState, useEffect } from "react";
-import { Button } from "./ui/button";
-import { ArrowUpToLine } from "lucide-react";
+import { ArrowUp } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export const ScrollToTop = () => {
-  const [showTopBtn, setShowTopBtn] = useState(false);
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => {
-      setShowTopBtn(window.scrollY > 400);
-    };
-    window.addEventListener("scroll", onScroll);
+    const onScroll = () => setShow(window.scrollY > 500);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const goToTop = () => {
-    window.scroll({ top: 0, left: 0 });
-  };
+  const goToTop = () =>
+    window.scroll({ top: 0, left: 0, behavior: "smooth" });
 
   return (
     <AnimatePresence>
-      {showTopBtn && (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.5 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.5 }}
-          transition={{ duration: 0.25, type: "spring", stiffness: 200 }}
-          className="fixed bottom-4 right-4 z-40 hidden md:block"
+      {show && (
+        <motion.button
+          onClick={goToTop}
+          initial={{ opacity: 0, y: 16, scale: 0.9 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: 16, scale: 0.9 }}
+          transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+          className="group fixed bottom-6 right-6 z-40 hidden md:flex w-12 h-12 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg shadow-primary/25 hover:scale-105 transition-transform"
+          aria-label="Back to top"
         >
-          <Button onClick={goToTop} className="opacity-90 shadow-md" size="icon">
-            <ArrowUpToLine className="h-4 w-4" />
-          </Button>
-        </motion.div>
+          <ArrowUp className="w-5 h-5 transition-transform duration-300 group-hover:-translate-y-0.5" strokeWidth={2.5} />
+        </motion.button>
       )}
     </AnimatePresence>
   );

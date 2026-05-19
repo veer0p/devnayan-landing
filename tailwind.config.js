@@ -16,6 +16,14 @@ module.exports = {
       },
     },
     extend: {
+      fontFamily: {
+        display: ['Manrope', 'Inter', 'system-ui', 'sans-serif'],
+        sans: ['Inter', 'system-ui', '-apple-system', 'Segoe UI', 'sans-serif'],
+        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
+      },
+      letterSpacing: {
+        widest2: '0.18em',
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

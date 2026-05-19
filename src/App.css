@@ -54,8 +54,16 @@
   * {
     @apply border-border;
   }
+  html {
+    font-feature-settings: 'cv11', 'ss01', 'ss03';
+  }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans antialiased;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  .font-display {
+    font-feature-settings: 'ss01', 'liga', 'kern', 'opsz';
   }
 }
 
@@ -63,6 +71,24 @@
   background: hsl(37 45% 55%);
   color: hsl(20 10% 8%);
 }
+
+/* Marquee — used by testimonials desktop view */
+@keyframes marquee-left {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.marquee-track {
+  animation: marquee-left 40s linear infinite;
+  width: max-content;
+}
+.marquee-pause:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+/* Hide native scrollbar on the mobile testimonial rail */
+.snap-rail::-webkit-scrollbar { display: none; }
+.snap-rail { -ms-overflow-style: none; scrollbar-width: none; }
 
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: hsl(20 10% 8%); }

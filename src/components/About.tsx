@@ -1,121 +1,153 @@
-import { Statistics } from "./Statistics";
-import drImage from "../assets/dr.png";
 import { motion } from "framer-motion";
-import { SlideRight, SlideLeft } from "@/lib/animation";
-import { Award, Shield, Heart } from "lucide-react";
+import { Award, Heart, ShieldCheck, Smile } from "lucide-react";
+import drImage from "../assets/dr.png";
+import { CountUp } from "./ui/CountUp";
+
+const ease = [0.22, 1, 0.36, 1] as const;
+
+type Stat =
+  | { kind: "count"; icon: typeof Award; end: number; decimals?: number; prefix?: string; suffix?: string; label: string }
+  | { kind: "static"; icon: typeof Award; text: string; label: string };
+
+const stats: Stat[] = [
+  { kind: "count",  icon: Award,       end: 10,    suffix: "+",   label: "Years in practice" },
+  { kind: "count",  icon: Smile,       end: 5000,  suffix: "+",   label: "Smiles cared for" },
+  { kind: "count",  icon: Heart,       end: 4.9,   decimals: 1,   suffix: " ★", label: "Google rating" },
+  { kind: "static", icon: ShieldCheck, text: "2014",              label: "Established" },
+];
 
 export const About = () => {
   return (
-    <section id="about" className="container py-24 sm:py-32">
-      <div className="bg-muted/50 border rounded-2xl py-12 overflow-hidden">
-        <div className="px-6 flex flex-col-reverse md:flex-row gap-8 md:gap-12 items-center">
-          {/* Creative doctor image */}
+    <section id="about" className="relative py-20 sm:py-28 bg-foreground/[0.02]">
+      <div className="container">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.8, ease }}
+          className="max-w-3xl mb-12 md:mb-16"
+        >
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 mb-5">
+            <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+            <span className="text-[11px] font-semibold uppercase tracking-widest2 text-primary">
+              Meet your dentist
+            </span>
+          </div>
+          <h2 className="font-display font-bold text-[32px] md:text-[44px] lg:text-[52px] leading-[1.1] tracking-[-0.02em] text-foreground">
+            Dr. Chintan Sayania,{" "}
+            <span className="text-primary">B.D.S.</span>
+          </h2>
+        </motion.div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+          {/* Photo */}
           <motion.div
-            variants={SlideRight(0.2)}
-            whileInView="animate"
-            initial="initial"
-            viewport={{ once: true }}
-            className="relative w-full md:w-auto flex justify-center shrink-0"
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 1, ease }}
+            className="lg:col-span-5"
           >
-            {/* Decorative ring */}
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <motion.div
-                className="w-[280px] h-[280px] md:w-[340px] md:h-[340px] rounded-full border-2 border-dashed border-primary/20"
-                animate={{ rotate: 360 }}
-                transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-              />
-            </div>
-
-            {/* Glowing background blob */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[250px] h-[250px] md:w-[300px] md:h-[300px] bg-primary/15 rounded-full blur-3xl" />
-
-            {/* Main image with creative shape */}
             <div className="relative">
-              <motion.div
-                className="w-[260px] h-[320px] md:w-[300px] md:h-[380px] rounded-[60px_60px_30px_30px] overflow-hidden border-4 border-primary/20 shadow-2xl shadow-primary/10"
-                whileHover={{ borderColor: "hsl(var(--primary) / 0.5)" }}
-                transition={{ duration: 0.3 }}
-              >
+              <div className="aspect-[4/5] overflow-hidden rounded-2xl bg-foreground/[0.04] shadow-xl shadow-foreground/5">
                 <motion.img
                   src={drImage}
-                  alt="Dr. Chintan Sayania"
+                  alt="Dr. Chintan Sayania, B.D.S."
+                  initial={{ scale: 1.06 }}
+                  whileInView={{ scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 1.6, ease }}
                   className="w-full h-full object-cover object-top"
-                  whileHover={{ scale: 1.05 }}
-                  transition={{ duration: 0.5 }}
                 />
-              </motion.div>
-
-              {/* Floating badge - top right */}
+              </div>
+              {/* Soft accent — a friendly badge */}
               <motion.div
-                initial={{ opacity: 0, scale: 0 }}
+                initial={{ opacity: 0, scale: 0.8 }}
                 whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.8, type: "spring", stiffness: 200 }}
                 viewport={{ once: true }}
-                className="absolute -top-3 -right-3 w-14 h-14 bg-primary rounded-2xl flex items-center justify-center shadow-lg shadow-primary/30 rotate-12"
+                transition={{ duration: 0.6, delay: 0.6, ease }}
+                className="absolute -bottom-4 -right-4 bg-background border border-border/60 rounded-2xl px-4 py-3 shadow-lg flex items-center gap-3"
               >
-                <Award className="w-7 h-7 text-primary-foreground" />
-              </motion.div>
-
-              {/* Floating badge - bottom left */}
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ delay: 1, type: "spring", stiffness: 150 }}
-                viewport={{ once: true }}
-                className="absolute -bottom-4 -left-4 bg-background border shadow-xl rounded-2xl px-4 py-2.5 flex items-center gap-2"
-              >
-                <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
-                  <Shield className="w-4 h-4 text-primary" />
+                <div className="w-9 h-9 rounded-full bg-primary/15 flex items-center justify-center">
+                  <Award className="w-4 h-4 text-primary" strokeWidth={2} />
                 </div>
                 <div>
-                  <p className="text-xs font-bold">10+ Years</p>
-                  <p className="text-[10px] text-muted-foreground">Experience</p>
+                  <div className="text-[13px] font-semibold text-foreground">
+                    B.D.S.
+                  </div>
+                  <div className="text-[11px] text-foreground/55">
+                    Practising since 2014
+                  </div>
                 </div>
-              </motion.div>
-
-              {/* Floating badge - right middle */}
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ delay: 1.2, type: "spring", stiffness: 150 }}
-                viewport={{ once: true }}
-                className="absolute top-1/2 -right-6 bg-background border shadow-xl rounded-2xl px-3 py-2 flex items-center gap-2"
-              >
-                <Heart className="w-4 h-4 text-primary fill-primary" />
-                <span className="text-xs font-bold">5K+</span>
               </motion.div>
             </div>
           </motion.div>
 
-          {/* Content */}
-          <div className="flex flex-col justify-between flex-1">
-            <motion.div
-              variants={SlideLeft(0.3)}
-              whileInView="animate"
-              initial="initial"
-              viewport={{ once: true }}
-              className="pb-6"
-            >
-              <h2 className="text-3xl md:text-4xl font-bold">
-                <span className="bg-gradient-to-b from-primary/60 to-primary text-transparent bg-clip-text">
-                  Meet{" "}
+          {/* Text */}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 1, delay: 0.1, ease }}
+            className="lg:col-span-7"
+          >
+            <div className="space-y-5 max-w-[560px] text-[15px] md:text-[16px] leading-[1.7] text-foreground/70">
+              <p>
+                For over a decade, Dr. Chintan Sayania has cared for families
+                across Bardoli. What started as a single chair has grown into
+                Devnayan — a calm, modern practice built on a simple promise:
+                every patient leaves feeling{" "}
+                <span className="text-foreground font-medium">
+                  listened to, not rushed.
                 </span>
-                Dr. Chintan Sayania
-              </h2>
-              <p className="text-sm text-primary mt-1 mb-4">
-                B.D.S. | Dental Surgeon &amp; Consultant
               </p>
-              <p className="text-xl text-muted-foreground">
-                With over a decade of experience serving the Bardoli community,
-                Dr. Chintan Sayania combines clinical precision with genuine
-                compassion. Every treatment plan is personalized, every procedure
-                performed with meticulous attention to patient comfort — from
-                routine checkups to complex implants.
+              <p>
+                The work spans the everyday and the complex — routine cleanings
+                and family hygiene through to implants, root canals, and
+                full-smile rehabilitation. The tools are modern. The approach is
+                unhurried. Prices are quoted before any procedure begins.
               </p>
-            </motion.div>
+            </div>
 
-            <Statistics />
-          </div>
+            {/* Stats */}
+            <div className="mt-10 pt-8 border-t border-foreground/10 grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-7">
+              {stats.map((s, i) => {
+                const Icon = s.icon;
+                return (
+                  <motion.div
+                    key={s.label}
+                    initial={{ opacity: 0, y: 12 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: i * 0.08, ease }}
+                    className="flex items-start gap-3"
+                  >
+                    <span className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-0.5">
+                      <Icon className="w-4 h-4 text-primary" strokeWidth={2} />
+                    </span>
+                    <div>
+                      <div className="font-display font-bold text-[20px] md:text-[22px] leading-none text-foreground tabular-nums">
+                        {s.kind === "count" ? (
+                          <CountUp
+                            end={s.end}
+                            decimals={s.decimals}
+                            prefix={s.prefix}
+                            suffix={s.suffix}
+                          />
+                        ) : (
+                          s.text
+                        )}
+                      </div>
+                      <div className="text-[12px] text-foreground/55 mt-1.5 leading-tight">
+                        {s.label}
+                      </div>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>
