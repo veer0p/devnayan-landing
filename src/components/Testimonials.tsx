@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Star, Quote } from "lucide-react";
+import { useClinic } from "../context/ClinicContext";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -10,70 +11,72 @@ interface QuoteItem {
   context: string;
 }
 
-const quotes: QuoteItem[] = [
-  {
-    comment:
-      "Dr. Chintan made me forget I was at a dentist. The entire experience was calm, professional, and completely pain-free.",
-    name: "Ravi M.",
-    context: "Patient since 2019 · Bardoli",
-  },
-  {
-    comment:
-      "I was terrified of root canals until I visited Devnayan. The patience and skill here changed my perspective entirely.",
-    name: "Priya S.",
-    context: "Patient since 2021 · Bardoli",
-  },
-  {
-    comment:
-      "My whole family has been coming here for years. Honest pricing, modern tools, and a doctor who actually listens.",
-    name: "Amit P.",
-    context: "Family of four · Surat",
-  },
-  {
-    comment:
-      "Got my implants done here. The result looks and feels completely natural. Truly skilled hands.",
-    name: "Suresh T.",
-    context: "Patient since 2022 · Surat",
-  },
-  {
-    comment:
-      "Best dental clinic in Bardoli. My kids actually look forward to their visits — that says everything.",
-    name: "Meera D.",
-    context: "Mother of two · Bardoli",
-  },
-  {
-    comment:
-      "From consultation to treatment everything was transparent. No hidden costs, no upselling — just good care.",
-    name: "Neha K.",
-    context: "Patient since 2020 · Bardoli",
-  },
-];
-
-// Single quote card — used both in marquee (desktop) and snap-rail (mobile)
-const QuoteCard = ({ q }: { q: QuoteItem }) => (
-  <figure className="w-[88vw] sm:w-[420px] shrink-0 p-6 md:p-7 rounded-2xl border border-foreground/10 bg-background flex flex-col gap-5 snap-center shadow-sm hover:shadow-lg hover:shadow-primary/5 hover:border-primary/30 transition-all duration-300">
-    <Quote className="w-7 h-7 text-primary/40" strokeWidth={1.5} />
-    <blockquote className="text-[15px] md:text-[16px] leading-[1.65] text-foreground/85 min-h-[6em]">
-      {q.comment}
-    </blockquote>
-    <figcaption className="mt-auto flex items-center gap-3 pt-5 border-t border-foreground/10">
-      <span className="w-10 h-10 rounded-full bg-primary/15 text-primary font-bold flex items-center justify-center text-[14px] shrink-0">
-        {q.name.charAt(0)}
-      </span>
-      <div>
-        <div className="text-[14px] font-semibold text-foreground leading-none">
-          {q.name}
-        </div>
-        <div className="text-[11.5px] text-foreground/55 mt-1">{q.context}</div>
-      </div>
-    </figcaption>
-  </figure>
-);
-
 export const Testimonials = () => {
+  const { clinic } = useClinic();
+  
+  // Single quote card — used both in marquee (desktop) and snap-rail (mobile)
+  const QuoteCard = ({ q }: { q: QuoteItem }) => (
+    <figure className="w-[88vw] sm:w-[420px] shrink-0 p-6 md:p-7 rounded-2xl border border-foreground/10 bg-background flex flex-col gap-5 snap-center shadow-sm hover:shadow-lg hover:shadow-primary/5 hover:border-primary/30 transition-all duration-300">
+      <Quote className="w-7 h-7 text-primary/40" strokeWidth={1.5} />
+      <blockquote className="text-[15px] md:text-[16px] leading-[1.65] text-foreground/85 min-h-[6em]">
+        {q.comment}
+      </blockquote>
+      <figcaption className="mt-auto flex items-center gap-3 pt-5 border-t border-foreground/10">
+        <span className="w-10 h-10 rounded-full bg-primary/15 text-primary font-bold flex items-center justify-center text-[14px] shrink-0">
+          {q.name.charAt(0)}
+        </span>
+        <div>
+          <div className="text-[14px] font-semibold text-foreground leading-none">
+            {q.name}
+          </div>
+          <div className="text-[11.5px] text-foreground/55 mt-1">{q.context}</div>
+        </div>
+      </figcaption>
+    </figure>
+  );
+
   // Mobile dot indicator
   const railRef = useRef<HTMLDivElement>(null);
   const [activeDot, setActiveDot] = useState(0);
+
+  const quotes: QuoteItem[] = [
+    {
+      comment:
+        `${clinic.doctorName} made me forget I was at a dentist. The entire experience was calm, professional, and completely pain-free.`,
+      name: "Ravi M.",
+      context: "Patient since 2019 · Bardoli",
+    },
+    {
+      comment:
+        `I was terrified of root canals until I visited ${clinic.name}. The patience and skill here changed my perspective entirely.`,
+      name: "Priya S.",
+      context: "Patient since 2021 · Bardoli",
+    },
+    {
+      comment:
+        "My whole family has been coming here for years. Honest pricing, modern tools, and a doctor who actually listens.",
+      name: "Amit P.",
+      context: "Family of four · Surat",
+    },
+    {
+      comment:
+        "Got my implants done here. The result looks and feels completely natural. Truly skilled hands.",
+      name: "Suresh T.",
+      context: "Patient since 2022 · Surat",
+    },
+    {
+      comment:
+        `Best dental clinic in Bardoli. My kids actually look forward to their visits — that says everything.`,
+      name: "Meera D.",
+      context: "Mother of two · Bardoli",
+    },
+    {
+      comment:
+        "From consultation to treatment everything was transparent. No hidden costs, no upselling — just good care.",
+      name: "Neha K.",
+      context: "Patient since 2020 · Bardoli",
+    },
+  ];
 
   useEffect(() => {
     const el = railRef.current;
@@ -132,7 +135,7 @@ export const Testimonials = () => {
             </div>
             <div>
               <div className="text-[13px] font-semibold text-foreground leading-none">
-                4.9 · 200+ reviews
+                {clinic.rating} · {clinic.reviewsCount} reviews
               </div>
               <div className="text-[10px] text-foreground/55 mt-0.5">on Google</div>
             </div>

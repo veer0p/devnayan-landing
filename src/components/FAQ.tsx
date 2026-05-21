@@ -6,6 +6,7 @@ import {
 } from "@/components/ui/accordion";
 import { motion } from "framer-motion";
 import { MessageCircle } from "lucide-react";
+import { useClinic } from "../context/ClinicContext";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -15,13 +16,16 @@ interface FAQProps {
   value: string;
 }
 
-const FAQList: FAQProps[] = [
-  {
-    question: "Is the first consultation really free?",
-    answer:
-      "Yes — your initial consultation with Dr. Chintan is complimentary. We believe a thorough conversation should come before any treatment plan. There is no obligation to book anything that follows.",
-    value: "item-1",
-  },
+export const FAQ = () => {
+  const { clinic } = useClinic();
+
+  const FAQList: FAQProps[] = [
+    {
+      question: "Is the first consultation really free?",
+      answer:
+        `Yes — your initial consultation with ${clinic.doctorName} is complimentary. We believe a thorough conversation should come before any treatment plan. There is no obligation to book anything that follows.`,
+      value: "item-1",
+    },
   {
     question: "Are your treatments actually pain-free?",
     answer:
@@ -40,21 +44,20 @@ const FAQList: FAQProps[] = [
       "Cash, UPI, cards, and bank transfers. For longer treatment plans like implants or orthodontics, we offer staged payment so cost can be spread across the duration of care.",
     value: "item-4",
   },
-  {
-    question: "How do I book an appointment?",
-    answer:
-      "WhatsApp 99135 20707, call 02622-227071, or walk in during clinic hours (Mon–Sat, 9 AM – 1 PM and 3 PM – 8 PM). We'll confirm your slot within minutes.",
-    value: "item-5",
-  },
-  {
-    question: "Where exactly is the clinic located?",
-    answer:
-      "B 394601, 6-7, Lal Bahadur Shastri Rd, Rushikesh Nagar, Radhabaug Society, Bardoli, Gujarat 394601. Easily accessible from the main road.",
-    value: "item-6",
-  },
-];
+    {
+      question: "How do I book an appointment?",
+      answer:
+        `WhatsApp ${clinic.phone}, or walk in during clinic hours (${clinic.hours}). We'll confirm your slot within minutes.`,
+      value: "item-5",
+    },
+    {
+      question: "Where exactly is the clinic located?",
+      answer:
+        `${clinic.address}. Easily accessible from the main road.`,
+      value: "item-6",
+    },
+  ];
 
-export const FAQ = () => {
   return (
     <section id="faq" className="relative py-20 sm:py-28 bg-background">
       <div className="container">
@@ -131,11 +134,11 @@ export const FAQ = () => {
               Still have a question?
             </h3>
             <p className="mt-2 text-[14px] leading-[1.65] text-foreground/65">
-              Send us a quick message. Dr. Chintan or the front desk usually
+              Send us a quick message. {clinic.doctorName} or the front desk usually
               reply within minutes during clinic hours.
             </p>
             <a
-              href="https://wa.me/919913520707?text=Hi%20Dr.%20Chintan%2C%20I%20have%20a%20question."
+              href={`https://wa.me/${clinic.phoneRaw}?text=Hi%20${encodeURIComponent(clinic.doctorName)}%2C%20I%20have%20a%20question.`}
               target="_blank"
               rel="noopener noreferrer"
               className="mt-5 inline-flex items-center gap-2 px-5 py-3 rounded-full bg-primary text-primary-foreground text-[13px] font-semibold hover:scale-[1.02] transition-transform shadow-md shadow-primary/20"

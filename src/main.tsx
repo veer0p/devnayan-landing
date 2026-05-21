@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import { ThemeProvider } from "@/components/theme-provider.tsx";
+import { ClinicProvider } from "./context/ClinicContext.tsx";
 import "./index.css";
 
 // Lenis smooth scroll
@@ -24,7 +25,9 @@ requestAnimationFrame(raf);
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <ThemeProvider>
-      <App />
+      <ClinicProvider>
+        <App />
+      </ClinicProvider>
     </ThemeProvider>
   </React.StrictMode>
 );

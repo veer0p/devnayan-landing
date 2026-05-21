@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/sheet";
 import { Menu, Phone, ArrowUpRight } from "lucide-react";
 import { motion } from "framer-motion";
+import { useClinic } from "../context/ClinicContext";
 
 interface RouteProps {
   href: string;
@@ -25,6 +26,10 @@ const routeList: RouteProps[] = [
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const { clinic } = useClinic();
+
+  const [firstWord, ...restWords] = clinic.name.split(" ");
+  const restName = restWords.join(" ");
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -46,20 +51,20 @@ export const Navbar = () => {
     >
       <div className="container h-[72px] flex items-center justify-between gap-6">
         {/* Wordmark — sans, clean */}
-        <a href="/" className="flex items-center gap-2.5 select-none">
-          <span className="w-9 h-9 rounded-xl bg-primary/15 flex items-center justify-center">
+        <a href="/" className="flex items-center gap-2.5 select-none shrink-0">
+          <span className="w-9 h-9 rounded-xl bg-primary/15 flex items-center justify-center shrink-0">
             <svg viewBox="0 0 24 24" className="w-4 h-4 text-primary" fill="currentColor">
               <path d="M12 2C8.5 2 6.5 3.5 6 5.5c-.3 1.2.1 2.6 1 4 1.4 2.2 2 4.6 2.3 7 .2 1.4.6 2.8 1.4 3.4.4.3 1 .5 1.3 0 .6-1 .6-2.6.9-4 .2-1.4.5-2.4 1.1-2.4s.9 1 1.1 2.4c.3 1.4.3 3 .9 4 .3.5.9.3 1.3 0 .8-.6 1.2-2 1.4-3.4.3-2.4.9-4.8 2.3-7 .9-1.4 1.3-2.8 1-4C17.5 3.5 15.5 2 12 2z"/>
             </svg>
           </span>
-          <span className="font-display font-bold text-[17px] tracking-tight text-foreground leading-none">
-            Devnayan{" "}
-            <span className="text-foreground/55 font-medium">Dental</span>
+          <span className="font-display font-bold text-[15px] sm:text-[17px] tracking-tight text-foreground leading-tight max-w-[200px] truncate">
+            {firstWord}{" "}
+            <span className="text-foreground/55 font-medium">{restName}</span>
           </span>
         </a>
 
         {/* Center nav */}
-        <nav className="hidden md:flex items-center gap-1">
+        <nav className="hidden md:flex items-center gap-1 shrink-0">
           {routeList.map((r) => (
             <a
               key={r.href}
@@ -72,16 +77,16 @@ export const Navbar = () => {
         </nav>
 
         {/* Right side */}
-        <div className="hidden md:flex items-center gap-3">
+        <div className="hidden md:flex items-center gap-3 shrink-0">
           <a
-            href="tel:+919913520707"
+            href={`tel:+${clinic.phoneRaw}`}
             className="flex items-center gap-2 px-4 py-2 rounded-full border border-foreground/15 text-[13.5px] font-medium text-foreground/80 hover:text-foreground hover:border-foreground/40 transition-colors"
           >
             <Phone className="w-3.5 h-3.5" strokeWidth={2} />
-            <span>99135 20707</span>
+            <span>{clinic.phone}</span>
           </a>
           <a
-            href="https://wa.me/919913520707?text=Hello%20Dr.%20Chintan%2C%20I%20would%20like%20to%20book%20an%20appointment."
+            href={`https://wa.me/${clinic.phoneRaw}?text=Hello%20${encodeURIComponent(clinic.doctorName)}%2C%20I%20would%20like%20to%20book%20an%20appointment.`}
             target="_blank"
             rel="noopener noreferrer"
             className="group inline-flex items-center gap-1.5 pl-4 pr-3.5 py-2 rounded-full bg-primary text-primary-foreground text-[13.5px] font-semibold transition-transform duration-300 hover:scale-[1.03] shadow-md shadow-primary/20"
@@ -95,9 +100,9 @@ export const Navbar = () => {
         </div>
 
         {/* Mobile */}
-        <div className="md:hidden flex items-center gap-2">
+        <div className="md:hidden flex items-center gap-2 shrink-0">
           <a
-            href="tel:+919913520707"
+            href={`tel:+${clinic.phoneRaw}`}
             aria-label="Call clinic"
             className="w-9 h-9 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-sm"
           >
@@ -110,9 +115,9 @@ export const Navbar = () => {
             </SheetTrigger>
             <SheetContent side="right" className="bg-background border-l border-border/60">
               <SheetHeader>
-                <SheetTitle className="font-display font-bold text-xl tracking-tight text-left">
-                  Devnayan{" "}
-                  <span className="text-foreground/55 font-medium">Dental</span>
+                <SheetTitle className="font-display font-bold text-xl tracking-tight text-left leading-tight">
+                  {firstWord}{" "}
+                  <span className="text-foreground/55 font-medium">{restName}</span>
                 </SheetTitle>
               </SheetHeader>
               <nav className="flex flex-col mt-8 -mx-2">
@@ -128,7 +133,7 @@ export const Navbar = () => {
                 ))}
               </nav>
               <a
-                href="https://wa.me/919913520707?text=Hello%20Dr.%20Chintan%2C%20I%20would%20like%20to%20book%20an%20appointment."
+                href={`https://wa.me/${clinic.phoneRaw}?text=Hello%20${encodeURIComponent(clinic.doctorName)}%2C%20I%20would%20like%20to%20book%20an%20appointment.`}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setIsOpen(false)}

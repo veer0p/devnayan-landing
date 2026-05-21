@@ -1,10 +1,15 @@
 import { motion } from "framer-motion";
-import { MessageCircle, Phone, MapPin, Mail, ArrowUpRight } from "lucide-react";
+import { MessageCircle, Phone, MapPin, ArrowUpRight } from "lucide-react";
+import { useClinic } from "../context/ClinicContext";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
 export const Footer = () => {
   const year = new Date().getFullYear();
+  const { clinic } = useClinic();
+
+  const [firstWord, ...restWords] = clinic.name.split(" ");
+  const restName = restWords.join(" ");
 
   return (
     <motion.footer
@@ -25,16 +30,15 @@ export const Footer = () => {
                   <path d="M12 2C8.5 2 6.5 3.5 6 5.5c-.3 1.2.1 2.6 1 4 1.4 2.2 2 4.6 2.3 7 .2 1.4.6 2.8 1.4 3.4.4.3 1 .5 1.3 0 .6-1 .6-2.6.9-4 .2-1.4.5-2.4 1.1-2.4s.9 1 1.1 2.4c.3 1.4.3 3 .9 4 .3.5.9.3 1.3 0 .8-.6 1.2-2 1.4-3.4.3-2.4.9-4.8 2.3-7 .9-1.4 1.3-2.8 1-4C17.5 3.5 15.5 2 12 2z"/>
                 </svg>
               </span>
-              <span className="font-display font-bold text-[19px] tracking-tight">
-                Devnayan <span className="opacity-60">Dental</span>
+              <span className="font-display font-bold text-[19px] tracking-tight leading-tight max-w-[250px]">
+                {firstWord} <span className="opacity-60">{restName}</span>
               </span>
             </div>
             <p className="text-[15px] leading-[1.65] text-background/65 max-w-[380px]">
-              Painless dentistry for the whole family, run by Dr. Chintan
-              Sayania (B.D.S.) in Bardoli since 2014.
+              Painless dentistry for the whole family, run by {clinic.doctorName}.
             </p>
             <a
-              href="https://wa.me/919913520707?text=Hello%20Dr.%20Chintan%2C%20I%20would%20like%20to%20book%20an%20appointment."
+              href={`https://wa.me/${clinic.phoneRaw}?text=Hello%20${encodeURIComponent(clinic.doctorName)}%2C%20I%20would%20like%20to%20book%20an%20appointment.`}
               target="_blank"
               rel="noopener noreferrer"
               className="mt-6 inline-flex items-center gap-2 px-5 py-3 rounded-full bg-primary text-primary-foreground text-[14px] font-semibold hover:scale-[1.02] transition-transform shadow-md shadow-primary/20"
@@ -54,7 +58,7 @@ export const Footer = () => {
                 <a href="#services" className="text-background/80 hover:text-background transition-colors">Treatments</a>
               </li>
               <li>
-                <a href="#about" className="text-background/80 hover:text-background transition-colors">About Dr. Chintan</a>
+                <a href="#about" className="text-background/80 hover:text-background transition-colors">About Us</a>
               </li>
               <li>
                 <a href="#testimonials" className="text-background/80 hover:text-background transition-colors">Reviews</a>
@@ -76,40 +80,42 @@ export const Footer = () => {
             <ul className="space-y-3 text-[14px]">
               <li>
                 <a
-                  href="tel:+919913520707"
+                  href={`tel:+${clinic.phoneRaw}`}
                   className="group inline-flex items-center gap-2.5 text-background/80 hover:text-background transition-colors"
                 >
                   <Phone className="w-3.5 h-3.5 opacity-60" strokeWidth={2} />
-                  +91 99135 20707
+                  {clinic.phone}
                 </a>
               </li>
+              {clinic.website && (
+                <li>
+                  <a
+                    href={clinic.website}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group inline-flex items-center gap-2.5 text-background/80 hover:text-background transition-colors break-all"
+                  >
+                    <ArrowUpRight className="w-3.5 h-3.5 opacity-60 shrink-0" strokeWidth={2} />
+                    {clinic.website.replace(/^https?:\/\//, '')}
+                  </a>
+                </li>
+              )}
               <li>
                 <a
-                  href="mailto:sayaniachintan@gmail.com"
-                  className="group inline-flex items-center gap-2.5 text-background/80 hover:text-background transition-colors break-all"
-                >
-                  <Mail className="w-3.5 h-3.5 opacity-60 shrink-0" strokeWidth={2} />
-                  sayaniachintan@gmail.com
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://maps.app.goo.gl/aEDX8fUtLXwMdm1m7"
+                  href={`https://maps.google.com/?q=${clinic.placeId}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group inline-flex items-start gap-2.5 text-background/80 hover:text-background transition-colors"
                 >
                   <MapPin className="w-3.5 h-3.5 opacity-60 mt-1 shrink-0" strokeWidth={2} />
                   <span>
-                    B 394601, Lal Bahadur Shastri Rd,
-                    <br />
-                    Bardoli, Gujarat 394601
+                    {clinic.address}
                     <ArrowUpRight className="inline w-3 h-3 ml-1 opacity-70" strokeWidth={2} />
                   </span>
                 </a>
               </li>
               <li className="text-background/55 text-[13px] pt-1">
-                Mon–Sat · 9 AM – 1 PM · 3 PM – 8 PM
+                {clinic.hours}
               </li>
             </ul>
           </div>
@@ -117,7 +123,7 @@ export const Footer = () => {
 
         {/* Bottom rail */}
         <div className="pt-6 border-t border-background/10 flex flex-col md:flex-row items-center justify-between gap-2 text-[12px] text-background/55">
-          <span>© {year} Devnayan Dental Clinic · All rights reserved</span>
+          <span>© {year} {clinic.name} · All rights reserved</span>
           <span>
             Crafted by{" "}
             <a
@@ -134,7 +140,7 @@ export const Footer = () => {
 
       {/* Mobile sticky WhatsApp bar */}
       <a
-        href="https://wa.me/919913520707?text=Hello%20Dr.%20Chintan%2C%20I%20would%20like%20to%20book%20an%20appointment."
+        href={`https://wa.me/${clinic.phoneRaw}?text=Hello%20${encodeURIComponent(clinic.doctorName)}%2C%20I%20would%20like%20to%20book%20an%20appointment.`}
         target="_blank"
         rel="noopener noreferrer"
         className="fixed bottom-0 left-0 right-0 z-40 md:hidden bg-primary text-primary-foreground py-4 flex items-center justify-center gap-2 font-semibold text-[14px] shadow-lg"

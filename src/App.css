@@ -94,3 +94,17 @@
 ::-webkit-scrollbar-track { background: hsl(20 10% 8%); }
 ::-webkit-scrollbar-thumb { background: hsl(37 45% 55%); border-radius: 3px; }
 html { scrollbar-width: thin; scrollbar-color: hsl(37 45% 55%) hsl(20 10% 8%); }
+
+/* Template Typography Overrides */
+.font-serif {
+  font-family: 'Playfair Display', Georgia, serif !important;
+}
+.font-holistic {
+  font-family: 'Fraunces', Georgia, serif !important;
+}
+.font-tech {
+  font-family: 'Outfit', sans-serif !important;
+}
+.font-jakarta {
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+}

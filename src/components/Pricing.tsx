@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
-import { ArrowUpRight, Phone, MessageCircle, MapPin, Clock, Mail } from "lucide-react";
+import { ArrowUpRight, Phone, MessageCircle, MapPin, Clock, Globe } from "lucide-react";
+import { useClinic } from "../context/ClinicContext";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -18,6 +19,7 @@ const dayNames = [
 ];
 
 export const Pricing = () => {
+  const { clinic } = useClinic();
   const today = dayNames[new Date().getDay()];
 
   return (
@@ -119,15 +121,13 @@ export const Pricing = () => {
             </div>
 
             <a
-              href="https://maps.app.goo.gl/aEDX8fUtLXwMdm1m7"
+              href={`https://maps.google.com/?q=${clinic.placeId}`}
               target="_blank"
               rel="noopener noreferrer"
               className="group inline-flex items-start gap-2 text-[15px] md:text-[16px] leading-[1.5] text-foreground hover:text-primary transition-colors mb-6"
             >
               <span>
-                B 394601, 6-7, Lal Bahadur Shastri Rd,
-                <br />
-                Rushikesh Nagar, Bardoli, Gujarat 394601
+                {clinic.address}
               </span>
               <ArrowUpRight
                 className="w-4 h-4 mt-1 text-foreground/40 group-hover:text-primary transition-colors"
@@ -137,7 +137,7 @@ export const Pricing = () => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
               <a
-                href="tel:+919913520707"
+                href={`tel:+${clinic.phoneRaw}`}
                 className="flex items-center gap-3 px-4 py-3 rounded-xl border border-foreground/10 hover:border-primary/30 hover:bg-primary/[0.03] transition-colors"
               >
                 <Phone className="w-4 h-4 text-primary" strokeWidth={2} />
@@ -146,28 +146,32 @@ export const Pricing = () => {
                     Call
                   </div>
                   <div className="text-[14px] font-semibold text-foreground">
-                    +91 99135 20707
+                    {clinic.phone}
                   </div>
                 </div>
               </a>
-              <a
-                href="mailto:sayaniachintan@gmail.com"
-                className="flex items-center gap-3 px-4 py-3 rounded-xl border border-foreground/10 hover:border-primary/30 hover:bg-primary/[0.03] transition-colors"
-              >
-                <Mail className="w-4 h-4 text-primary" strokeWidth={2} />
-                <div className="min-w-0">
-                  <div className="text-[10px] uppercase tracking-widest2 text-foreground/50 font-semibold">
-                    Email
+              {clinic.website && (
+                <a
+                  href={clinic.website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 px-4 py-3 rounded-xl border border-foreground/10 hover:border-primary/30 hover:bg-primary/[0.03] transition-colors"
+                >
+                  <Globe className="w-4 h-4 text-primary" strokeWidth={2} />
+                  <div className="min-w-0">
+                    <div className="text-[10px] uppercase tracking-widest2 text-foreground/50 font-semibold">
+                      Website
+                    </div>
+                    <div className="text-[14px] font-semibold text-foreground truncate">
+                      {clinic.website.replace(/^https?:\/\//, '')}
+                    </div>
                   </div>
-                  <div className="text-[14px] font-semibold text-foreground truncate">
-                    sayaniachintan@gmail.com
-                  </div>
-                </div>
-              </a>
+                </a>
+              )}
             </div>
 
             <a
-              href="https://wa.me/919913520707?text=Hello%20Dr.%20Chintan%2C%20I%20would%20like%20to%20book%20an%20appointment."
+              href={`https://wa.me/${clinic.phoneRaw}?text=Hello%20${encodeURIComponent(clinic.doctorName)}%2C%20I%20would%20like%20to%20book%20an%20appointment.`}
               target="_blank"
               rel="noopener noreferrer"
               className="mt-auto inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-full bg-primary text-primary-foreground font-semibold text-[14px] hover:scale-[1.02] transition-transform shadow-md shadow-primary/20"
@@ -187,8 +191,8 @@ export const Pricing = () => {
           className="overflow-hidden rounded-2xl border border-foreground/10"
         >
           <iframe
-            title="Devnayan Dental Clinic Location"
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3721.5568353651074!2d73.11166829999999!3d21.130227200000007!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be0670cac31009b%3A0x8b4afc667e788f11!2sDevnayan%20Dental%20Clinic%20Bardoli!5e0!3m2!1sen!2sin!4v1779188561501!5m2!1sen!2sin"
+            title={`${clinic.name} Location`}
+            src={clinic.mapEmbedUrl}
             className="w-full h-[340px] md:h-[420px]"
             loading="lazy"
             allowFullScreen

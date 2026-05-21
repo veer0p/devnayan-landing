@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowUpRight, Phone, Star, ShieldCheck, Sparkles, Users } from "lucide-react";
+import { useClinic } from "../context/ClinicContext";
 
 import imgFamily from "@/assets/images/family.jpg";
 import imgChair from "@/assets/images/dental-chair.jpg";
@@ -8,12 +9,6 @@ import imgClinic from "@/assets/images/clinic.jpg";
 import { MagneticButton } from "./ui/MagneticButton";
 
 const ease = [0.22, 1, 0.36, 1] as const;
-
-const slides = [
-  { src: imgFamily, alt: "Modern dental clinic interior" },
-  { src: imgChair, alt: "Treatment chair and equipment" },
-  { src: imgClinic, alt: "The Devnayan clinic" },
-];
 
 const trust = [
   { icon: Star, value: "4.9 ★", label: "200+ Google reviews" },
@@ -23,7 +18,14 @@ const trust = [
 ];
 
 export const Hero = () => {
+  const { clinic } = useClinic();
   const [slide, setSlide] = useState(0);
+
+  const slides = [
+    { src: imgFamily, alt: "Modern dental clinic interior" },
+    { src: imgChair, alt: "Treatment chair and equipment" },
+    { src: imgClinic, alt: `The ${clinic.name.split(' ')[0]} clinic` },
+  ];
 
   // Cycle hero images every 5 s — gives the right-side photo a soft "video" feel
   useEffect(() => {
@@ -93,9 +95,9 @@ export const Hero = () => {
             transition={{ duration: 0.85, delay: 0.4, ease }}
             className="mt-7 max-w-[520px] text-[16px] md:text-[17px] leading-[1.65] text-foreground/65"
           >
-            Devnayan Dental Clinic, run by{" "}
+            {clinic.name}, run by{" "}
             <span className="text-foreground font-medium">
-              Dr. Chintan Sayania (B.D.S.)
+              {clinic.doctorName}
             </span>{" "}
             in Bardoli — gentle hands, modern equipment, and treatment plans
             explained in plain words.
@@ -109,7 +111,7 @@ export const Hero = () => {
             className="mt-9 flex flex-wrap items-center gap-3 sm:gap-4"
           >
             <MagneticButton
-              href="https://wa.me/919913520707?text=Hello%20Dr.%20Chintan%2C%20I%20would%20like%20to%20book%20an%20appointment."
+              href={`https://wa.me/${clinic.phoneRaw}?text=Hello%20${encodeURIComponent(clinic.doctorName)}%2C%20I%20would%20like%20to%20book%20an%20appointment.`}
               target="_blank"
               rel="noopener noreferrer"
               strength={0.3}
@@ -124,12 +126,12 @@ export const Hero = () => {
               />
             </MagneticButton>
             <a
-              href="tel:+919913520707"
+              href={`tel:+${clinic.phoneRaw}`}
               className="group inline-flex items-center gap-2.5 px-6 py-3.5 rounded-full border border-foreground/20 bg-background hover:border-foreground/50 hover:bg-foreground/[0.03] transition-colors"
             >
               <Phone className="w-4 h-4 text-foreground/70" strokeWidth={2} />
               <span className="text-[14px] font-medium text-foreground">
-                99135 20707
+                {clinic.phone}
               </span>
             </a>
           </motion.div>
@@ -190,11 +192,11 @@ export const Hero = () => {
             <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-foreground/55 via-foreground/15 to-transparent pointer-events-none" />
             <div className="absolute left-4 right-4 bottom-4 flex items-end justify-between gap-3">
               <div className="bg-background/85 backdrop-blur-md border border-border/60 px-3.5 py-2.5 rounded-xl shadow-sm">
-                <div className="text-[10px] uppercase tracking-widest2 text-foreground/55 font-medium">
-                  Devnayan Dental Clinic
+                <div className="text-[10px] uppercase tracking-widest2 text-foreground/55 font-medium truncate max-w-[150px]">
+                  {clinic.name}
                 </div>
                 <div className="text-[13px] font-semibold text-foreground mt-0.5">
-                  Bardoli, Gujarat · Est. 2014
+                  Bardoli, Gujarat
                 </div>
               </div>
               {/* Slide dots */}
@@ -226,7 +228,7 @@ export const Hero = () => {
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
               </span>
               <span className="text-[11px] font-medium text-foreground/85">
-                Open today · 9 AM – 8 PM
+                {clinic.hours.split('·')[0].split(',')[0].slice(0, 20)}
               </span>
             </motion.div>
           </div>

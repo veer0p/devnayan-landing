@@ -50,7 +50,7 @@ export const Features = () => {
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 mb-5">
             <span className="w-1.5 h-1.5 rounded-full bg-primary" />
             <span className="text-[11px] font-semibold uppercase tracking-widest2 text-primary">
-              Why Devnayan
+              Why Choose Us
             </span>
           </div>
           <h2 className="font-display font-bold text-[32px] md:text-[44px] lg:text-[52px] leading-[1.1] tracking-[-0.02em] text-foreground">

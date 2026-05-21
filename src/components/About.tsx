@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Award, Heart, ShieldCheck, Smile } from "lucide-react";
 import drImage from "../assets/dr.png";
 import { CountUp } from "./ui/CountUp";
+import { useClinic } from "../context/ClinicContext";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -17,6 +18,8 @@ const stats: Stat[] = [
 ];
 
 export const About = () => {
+  const { clinic } = useClinic();
+  
   return (
     <section id="about" className="relative py-20 sm:py-28 bg-foreground/[0.02]">
       <div className="container">
@@ -35,8 +38,7 @@ export const About = () => {
             </span>
           </div>
           <h2 className="font-display font-bold text-[32px] md:text-[44px] lg:text-[52px] leading-[1.1] tracking-[-0.02em] text-foreground">
-            Dr. Chintan Sayania,{" "}
-            <span className="text-primary">B.D.S.</span>
+            {clinic.doctorName}{" "}
           </h2>
         </motion.div>
 
@@ -52,8 +54,8 @@ export const About = () => {
             <div className="relative">
               <div className="aspect-[4/5] overflow-hidden rounded-2xl bg-foreground/[0.04] shadow-xl shadow-foreground/5">
                 <motion.img
-                  src={drImage}
-                  alt="Dr. Chintan Sayania, B.D.S."
+                  src={clinic.id === "devnayan" ? drImage : "https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=800&auto=format&fit=crop"}
+                  alt={clinic.doctorName}
                   initial={{ scale: 1.06 }}
                   whileInView={{ scale: 1 }}
                   viewport={{ once: true }}
@@ -94,9 +96,9 @@ export const About = () => {
           >
             <div className="space-y-5 max-w-[560px] text-[15px] md:text-[16px] leading-[1.7] text-foreground/70">
               <p>
-                For over a decade, Dr. Chintan Sayania has cared for families
+                For over a decade, {clinic.doctorName} has cared for families
                 across Bardoli. What started as a single chair has grown into
-                Devnayan — a calm, modern practice built on a simple promise:
+                {clinic.name} — a calm, modern practice built on a simple promise:
                 every patient leaves feeling{" "}
                 <span className="text-foreground font-medium">
                   listened to, not rushed.
