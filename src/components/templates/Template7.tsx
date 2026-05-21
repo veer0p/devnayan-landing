@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { Activity, Search, ArrowRight, CheckCircle2, ChevronRight, Stethoscope } from "lucide-react";
 import { InquiryForm } from "../InquiryForm";
+import { useClinic } from "../../context/ClinicContext";
 
 export const Template7: React.FC = () => {
+  const { clinic } = useClinic();
   const [selectedSymptom, setSelectedSymptom] = useState<string>("Toothache");
 
   const symptoms = [

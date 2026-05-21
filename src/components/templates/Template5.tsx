@@ -1,8 +1,10 @@
 import React from "react";
 import { ArrowRight, ChevronRight, CheckCircle2, Sparkles } from "lucide-react";
 import { InquiryForm } from "../InquiryForm";
+import { useClinic } from "../../context/ClinicContext";
 
 export const Template5: React.FC = () => {
+  const { clinic } = useClinic();
   return (
     <div className="font-sans bg-white text-slate-800 selection:bg-sky-500/20 min-h-screen">
       
