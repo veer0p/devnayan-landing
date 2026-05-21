@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Navbar } from "./components/Navbar";
 import { Footer } from "./components/Footer";
 import { ScrollToTop } from "./components/ScrollToTop";
 import { ScrollProgress } from "./components/ui/ScrollProgress";
 import { TemplateSwitcher } from "./components/TemplateSwitcher";
+import { useClinic } from "./context/ClinicContext";
 
 // Import Templates
 import { Template1 } from "./components/templates/Template1";
@@ -24,6 +25,12 @@ function App() {
     const tParam = params.get("template");
     return tParam ? tParam.toLowerCase() : "t1";
   });
+  const { clinic } = useClinic();
+
+  // Dynamically update page title based on the loaded clinic context
+  useEffect(() => {
+    document.title = `${clinic.name} - Book Your Appointment Today`;
+  }, [clinic.name]);
 
   const handleTemplateChange = (templateId: string) => {
     setTemplate(templateId);
