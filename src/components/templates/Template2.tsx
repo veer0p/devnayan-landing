@@ -1,244 +1,613 @@
-import React from "react";
-import { Star, ShieldCheck, Award, ThumbsUp, Quote, CheckCircle2, Phone } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  ArrowUpRight, Phone, Star, Quote, MapPin, Clock, MessageCircle,
+  Sparkles, Award, ShieldCheck, Crown, Diamond, Feather, Gem,
+} from "lucide-react";
 import { InquiryForm } from "../InquiryForm";
 import { useClinic } from "../../context/ClinicContext";
+import { CountUp } from "../ui/CountUp";
+import { MagneticButton } from "../ui/MagneticButton";
+
+import imgChair from "@/assets/images/dental-chair.jpg";
+import imgWhitening from "@/assets/images/whitening.jpg";
+import imgSmile from "@/assets/images/smile.jpg";
+import imgClinic from "@/assets/images/clinic.jpg";
+import imgFamily from "@/assets/images/family.jpg";
+import imgTools from "@/assets/images/dental-tools.jpg";
+
+const ease = [0.22, 1, 0.36, 1] as const;
+
+const services = [
+  { num: "I",   title: "Porcelain Veneers",       desc: "Hand-crafted, paper-thin shells that reshape the front-facing smile in two unhurried visits.", img: imgSmile },
+  { num: "II",  title: "Smile Design",            desc: "A digital mock-up of your final smile, agreed before we touch a single tooth.",                img: imgWhitening },
+  { num: "III", title: "Premium Implants",        desc: "Swiss-grade titanium roots, zirconia crowns, milled in-house for an undetectable finish.",   img: imgChair },
+  { num: "IV",  title: "Cosmetic Whitening",      desc: "Eight shades brighter in a single session — without the chair-time sensitivity.",            img: imgWhitening },
+  { num: "V",   title: "Invisalign — Adult",      desc: "Clear aligners worn discreetly, mapped end-to-end before treatment begins.",                  img: imgFamily },
+  { num: "VI",  title: "Full Mouth Restoration",  desc: "The most complex case, planned across six to nine months. No two are alike.",                 img: imgClinic },
+];
+
+const principles = [
+  { icon: Crown,       title: "Curated, never rushed",  body: "Two patients a day. Each consultation runs the full hour, in a private suite." },
+  { icon: Diamond,     title: "Hand-finished work",     body: "Every veneer is layered and contoured by hand — no off-the-shelf milling." },
+  { icon: Feather,     title: "Quiet, calm rooms",      body: "Noise-cancelling headphones, weighted blanket, your music. We adjust to your pace." },
+  { icon: ShieldCheck, title: "Five-year guarantee",    body: "Cosmetic work is warrantied against shade-shift and bonding failure for five years." },
+];
+
+const ritual = [
+  { num: "01", title: "Private consultation",    body: "A 75-minute conversation in our consult lounge. Photographs and CBCT scans where indicated." },
+  { num: "02", title: "Digital smile preview",   body: "Your future smile rendered on screen. We refine it together — proportion by proportion." },
+  { num: "03", title: "Crafted in the studio",   body: "Veneers and crowns hand-layered in-house by our ceramist. Two to three weeks." },
+  { num: "04", title: "Reveal",                  body: "Final fit, polish, photographs. You leave with the smile we designed together." },
+];
+
+const quotes = [
+  { name: "Aanya R.",    role: "Veneers · 2024",        text: "I'd been postponing this for years. They walked me through the digital mock-up first — by the time we started, there were no surprises left." },
+  { name: "Karan M.",    role: "Smile design · 2023",   text: "The result looks like the teeth I should have had. Family didn't realise anything had changed, only that I'd started smiling more." },
+  { name: "Pooja S.",    role: "Implants · 2024",       text: "Calm room, classical music, and a doctor who actually sketches things out for you. I've never had dental work feel this composed." },
+  { name: "Vihaan T.",   role: "Whitening · 2025",      text: "Eight shades brighter in under an hour and zero sensitivity afterwards. Not what I was expecting from a whitening appointment." },
+];
+
+const press = [
+  "Featured in Vogue India", "Surat Times — Best Cosmetic Practice 2024", "Indian Dental Excellence Award", "Smile India 100",
+];
+
+const schedule = [
+  { day: "Monday — Saturday", time: "By appointment · 10 AM – 7 PM" },
+  { day: "Sunday",            time: "Closed (private appointments on request)" },
+];
+
+const faqs = [
+  { q: "How long does a veneers case take?",        a: "Two visits, spaced roughly two weeks apart. Initial prep and impressions, then the final reveal." },
+  { q: "Is the work permanent?",                    a: "Yes. Properly maintained, hand-layered porcelain veneers will outlast most other dental restorations." },
+  { q: "Do you offer financing?",                   a: "Larger plans are quoted upfront and can be split across the treatment duration. No interest, no third-party processors." },
+  { q: "Can I see your previous cases?",            a: "Privately, in consultation. We don't publish patient photographs without explicit consent — a discretion most cosmetic patients value." },
+  { q: "Is there a guarantee on cosmetic work?",    a: "Five years against shade drift and bonding failure, in writing, at the time of treatment." },
+];
 
 export const Template2: React.FC = () => {
   const { clinic } = useClinic();
+  const [slide, setSlide] = useState(0);
+  const [activeSvc, setActiveSvc] = useState(0);
 
-  const reviews = [
-    {
-      name: "Ramesh Patel",
-      service: "Dental Implants",
-      text: `After struggling with dentures for years, ${clinic.doctorName}'s implants changed my life. The clinic is spotless, and the team made sure I felt absolutely no pain during the procedure.`,
-      img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&q=80"
-    },
-    {
-      name: "Sneha Desai",
-      service: "Invisalign Aligners",
-      text: `I was extremely anxious about dentist visits. The team at ${clinic.name.split(' ')[0]} completely changed that. They walked me through my 3D scan and the Invisalign process was seamless.`,
-      img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&q=80"
-    },
-    {
-      name: "Amit Shah",
-      service: "Emergency Root Canal",
-      text: "I had a severe toothache at 8 PM. They accommodated me immediately. The root canal was done using advanced tools and I was pain-free the very next morning.",
-      img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80"
-    }
+  const heroSlides = [
+    { src: imgClinic, alt: `${clinic.name} interior` },
+    { src: imgChair,  alt: "Treatment suite" },
+    { src: imgSmile,  alt: "Finished smile" },
   ];
 
+  useEffect(() => {
+    const id = window.setInterval(() => setSlide((s) => (s + 1) % heroSlides.length), 5500);
+    return () => window.clearInterval(id);
+  }, []);
+
   return (
-    <div className="font-sans bg-slate-50 text-slate-800 selection:bg-blue-500/20 min-h-screen pb-24 md:pb-0">
-      
-      {/* Trust Hero Section */}
-      <section className="pt-24 pb-16 bg-white border-b border-slate-200">
-        <div className="container max-w-6xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div className="space-y-6">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-blue-700 text-xs font-bold uppercase tracking-wider">
-              <div className="flex text-amber-400">
-                <Star className="w-3.5 h-3.5 fill-current" />
-                <Star className="w-3.5 h-3.5 fill-current" />
-                <Star className="w-3.5 h-3.5 fill-current" />
-                <Star className="w-3.5 h-3.5 fill-current" />
-                <Star className="w-3.5 h-3.5 fill-current" />
-              </div>
-              <span className="text-slate-600">Rated {clinic.rating}/5 by {clinic.reviewsCount}+ Patients</span>
-            </div>
-            
-            <h1 className="text-4xl sm:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight">
-              South Gujarat's Most <span className="text-blue-600">Trusted</span> Dental Practice.
-            </h1>
-            
-            <p className="text-base text-slate-600 leading-relaxed max-w-md font-medium">
-              Join thousands of happy smiles. {clinic.doctorName} brings over a decade of clinical excellence, painless procedures, and transparent pricing to Bardoli.
-            </p>
-            
-            <div className="flex flex-wrap items-center gap-6 pt-2">
-              <div className="flex -space-x-3">
-                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&q=80" className="w-12 h-12 rounded-full border-2 border-white object-cover shadow-sm" alt="Patient" />
-                <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100&q=80" className="w-12 h-12 rounded-full border-2 border-white object-cover shadow-sm" alt="Patient" />
-                <img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=100&q=80" className="w-12 h-12 rounded-full border-2 border-white object-cover shadow-sm" alt="Patient" />
-                <div className="w-12 h-12 rounded-full border-2 border-white bg-blue-50 flex items-center justify-center text-blue-700 font-bold text-xs shadow-sm">+12k</div>
-              </div>
-              <div className="text-sm font-bold text-slate-700">
-                Smiles Restored <br/><span className="text-slate-400 font-normal">Since 2012</span>
-              </div>
-            </div>
+    <div className="font-serif bg-[#0c1410] text-stone-100 selection:bg-amber-400/30 selection:text-amber-100">
 
-            <a
-              href="#inquiry"
-              className="hidden md:inline-flex px-8 py-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold transition-all shadow-lg shadow-blue-600/20 items-center gap-2"
+      {/* ───── 1. HERO ───── */}
+      <section className="relative min-h-screen overflow-hidden">
+        {/* Ambient gradient orb */}
+        <div className="pointer-events-none absolute inset-0">
+          <div className="absolute -top-40 -right-40 w-[700px] h-[700px] rounded-full bg-amber-400/[0.08] blur-[160px]" />
+          <div className="absolute -bottom-40 -left-40 w-[600px] h-[600px] rounded-full bg-emerald-500/[0.06] blur-[160px]" />
+        </div>
+
+        {/* Vertical edge label */}
+        <div className="hidden lg:block absolute left-6 top-1/2 -translate-y-1/2 -rotate-90 origin-left text-[10px] tracking-[0.4em] uppercase text-amber-200/60 font-sans font-medium whitespace-nowrap">
+          Atelier · Cosmetic Dentistry · Est. 2014
+        </div>
+
+        <div className="container relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 pt-28 lg:pt-36 pb-20 items-center min-h-screen">
+          <div className="lg:col-span-7 order-2 lg:order-1">
+            <motion.div
+              initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, ease }}
+              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-amber-300/30 bg-stone-100/[0.04] backdrop-blur-sm mb-8 font-sans"
             >
-              Request a Consultation
-            </a>
-          </div>
+              <Sparkles className="w-3 h-3 text-amber-300" />
+              <span className="text-[11px] tracking-[0.2em] uppercase text-amber-200/90 font-medium">
+                Private cosmetic atelier · Bardoli
+              </span>
+            </motion.div>
 
-          <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-slate-100">
-            <img
-              src="https://images.unsplash.com/photo-1606811841689-23dfddce3e95?q=80&w=800&auto=format&fit=crop"
-              alt="Patient smiling in dental chair"
-              className="w-full aspect-[4/3] object-cover"
-            />
-            {/* Overlay Trust Badge */}
-            <div className="absolute bottom-6 left-6 right-6 p-4 rounded-xl bg-white/95 backdrop-blur shadow-lg flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center shrink-0">
-                <ShieldCheck className="w-6 h-6 text-blue-600" />
+            <motion.h1
+              initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.95, delay: 0.2, ease }}
+              className="font-serif text-[44px] sm:text-[60px] md:text-[72px] lg:text-[82px] xl:text-[92px] leading-[0.98] tracking-[-0.02em] text-stone-50"
+            >
+              Smiles, <em className="not-italic text-amber-300/95">designed.</em>
+              <br />
+              Not <em className="font-medium italic text-stone-300">drilled.</em>
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.95, delay: 0.4, ease }}
+              className="mt-8 max-w-[540px] text-[15px] md:text-[16px] leading-[1.75] text-stone-300/85 font-sans"
+            >
+              An unhurried, by-appointment-only cosmetic practice. Hand-layered veneers,
+              digital smile previews, and a five-year guarantee on every aesthetic case
+              completed in our Bardoli studio.
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.95, delay: 0.55, ease }}
+              className="mt-10 flex flex-wrap items-center gap-3 sm:gap-4 font-sans"
+            >
+              <MagneticButton
+                href={`https://wa.me/${clinic.phoneRaw}?text=Hello%2C%20I%20would%20like%20to%20enquire%20about%20a%20cosmetic%20consultation.`}
+                target="_blank" rel="noopener noreferrer" strength={0.3}
+                className="group inline-flex items-center gap-2.5 px-7 py-4 rounded-none bg-amber-300 text-emerald-950 hover:bg-amber-200 transition-colors shadow-[0_8px_30px_-8px_rgba(252,211,77,0.5)]"
+              >
+                <span className="text-[12.5px] tracking-[0.18em] uppercase font-semibold">Reserve a consultation</span>
+                <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" strokeWidth={2} />
+              </MagneticButton>
+              <a href={`tel:+${clinic.phoneRaw}`} className="inline-flex items-center gap-3 px-7 py-4 border border-stone-100/20 hover:border-amber-300/50 hover:bg-stone-100/[0.03] transition-colors">
+                <Phone className="w-4 h-4 text-amber-300" />
+                <span className="text-[12.5px] tracking-[0.12em] uppercase text-stone-200">{clinic.phone}</span>
+              </a>
+            </motion.div>
+
+            {/* Hairline trust strip */}
+            <motion.div
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1, delay: 0.75, ease }}
+              className="mt-14 pt-7 border-t border-stone-100/10 grid grid-cols-3 gap-4 font-sans max-w-[540px]"
+            >
+              <div>
+                <div className="font-serif text-[28px] text-amber-300 leading-none"><CountUp end={10} suffix="+" /></div>
+                <div className="text-[10.5px] tracking-[0.18em] uppercase text-stone-400 mt-2">Years curating smiles</div>
               </div>
               <div>
-                <h4 className="font-bold text-slate-900">100% Painless Guarantee</h4>
-                <p className="text-xs text-slate-500 font-medium">Advanced anesthesia & gentle care.</p>
+                <div className="font-serif text-[28px] text-amber-300 leading-none"><CountUp end={4.9} decimals={1} /></div>
+                <div className="text-[10.5px] tracking-[0.18em] uppercase text-stone-400 mt-2">Patient rating</div>
+              </div>
+              <div>
+                <div className="font-serif text-[28px] text-amber-300 leading-none">5 yr</div>
+                <div className="text-[10.5px] tracking-[0.18em] uppercase text-stone-400 mt-2">Aesthetic guarantee</div>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Cinematic image */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1.2, delay: 0.4, ease }}
+            className="lg:col-span-5 order-1 lg:order-2 relative"
+          >
+            <div className="relative aspect-[3/4] overflow-hidden bg-emerald-900/40">
+              <AnimatePresence mode="sync">
+                <motion.img
+                  key={heroSlides[slide].src}
+                  src={heroSlides[slide].src}
+                  alt={heroSlides[slide].alt}
+                  initial={{ opacity: 0, scale: 1.08 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }}
+                  transition={{ opacity: { duration: 1.4 }, scale: { duration: 6, ease: "linear" } }}
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
+              </AnimatePresence>
+
+              {/* Gold ornament corners */}
+              <div className="absolute top-4 left-4 w-7 h-7 border-l border-t border-amber-300/60" />
+              <div className="absolute top-4 right-4 w-7 h-7 border-r border-t border-amber-300/60" />
+              <div className="absolute bottom-4 left-4 w-7 h-7 border-l border-b border-amber-300/60" />
+              <div className="absolute bottom-4 right-4 w-7 h-7 border-r border-b border-amber-300/60" />
+
+              <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-emerald-950/90 via-emerald-950/30 to-transparent" />
+              <div className="absolute bottom-7 left-7 right-7 font-sans">
+                <div className="text-[10px] tracking-[0.3em] uppercase text-amber-200/80">{clinic.name}</div>
+                <div className="font-serif text-2xl text-stone-50 mt-2 leading-none">Bardoli, Gujarat</div>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
-      </section>
 
-      {/* Trust Indicators Bar */}
-      <section className="py-8 bg-blue-600 text-white">
-        <div className="container max-w-5xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-          <div className="flex flex-col items-center gap-2">
-            <Award className="w-6 h-6 text-blue-200" />
-            <h4 className="font-bold text-sm">ISO Certified Clinic</h4>
-          </div>
-          <div className="flex flex-col items-center gap-2">
-            <ThumbsUp className="w-6 h-6 text-blue-200" />
-            <h4 className="font-bold text-sm">99% Success Rate</h4>
-          </div>
-          <div className="flex flex-col items-center gap-2">
-            <ShieldCheck className="w-6 h-6 text-blue-200" />
-            <h4 className="font-bold text-sm">Sterilization Protocols</h4>
-          </div>
-          <div className="flex flex-col items-center gap-2">
-            <Star className="w-6 h-6 text-blue-200" />
-            <h4 className="font-bold text-sm">Top Rated on Google</h4>
-          </div>
-        </div>
-      </section>
-
-      {/* Video-Style Testimonial Section */}
-      <section className="py-20 bg-slate-50">
-        <div className="container max-w-5xl mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-extrabold text-slate-900">Don't just take our word for it.</h2>
-            <p className="text-slate-500 mt-3 font-medium">Watch and read stories from patients who transformed their dental health with us.</p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {reviews.map((rev, idx) => (
-              <div key={idx} className="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 relative group">
-                <Quote className="absolute top-6 right-6 w-8 h-8 text-blue-50" />
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="relative">
-                    <img src={rev.img} alt={rev.name} className="w-14 h-14 rounded-full object-cover border-2 border-blue-100" />
-                    <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-blue-600 rounded-full flex items-center justify-center border-2 border-white">
-                      <CheckCircle2 className="w-3 h-3 text-white" />
-                    </div>
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-slate-900 text-sm">{rev.name}</h4>
-                    <p className="text-xs text-blue-600 font-semibold">{rev.service}</p>
-                  </div>
-                </div>
-                <p className="text-sm text-slate-600 leading-relaxed relative z-10 italic">
-                  "{rev.text}"
-                </p>
-                <div className="mt-4 flex text-amber-400 gap-1">
-                  {[...Array(5)].map((_, i) => <Star key={i} className="w-4 h-4 fill-current" />)}
-                </div>
-              </div>
+        {/* Press marquee */}
+        <div className="relative border-y border-stone-100/10 py-5 overflow-hidden bg-emerald-950/40">
+          <div className="marquee-track flex gap-14 items-center text-[10.5px] tracking-[0.35em] uppercase text-stone-400 font-sans whitespace-nowrap">
+            {[...press, ...press, ...press].map((p, i) => (
+              <span key={i} className="flex items-center gap-14"><span>{p}</span><span className="text-amber-300/60">✦</span></span>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Authority Profile */}
-      <section className="py-20 bg-white border-y border-slate-200">
-        <div className="container max-w-5xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div className="relative">
-            <div className="absolute inset-0 bg-blue-600 rounded-2xl translate-x-3 translate-y-3 opacity-10" />
-            <img
-              src="https://images.unsplash.com/photo-1537368910025-700350fe46c7?q=80&w=800&auto=format&fit=crop"
-              alt={clinic.doctorName}
-              className="w-full aspect-square object-cover rounded-2xl relative z-10 border border-slate-200"
+      {/* ───── 2. SERVICES — Editorial atelier ───── */}
+      <section className="relative py-24 lg:py-32 bg-stone-50 text-emerald-950">
+        <div className="container">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 mb-16 lg:mb-20">
+            <motion.div
+              initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.8, ease }}
+              className="lg:col-span-7"
+            >
+              <div className="text-[10px] tracking-[0.35em] uppercase text-amber-700 font-sans font-medium mb-6">— The Atelier</div>
+              <h2 className="font-serif text-[36px] md:text-[52px] lg:text-[64px] leading-[1.02] tracking-[-0.02em]">
+                Six disciplines.<br />
+                <em className="not-italic text-amber-700">One studio.</em>
+              </h2>
+            </motion.div>
+            <motion.p
+              initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.8, delay: 0.1, ease }}
+              className="lg:col-span-5 text-[15px] md:text-[16px] leading-[1.75] text-emerald-950/70 font-sans self-end max-w-[440px]"
+            >
+              Each procedure is a craft. We do six things — slowly, by hand, with the same
+              ceramist and surgeon present on every case. No franchises, no shortcuts.
+            </motion.p>
+          </div>
+
+          {/* Editorial list + sticky image */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+            <div className="lg:col-span-7">
+              <ul className="border-t border-emerald-950/15">
+                {services.map((s, i) => (
+                  <li
+                    key={s.num}
+                    onMouseEnter={() => setActiveSvc(i)}
+                    className="group relative border-b border-emerald-950/15 py-8 cursor-default"
+                  >
+                    <div className="flex items-baseline gap-8">
+                      <span className="font-serif italic text-[20px] text-amber-700 w-12 shrink-0">{s.num}</span>
+                      <div className="flex-1">
+                        <div className="flex flex-wrap items-baseline justify-between gap-4">
+                          <h3 className="font-serif text-[28px] lg:text-[34px] leading-tight tracking-[-0.015em] group-hover:translate-x-1.5 transition-transform duration-500">
+                            {s.title}
+                          </h3>
+                          <span className="inline-flex items-center gap-1.5 text-[10px] tracking-[0.25em] uppercase text-emerald-950/40 group-hover:text-amber-700 transition-colors font-sans font-medium">
+                            View craft <ArrowUpRight className="w-3.5 h-3.5" strokeWidth={2} />
+                          </span>
+                        </div>
+                        <p className="mt-3 max-w-[480px] text-[14px] leading-[1.7] text-emerald-950/65 font-sans">{s.desc}</p>
+                      </div>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="hidden lg:block lg:col-span-5 sticky top-28 self-start">
+              <div className="relative aspect-[4/5] overflow-hidden bg-emerald-900/10">
+                <AnimatePresence mode="wait">
+                  <motion.img
+                    key={services[activeSvc].img} src={services[activeSvc].img} alt={services[activeSvc].title}
+                    initial={{ opacity: 0, scale: 1.06 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }}
+                    transition={{ duration: 0.7, ease }}
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+                </AnimatePresence>
+                <div className="absolute top-4 left-4 w-7 h-7 border-l border-t border-amber-500/70" />
+                <div className="absolute top-4 right-4 w-7 h-7 border-r border-t border-amber-500/70" />
+                <div className="absolute bottom-4 left-4 w-7 h-7 border-l border-b border-amber-500/70" />
+                <div className="absolute bottom-4 right-4 w-7 h-7 border-r border-b border-amber-500/70" />
+                <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-emerald-950/80 to-transparent" />
+                <motion.div key={`label-${activeSvc}`} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} className="absolute left-6 bottom-6 right-6 font-sans">
+                  <div className="text-[10px] tracking-[0.3em] uppercase text-amber-200">Treatment · {services[activeSvc].num}</div>
+                  <div className="font-serif text-[22px] text-stone-50 mt-2 leading-none">{services[activeSvc].title}</div>
+                </motion.div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ───── 3. ABOUT — Doctor portrait ───── */}
+      <section className="relative py-24 lg:py-32 bg-[#0c1410]">
+        <div className="container grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 1, ease }} className="lg:col-span-5"
+          >
+            <div className="relative aspect-[4/5] overflow-hidden bg-emerald-900/30">
+              <img
+                src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=900&auto=format&fit=crop"
+                alt={clinic.doctorName}
+                className="w-full h-full object-cover object-top filter grayscale-[40%] hover:grayscale-0 transition-all duration-1000"
+              />
+              <div className="absolute top-4 left-4 w-7 h-7 border-l border-t border-amber-300/70" />
+              <div className="absolute top-4 right-4 w-7 h-7 border-r border-t border-amber-300/70" />
+              <div className="absolute bottom-4 left-4 w-7 h-7 border-l border-b border-amber-300/70" />
+              <div className="absolute bottom-4 right-4 w-7 h-7 border-r border-b border-amber-300/70" />
+            </div>
+            <div className="mt-7 flex items-center gap-4 font-sans">
+              <div className="w-10 h-px bg-amber-300/60" />
+              <div>
+                <div className="font-serif italic text-[18px] text-amber-300">{clinic.doctorName}</div>
+                <div className="text-[10px] tracking-[0.25em] uppercase text-stone-400 mt-1">Clinical Director · Ceramist</div>
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 1, delay: 0.15, ease }} className="lg:col-span-7"
+          >
+            <div className="text-[10px] tracking-[0.35em] uppercase text-amber-300/80 font-sans font-medium mb-6">— The hands behind the craft</div>
+            <h2 className="font-serif text-[36px] md:text-[52px] lg:text-[60px] leading-[1.02] tracking-[-0.02em] text-stone-50">
+              A decade of <em className="not-italic text-amber-300">quiet</em> obsession with shape, shade, and proportion.
+            </h2>
+            <div className="mt-8 space-y-5 max-w-[560px] text-[15px] md:text-[16px] leading-[1.8] text-stone-300/85 font-sans">
+              <p>
+                {clinic.doctorName} trained in cosmetic and prosthodontic dentistry over a decade of clinical
+                practice, eventually founding the {clinic.name} atelier in Bardoli — a deliberately small studio
+                that takes on only two patients a day.
+              </p>
+              <p>
+                The work centres on hand-layered porcelain, custom shade-matching under three lights, and a refusal
+                to mill anything off-the-shelf. The result is dentistry that doesn't announce itself in photographs.
+              </p>
+            </div>
+            <div className="mt-10 pt-8 border-t border-stone-100/15 grid grid-cols-3 gap-6 font-sans max-w-[480px]">
+              {[
+                { v: <CountUp end={500} suffix="+" />, l: "Cosmetic cases" },
+                { v: <CountUp end={4.9} decimals={1} />, l: "Patient rating" },
+                { v: "2014", l: "Atelier founded" },
+              ].map((s, i) => (
+                <div key={i}>
+                  <div className="font-serif text-[30px] text-amber-300 leading-none">{s.v}</div>
+                  <div className="text-[10px] tracking-[0.18em] uppercase text-stone-500 mt-2">{s.l}</div>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ───── 4. PRINCIPLES (Features) ───── */}
+      <section className="relative py-24 lg:py-32 bg-stone-50 text-emerald-950">
+        <div className="container">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.8, ease }} className="max-w-3xl mb-16"
+          >
+            <div className="text-[10px] tracking-[0.35em] uppercase text-amber-700 font-sans font-medium mb-6">— Studio principles</div>
+            <h2 className="font-serif text-[36px] md:text-[52px] lg:text-[60px] leading-[1.02] tracking-[-0.02em]">
+              Four principles that <em className="not-italic text-amber-700">never</em> bend.
+            </h2>
+          </motion.div>
+
+          {/* Asymmetric bento */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-emerald-950/15 border border-emerald-950/15">
+            {principles.map((p, i) => {
+              const Icon = p.icon;
+              return (
+                <motion.div
+                  key={p.title}
+                  initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-60px" }}
+                  transition={{ duration: 0.7, delay: i * 0.08, ease }}
+                  className="group bg-stone-50 p-8 md:p-10 hover:bg-emerald-950 hover:text-stone-50 transition-colors duration-500 cursor-default"
+                >
+                  <div className="w-12 h-12 border border-emerald-950/30 group-hover:border-amber-300/60 flex items-center justify-center mb-7 transition-colors">
+                    <Icon className="w-5 h-5 text-amber-700 group-hover:text-amber-300 transition-colors" strokeWidth={1.5} />
+                  </div>
+                  <h3 className="font-serif text-[22px] leading-tight tracking-[-0.01em] mb-3">{p.title}</h3>
+                  <p className="text-[13.5px] leading-[1.7] font-sans text-emerald-950/65 group-hover:text-stone-300 transition-colors">{p.body}</p>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* ───── 5. RITUAL (How it works) ───── */}
+      <section className="relative py-24 lg:py-32 bg-[#0c1410] overflow-hidden">
+        <div className="pointer-events-none absolute -top-32 right-0 w-[500px] h-[500px] rounded-full bg-amber-400/[0.05] blur-[140px]" />
+        <div className="container">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.8, ease }} className="max-w-3xl mb-16"
+          >
+            <div className="text-[10px] tracking-[0.35em] uppercase text-amber-300/80 font-sans font-medium mb-6">— The ritual</div>
+            <h2 className="font-serif text-[36px] md:text-[52px] lg:text-[60px] leading-[1.02] tracking-[-0.02em] text-stone-50">
+              From first <em className="not-italic text-amber-300">consultation</em> to final reveal.
+            </h2>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-stone-100/10 border border-stone-100/10">
+            {ritual.map((r, i) => (
+              <motion.div
+                key={r.num}
+                initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.7, delay: i * 0.1, ease }}
+                className="bg-[#0c1410] p-8 md:p-10 group"
+              >
+                <div className="flex items-baseline justify-between mb-7">
+                  <span className="font-serif italic text-[36px] text-amber-300/80">{r.num}</span>
+                  <div className="w-12 h-px bg-stone-100/30 group-hover:bg-amber-300 group-hover:w-20 transition-all duration-500" />
+                </div>
+                <h3 className="font-serif text-[22px] leading-tight tracking-[-0.01em] text-stone-50 mb-3">{r.title}</h3>
+                <p className="text-[13.5px] leading-[1.7] font-sans text-stone-300/70">{r.body}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ───── 6. INQUIRY CTA ───── */}
+      <section id="inquiry" className="relative py-24 lg:py-32 bg-stone-50 text-emerald-950">
+        <div className="container max-w-6xl">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.9, ease }} className="lg:col-span-6"
+            >
+              <div className="text-[10px] tracking-[0.35em] uppercase text-amber-700 font-sans font-medium mb-6">— Begin</div>
+              <h2 className="font-serif text-[40px] md:text-[56px] lg:text-[68px] leading-[1.02] tracking-[-0.02em]">
+                Reserve your <em className="not-italic text-amber-700">private</em> consultation.
+              </h2>
+              <p className="mt-6 max-w-[450px] text-[15px] leading-[1.75] text-emerald-950/70 font-sans">
+                A confidential, 75-minute conversation in our consult lounge.
+                Photographs and CBCT scan where indicated. No obligation; never any pressure.
+              </p>
+              <ul className="mt-10 space-y-4 font-sans">
+                {["Two patients a day — full hour each", "Confidentiality assured", "Photography only with consent", "Quote in writing before any work begins"].map((p, i) => (
+                  <li key={i} className="flex items-center gap-4 text-[14px] text-emerald-950/85">
+                    <span className="w-1.5 h-1.5 bg-amber-500 rotate-45" /> {p}
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.9, delay: 0.1, ease }} className="lg:col-span-6 font-sans"
+            >
+              <div className="bg-white p-8 md:p-10 border border-emerald-950/15 relative">
+                <div className="absolute top-3 left-3 w-5 h-5 border-l border-t border-amber-600" />
+                <div className="absolute top-3 right-3 w-5 h-5 border-r border-t border-amber-600" />
+                <div className="absolute bottom-3 left-3 w-5 h-5 border-l border-b border-amber-600" />
+                <div className="absolute bottom-3 right-3 w-5 h-5 border-r border-b border-amber-600" />
+                <InquiryForm
+                  templateId="t2"
+                  themeColor="bg-emerald-950 hover:bg-emerald-900"
+                  textColor="text-amber-300"
+                  buttonClass="rounded-none tracking-[0.18em] uppercase text-[11px] py-4 font-bold"
+                  prefilledMessage="I would like to reserve a private cosmetic consultation."
+                />
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* ───── 7. TESTIMONIALS — Magazine quotes ───── */}
+      <section className="relative py-24 lg:py-32 bg-[#0c1410]">
+        <div className="container">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.8, ease }} className="max-w-3xl mb-16"
+          >
+            <div className="text-[10px] tracking-[0.35em] uppercase text-amber-300/80 font-sans font-medium mb-6">— Words from patients</div>
+            <h2 className="font-serif text-[36px] md:text-[52px] lg:text-[60px] leading-[1.02] tracking-[-0.02em] text-stone-50">
+              Quiet <em className="not-italic text-amber-300">references.</em>
+            </h2>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-stone-100/10 border border-stone-100/10">
+            {quotes.map((q, i) => (
+              <motion.figure
+                key={q.name}
+                initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.7, delay: i * 0.08, ease }}
+                className="bg-[#0c1410] p-10 md:p-14"
+              >
+                <Quote className="w-7 h-7 text-amber-300/50 mb-7" strokeWidth={1.5} />
+                <blockquote className="font-serif text-[20px] md:text-[24px] leading-[1.45] tracking-[-0.01em] text-stone-100">
+                  "{q.text}"
+                </blockquote>
+                <figcaption className="mt-8 pt-6 border-t border-stone-100/10 font-sans">
+                  <div className="font-serif italic text-[16px] text-amber-300">{q.name}</div>
+                  <div className="text-[10.5px] tracking-[0.25em] uppercase text-stone-500 mt-1.5">{q.role}</div>
+                </figcaption>
+              </motion.figure>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ───── 8. VISIT / PRICING / MAP ───── */}
+      <section className="relative py-24 lg:py-32 bg-stone-50 text-emerald-950">
+        <div className="container">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.8, ease }} className="max-w-3xl mb-16"
+          >
+            <div className="text-[10px] tracking-[0.35em] uppercase text-amber-700 font-sans font-medium mb-6">— Visit</div>
+            <h2 className="font-serif text-[36px] md:text-[52px] lg:text-[60px] leading-[1.02] tracking-[-0.02em]">
+              By <em className="not-italic text-amber-700">appointment.</em>
+            </h2>
+          </motion.div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-px bg-emerald-950/15 border border-emerald-950/15 mb-10">
+            <div className="lg:col-span-5 bg-stone-50 p-8 md:p-10 font-sans">
+              <div className="flex items-center gap-3 mb-6"><Clock className="w-4 h-4 text-amber-700" /><span className="text-[10px] tracking-[0.3em] uppercase font-medium text-emerald-950/60">Studio hours</span></div>
+              <ul className="space-y-4">
+                {schedule.map((r) => (
+                  <li key={r.day} className="flex flex-col gap-1 border-b border-emerald-950/10 pb-3">
+                    <span className="font-serif text-[18px]">{r.day}</span>
+                    <span className="text-[13px] text-emerald-950/65">{r.time}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="lg:col-span-7 bg-stone-50 p-8 md:p-10 font-sans flex flex-col">
+              <div className="flex items-center gap-3 mb-6"><MapPin className="w-4 h-4 text-amber-700" /><span className="text-[10px] tracking-[0.3em] uppercase font-medium text-emerald-950/60">Find the atelier</span></div>
+              <a href={`https://maps.google.com/?q=${clinic.placeId}`} target="_blank" rel="noopener noreferrer" className="font-serif text-[20px] md:text-[24px] leading-snug text-emerald-950 hover:text-amber-700 transition-colors group inline-flex items-start gap-2 mb-8">
+                <span>{clinic.address}</span>
+                <ArrowUpRight className="w-4 h-4 mt-2 shrink-0 group-hover:text-amber-700" />
+              </a>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-auto">
+                <a href={`tel:+${clinic.phoneRaw}`} className="flex items-center gap-3 p-4 border border-emerald-950/15 hover:border-amber-700 transition-colors">
+                  <Phone className="w-4 h-4 text-amber-700" />
+                  <div>
+                    <div className="text-[10px] tracking-[0.2em] uppercase text-emerald-950/55">Call</div>
+                    <div className="font-serif text-[16px]">{clinic.phone}</div>
+                  </div>
+                </a>
+                <a href={`https://wa.me/${clinic.phoneRaw}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-4 bg-emerald-950 text-amber-300 hover:bg-emerald-900 transition-colors">
+                  <MessageCircle className="w-4 h-4" />
+                  <div>
+                    <div className="text-[10px] tracking-[0.2em] uppercase opacity-80">WhatsApp</div>
+                    <div className="font-serif text-[16px]">Reserve appointment</div>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div className="relative overflow-hidden border border-emerald-950/15">
+            <iframe
+              title={`${clinic.name} Location`} src={clinic.mapEmbedUrl}
+              className="w-full h-[360px] md:h-[460px] grayscale-[40%]" loading="lazy" allowFullScreen
+              referrerPolicy="no-referrer-when-downgrade" style={{ border: 0 }}
             />
           </div>
-          <div className="space-y-6">
-            <h2 className="text-3xl font-extrabold text-slate-900">{clinic.doctorName}</h2>
-            <h4 className="text-sm font-bold text-blue-600 uppercase tracking-wider">Chief Dental Surgeon (B.D.S)</h4>
-            <p className="text-slate-600 leading-relaxed font-medium">
-              With a relentless focus on patient comfort and clinical precision, {clinic.doctorName.split(' ')[0]} has built {clinic.name} into a regional center of excellence. His approach ensures that every procedure, from routine fillings to complex implants, is performed with absolute transparency and care.
-            </p>
-            <ul className="space-y-3 text-sm font-bold text-slate-700">
-              <li className="flex items-center gap-3">
-                <CheckCircle2 className="w-5 h-5 text-blue-600" /> Member of the Indian Dental Association
-              </li>
-              <li className="flex items-center gap-3">
-                <CheckCircle2 className="w-5 h-5 text-blue-600" /> Advanced Certification in Endodontics
-              </li>
-              <li className="flex items-center gap-3">
-                <CheckCircle2 className="w-5 h-5 text-blue-600" /> Certified Implantologist
-              </li>
-            </ul>
-          </div>
         </div>
       </section>
 
-      {/* Form Section */}
-      <section id="inquiry" className="py-20 bg-blue-50">
-        <div className="container max-w-4xl mx-auto px-4">
-          <div className="bg-white rounded-3xl shadow-xl border border-blue-100 overflow-hidden flex flex-col md:flex-row">
-            <div className="bg-blue-600 text-white p-8 md:w-2/5 flex flex-col justify-between">
-              <div>
-                <h3 className="text-2xl font-bold mb-3">Ready to transform your smile?</h3>
-                <p className="text-blue-100 text-sm leading-relaxed mb-6">
-                  Join the thousands of patients who trust us with their dental health. Book your consultation today.
-                </p>
-              </div>
-              <div className="space-y-4">
-                <div className="flex items-center gap-3 text-sm">
-                  <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center"><Phone className="w-4 h-4" /></div>
-                  <span className="font-bold">{clinic.phone}</span>
-                </div>
-                <div className="flex items-center gap-3 text-sm">
-                  <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center"><ShieldCheck className="w-4 h-4" /></div>
-                  <span className="font-bold">100% Secure & Confidential</span>
-                </div>
-              </div>
-            </div>
-            <div className="p-8 md:w-3/5">
-              <InquiryForm
-                templateId="t2"
-                themeColor="bg-blue-600 hover:bg-blue-700"
-                buttonClass="rounded-lg font-bold shadow-md"
-              />
-            </div>
-          </div>
+      {/* ───── 9. FAQ ───── */}
+      <section className="relative py-24 lg:py-32 bg-[#0c1410]">
+        <div className="container max-w-5xl">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.8, ease }} className="mb-14"
+          >
+            <div className="text-[10px] tracking-[0.35em] uppercase text-amber-300/80 font-sans font-medium mb-6">— Frequently asked</div>
+            <h2 className="font-serif text-[36px] md:text-[52px] lg:text-[60px] leading-[1.02] tracking-[-0.02em] text-stone-50">
+              The <em className="not-italic text-amber-300">quiet</em> questions.
+            </h2>
+          </motion.div>
+          <ul className="border-t border-stone-100/15">
+            {faqs.map((f, i) => (
+              <FAQRow key={i} q={f.q} a={f.a} />
+            ))}
+          </ul>
         </div>
       </section>
+    </div>
+  );
+};
 
-      {/* Sticky Mobile CTA */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-slate-200 shadow-[0_-4px_10px_rgba(0,0,0,0.05)] z-50 flex gap-3">
-        <a href={`tel:+${clinic.phoneRaw}`} className="flex-1 py-3.5 rounded-xl border border-blue-600 text-blue-600 font-bold text-center text-sm flex items-center justify-center gap-2">
-          <Phone className="w-4 h-4" /> Call
-        </a>
-        <a href="#inquiry" className="flex-1 py-3.5 rounded-xl bg-blue-600 text-white font-bold text-center text-sm shadow-md">
-          Book Now
-        </a>
-      </div>
-
-    
-      {/* Map Section */}
-      <section className="border-t border-slate-200">
-        <iframe
-          title={`${clinic.name} Location`}
-          src={clinic.mapEmbedUrl}
-          className="w-full h-[400px]"
-          loading="lazy"
-          allowFullScreen
-          referrerPolicy="no-referrer-when-downgrade"
-          style={{ border: 0 }}
-        />
-      </section>
-</div>
+const FAQRow: React.FC<{ q: string; a: string }> = ({ q, a }) => {
+  const [open, setOpen] = useState(false);
+  return (
+    <li className="border-b border-stone-100/15">
+      <button onClick={() => setOpen((o) => !o)} className="w-full flex items-center justify-between gap-6 py-7 text-left group">
+        <span className="font-serif text-[20px] md:text-[24px] leading-snug tracking-[-0.01em] text-stone-50 group-hover:text-amber-300 transition-colors">{q}</span>
+        <span className={`shrink-0 w-8 h-8 border border-stone-100/30 group-hover:border-amber-300 flex items-center justify-center transition-all ${open ? "rotate-45" : ""}`}>
+          <span className="font-serif text-[20px] text-stone-50 group-hover:text-amber-300 leading-none">+</span>
+        </span>
+      </button>
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.35, ease }}
+            className="overflow-hidden"
+          >
+            <p className="pb-7 pr-12 text-[14.5px] leading-[1.8] text-stone-300/85 font-sans max-w-[680px]">{a}</p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </li>
   );
 };
