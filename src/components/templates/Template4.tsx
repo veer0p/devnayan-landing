@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowRight, Phone, MapPin, Clock, MessageCircle, Star,
-  Cpu, Activity, Microscope, Settings, ShieldCheck, Zap,
-  Layers, Box, Scan, Atom, Terminal, ChevronRight, CheckCircle2,
+  Cpu, Microscope, Settings,
+  Layers, Scan, Atom, Terminal, ChevronRight,
 } from "lucide-react";
 import { InquiryForm } from "../InquiryForm";
 import { useClinic } from "../../context/ClinicContext";

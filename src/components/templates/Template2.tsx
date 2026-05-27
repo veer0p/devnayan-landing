@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  ArrowUpRight, Phone, Star, Quote, MapPin, Clock, MessageCircle,
-  Sparkles, Award, ShieldCheck, Crown, Diamond, Feather, Gem,
+  ArrowUpRight, Phone, Quote, MapPin, Clock, MessageCircle,
+  Sparkles, ShieldCheck, Crown, Diamond, Feather,
 } from "lucide-react";
 import { InquiryForm } from "../InquiryForm";
 import { useClinic } from "../../context/ClinicContext";
@@ -14,7 +14,6 @@ import imgWhitening from "@/assets/images/whitening.jpg";
 import imgSmile from "@/assets/images/smile.jpg";
 import imgClinic from "@/assets/images/clinic.jpg";
 import imgFamily from "@/assets/images/family.jpg";
-import imgTools from "@/assets/images/dental-tools.jpg";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 

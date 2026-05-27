@@ -2,14 +2,13 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowRight, Phone, MapPin, Clock, MessageCircle, Sparkles,
-  Activity, Search, ChevronRight, CheckCircle2, Stethoscope, Star,
-  ChevronDown, Plus, Microscope, ShieldCheck, Heart, Layers,
-  Smile, Sun, Wrench, Wand2,
+  Activity, ChevronRight, CheckCircle2, Stethoscope, Star,
+  ChevronDown, Microscope, ShieldCheck, Heart, Layers,
+  Sun, Wrench, Wand2,
 } from "lucide-react";
 import { InquiryForm } from "../InquiryForm";
 import { useClinic } from "../../context/ClinicContext";
 import { CountUp } from "../ui/CountUp";
-import { MagneticButton } from "../ui/MagneticButton";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 

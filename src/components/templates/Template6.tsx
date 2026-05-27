@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowUpRight, Phone, MapPin, Clock, MessageCircle,
-  Star, ChevronDown, Plus,
+  Star, Plus,
 } from "lucide-react";
 import { InquiryForm } from "../InquiryForm";
 import { useClinic } from "../../context/ClinicContext";

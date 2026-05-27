@@ -3,8 +3,8 @@ import { motion } from "framer-motion";
 import {
   ArrowUpRight, Phone, MapPin, Clock, MessageCircle, Star,
   Award, ShieldCheck, CheckCircle2, ChevronRight, Microscope,
-  Activity, Settings, Cpu, Layers, Stethoscope, HeartPulse,
-  ChevronDown, Plus, X, BadgeCheck, Building2, Briefcase,
+  Activity, Cpu, Layers, Stethoscope, HeartPulse,
+  Plus, X, BadgeCheck, Building2, Briefcase,
 } from "lucide-react";
 import { InquiryForm } from "../InquiryForm";
 import { useClinic } from "../../context/ClinicContext";

@@ -3,8 +3,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowUpRight, Phone, MapPin, Clock, MessageCircle, Quote,
   Leaf, Flower2, TreePine, Wind, Sun, Sprout,
-  HandHeart, ShieldCheck, Stethoscope, Smile, Heart,
-  ChevronDown, Plus,
+  HandHeart, ShieldCheck, Heart,
+  Plus,
 } from "lucide-react";
 import { InquiryForm } from "../InquiryForm";
 import { useClinic } from "../../context/ClinicContext";
