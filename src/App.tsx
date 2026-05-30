@@ -38,6 +38,9 @@ function App() {
     const url = new URL(window.location.href);
     url.searchParams.set("template", templateId);
     window.history.pushState({}, "", url.toString());
+    
+    // Scroll to the top of the page instantly on template switch
+    window.scrollTo(0, 0);
   };
 
   const renderTemplate = () => {

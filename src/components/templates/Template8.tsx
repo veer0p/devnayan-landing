@@ -155,7 +155,7 @@ export const Template8: React.FC = () => {
               className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-sky-50 border border-sky-200 mb-8"
             >
               <Building2 className="w-3.5 h-3.5 text-sky-700" strokeWidth={2} />
-              <span className="text-[11px] font-bold tracking-[0.12em] uppercase text-sky-800">Bardoli's leading multi-specialty dental center</span>
+              <span className="text-[11px] font-bold tracking-[0.12em] uppercase text-sky-800">{clinic.id === 'janki' ? "Silvassa's" : "Bardoli's"} leading multi-specialty dental center</span>
             </motion.div>
 
             <motion.h1
@@ -172,7 +172,7 @@ export const Template8: React.FC = () => {
               transition={{ duration: 0.9, delay: 0.4, ease }}
               className="mt-7 max-w-[560px] text-[16px] md:text-[17px] leading-[1.65] text-slate-600"
             >
-              {clinic.name} is a full-service dental center in Bardoli, with on-site implantologists,
+              {clinic.name} is a full-service dental center in {clinic.id === 'janki' ? 'Silvassa' : 'Bardoli'}, with on-site implantologists,
               endodontists, and orthodontists — supported by digital imaging, CAD/CAM milling, and
               transparent insurance coordination.
             </motion.p>
@@ -203,7 +203,7 @@ export const Template8: React.FC = () => {
               {[
                 { v: <CountUp end={12000} suffix="+" />, l: "Patients treated" },
                 { v: <CountUp end={4.9} decimals={1} />, l: "Patient rating" },
-                { v: <CountUp end={10} suffix=" yrs" />, l: "In Bardoli" },
+                { v: <CountUp end={clinic.id === 'janki' ? 15 : 10} suffix=" yrs" />, l: clinic.id === 'janki' ? "In Silvassa" : "In Bardoli" },
                 { v: <CountUp end={6} />, l: "On-site specialists" },
               ].map((s, i) => (
                 <div key={i}>
@@ -318,7 +318,7 @@ export const Template8: React.FC = () => {
           >
             <div className="relative">
               <div className="aspect-[4/5] rounded-2xl overflow-hidden bg-slate-200">
-                <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=900&auto=format&fit=crop" alt={clinic.doctorName} className="w-full h-full object-cover object-top" />
+                <img src={clinic.doctorImage || "https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=900&auto=format&fit=crop"} alt={clinic.doctorName} className="w-full h-full object-cover object-top" />
               </div>
               <div className="absolute -bottom-5 -right-5 bg-slate-900 text-white px-5 py-4 rounded-2xl shadow-lg">
                 <div className="text-[10px] font-bold tracking-[0.12em] uppercase text-sky-400">Clinical Director</div>
@@ -341,12 +341,12 @@ export const Template8: React.FC = () => {
             </h2>
             <div className="mt-7 space-y-5 max-w-[560px] text-[15px] md:text-[16px] leading-[1.75] text-slate-600">
               <p>
-                {clinic.doctorName} founded {clinic.name} in 2014 with a structural vision:
+                {clinic.doctorName} founded {clinic.name} in {clinic.id === 'janki' ? '2010' : '2014'} with a structural vision:
                 a multi-specialty dental practice operated to the standards of a small hospital.
                 Specialists in-house, protocols documented, outcomes warrantied.
               </p>
               <p>
-                Today the practice serves over 12,000 patients across Bardoli and Surat, with
+                Today the practice serves over {clinic.id === 'janki' ? '5,000' : '12,000'} patients across {clinic.id === 'janki' ? 'Silvassa' : 'Bardoli and Surat'}, with
                 certified specialists across implantology, endodontics, orthodontics, and pediatric
                 dentistry — all working from a single, standardized clinical playbook.
               </p>
@@ -355,7 +355,7 @@ export const Template8: React.FC = () => {
             <div className="mt-9 grid grid-cols-2 sm:grid-cols-4 gap-px bg-slate-200 border border-slate-200 rounded-xl overflow-hidden">
               {[
                 { v: "B.D.S", l: "Qualification" },
-                { v: "12+", l: "Years practice" },
+                { v: clinic.id === 'janki' ? "15+" : "12+", l: "Years practice" },
                 { v: "500+", l: "Implants placed" },
                 { v: "IDA", l: "Member" },
               ].map((s, i) => (

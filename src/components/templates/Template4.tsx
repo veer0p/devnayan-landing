@@ -83,7 +83,7 @@ export const Template4: React.FC = () => {
           <div className="container py-3 flex items-center justify-between text-[10.5px] font-mono uppercase tracking-[0.18em]">
             <div className="flex items-center gap-5 text-zinc-500">
               <span className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />SYSTEM · ONLINE</span>
-              <span className="hidden md:flex items-center gap-2">CLINIC · BARDOLI · IN</span>
+              <span className="hidden md:flex items-center gap-2">CLINIC · {clinic.id === 'janki' ? 'SILVASSA' : 'BARDOLI'} · IN</span>
               <span className="hidden lg:flex items-center gap-2">UPTIME · {scanLine.toString().padStart(2, "0")}%</span>
             </div>
             <div className="text-cyan-400">v2026.01</div>
@@ -117,7 +117,7 @@ export const Template4: React.FC = () => {
               transition={{ duration: 0.95, delay: 0.4, ease }}
               className="mt-8 max-w-[560px] text-[15px] md:text-[16.5px] leading-[1.65] text-zinc-400"
             >
-              {clinic.name} — Bardoli's most data-driven dental practice. CBCT, laser, in-house milling,
+              {clinic.name} — {clinic.id === 'janki' ? 'Silvassa' : 'Bardoli'}'s most data-driven dental practice. CBCT, laser, in-house milling,
               microscope-assisted endodontics. Every treatment modelled, measured, and warrantied.
             </motion.p>
 
@@ -272,7 +272,7 @@ export const Template4: React.FC = () => {
               </div>
               <div className="aspect-[4/5] overflow-hidden">
                 <img
-                  src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=900&auto=format&fit=crop"
+                  src={clinic.doctorImage || "https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=900&auto=format&fit=crop"}
                   alt={clinic.doctorName}
                   className="w-full h-full object-cover object-top filter grayscale-[60%] hover:grayscale-0 transition-all duration-700"
                 />
@@ -291,7 +291,7 @@ export const Template4: React.FC = () => {
           >
             <div className="font-mono text-[10.5px] tracking-[0.35em] uppercase text-cyan-400 mb-6">// who.runs.this</div>
             <h2 className="font-extrabold text-[36px] md:text-[52px] lg:text-[60px] leading-[1.02] tracking-[-0.03em] text-zinc-50">
-              Twelve years <span className="text-cyan-300">writing protocols</span>.
+              {clinic.id === 'janki' ? 'Fifteen' : 'Twelve'} years <span className="text-cyan-300">writing protocols</span>.
               <br />Engineered, not improvised.
             </h2>
             <div className="mt-8 space-y-5 max-w-[560px] text-[15px] md:text-[16px] leading-[1.75] text-zinc-400">
@@ -309,10 +309,10 @@ export const Template4: React.FC = () => {
 
             <div className="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-3 font-mono">
               {[
-                { v: "12+", l: "yrs · clinical" },
+                { v: clinic.id === 'janki' ? "15+" : "12+", l: "yrs · clinical" },
                 { v: "500+", l: "implants · placed" },
                 { v: "100%", l: "digital · workflow" },
-                { v: "5 yr", l: "warranty · written" },
+                { v: clinic.id === 'janki' ? "5 yr" : "5 yr", l: "warranty · written" },
               ].map((s, i) => (
                 <div key={i} className="p-4 rounded-md border border-zinc-800 bg-zinc-950/60">
                   <div className="text-[24px] font-bold text-cyan-300 leading-none">{s.v}</div>

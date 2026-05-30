@@ -274,15 +274,15 @@ export const Template7: React.FC = () => {
             <div className="relative">
               <div className="aspect-[4/5] rounded-3xl overflow-hidden bg-slate-200">
                 <img
-                  src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=900&auto=format&fit=crop"
+                  src={clinic.doctorImage || "https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=900&auto=format&fit=crop"}
                   alt={clinic.doctorName} className="w-full h-full object-cover object-top"
                 />
               </div>
               <div className="absolute -bottom-5 -right-5 bg-white rounded-2xl border border-slate-200 px-4 py-3 shadow-lg flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-indigo-100 flex items-center justify-center"><Stethoscope className="w-5 h-5 text-indigo-600" strokeWidth={2} /></div>
                 <div>
-                  <div className="text-[10px] font-bold tracking-[0.12em] uppercase text-slate-500">B.D.S · Implantologist</div>
-                  <div className="text-[13.5px] font-extrabold text-slate-900">Practising since 2014</div>
+                  <div className="text-[10px] font-bold tracking-[0.12em] uppercase text-slate-500 font-jakarta">B.D.S · Implantologist</div>
+                  <div className="text-[13.5px] font-extrabold text-slate-900 font-jakarta">Practising since {clinic.id === 'janki' ? '2010' : '2014'}</div>
                 </div>
               </div>
             </div>
@@ -298,7 +298,7 @@ export const Template7: React.FC = () => {
             </div>
             <h2 className="font-extrabold text-[34px] md:text-[46px] lg:text-[54px] leading-[1.05] tracking-[-0.025em] text-slate-900">
               {clinic.doctorName}.<br />
-              <span className="text-indigo-600">Twelve years of pattern recognition.</span>
+              <span className="text-indigo-600">{clinic.id === 'janki' ? 'Fifteen' : 'Twelve'} years of pattern recognition.</span>
             </h2>
             <div className="mt-7 space-y-5 max-w-[560px] text-[15px] md:text-[16px] leading-[1.75] text-slate-600">
               <p>
@@ -313,7 +313,7 @@ export const Template7: React.FC = () => {
             </div>
             <div className="mt-9 grid grid-cols-3 gap-4">
               {[
-                { v: <CountUp end={12} suffix="+" />, l: "Years clinical", c: "bg-indigo-50 text-indigo-700" },
+                { v: <CountUp end={clinic.id === 'janki' ? 15 : 12} suffix="+" />, l: "Years clinical", c: "bg-indigo-50 text-indigo-700" },
                 { v: <CountUp end={500} suffix="+" />, l: "Implants placed", c: "bg-violet-50 text-violet-700" },
                 { v: <CountUp end={4.9} decimals={1} />, l: "Patient rating", c: "bg-fuchsia-50 text-fuchsia-700" },
               ].map((s, i) => (
@@ -519,7 +519,7 @@ export const Template7: React.FC = () => {
               <span className="text-[11px] font-bold tracking-[0.12em] uppercase text-indigo-700">Find the clinic</span>
             </div>
             <h2 className="font-extrabold text-[34px] md:text-[46px] lg:text-[54px] leading-[1.05] tracking-[-0.025em] text-slate-900">
-              <span className="text-indigo-600">Visit us</span> in Bardoli.
+              <span className="text-indigo-600">Visit us</span> in {clinic.id === 'janki' ? 'Silvassa' : 'Bardoli'}.
             </h2>
           </motion.div>
 

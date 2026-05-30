@@ -24,12 +24,7 @@ const services = [
   { code: "006", name: "PROFESSIONAL WHITENING",    duration: "45 min",  price: "from ₹6,500", desc: "LED-activated, low-sensitivity protocol." },
 ];
 
-const counts = [
-  { v: <CountUp end={12000} suffix="+" />,    l: "Patients treated" },
-  { v: <CountUp end={4.9} decimals={1} suffix="★" />, l: "Patient rating" },
-  { v: <CountUp end={10} suffix="+" />,       l: "Years in practice" },
-  { v: <CountUp end={99} suffix="%" />,       l: "Same-day relief" },
-];
+
 
 const numbers = [
   { idx: "—01", title: "ZERO HIDDEN COSTS",         body: "Quote written, signed, presented before any procedure begins. Materials documented." },
@@ -45,11 +40,7 @@ const process = [
   { stage: "IV.",  title: "FOLLOW-UP",     body: "WhatsApp check-in 48 hours later. Routine checkup six months after.", duration: "—" },
 ];
 
-const voices = [
-  { name: "AAKASH D.",   title: "RCT · BARDOLI",          body: "I'd been postponing this for two years. The microscope feed, the explanations, the absence of pain — it changed how I think about dental work entirely." },
-  { name: "PRIYA N.",    title: "IMPLANT · SURAT",        body: "Three previous quotes — all of them vague, all of them higher. This one came in writing, in a single sheet, with materials specified. The implant has been in for eight months without a single issue." },
-  { name: "MEHUL R.",    title: "VENEERS · BARDOLI",      body: "They render the final result on screen, you approve every dimension, then the work matches the render. It is uncanny how exact the system is, and yet the doctor is the warmest part of it." },
-];
+
 
 const schedule = [
   { day: "MON–SAT", time: "9:00–13:00  ·  15:00–20:00" },
@@ -70,6 +61,19 @@ export const Template6: React.FC = () => {
 
   useEffect(() => { setYear(new Date().getFullYear()); }, []);
 
+  const counts = [
+    { v: <CountUp end={12000} suffix="+" />,    l: "Patients treated" },
+    { v: <CountUp end={4.9} decimals={1} suffix="★" />, l: "Patient rating" },
+    { v: <CountUp end={clinic.id === 'janki' ? 15 : 10} suffix="+" />,       l: "Years in practice" },
+    { v: <CountUp end={99} suffix="%" />,       l: "Same-day relief" },
+  ];
+
+  const voices = [
+    { name: "AAKASH D.",   title: clinic.id === 'janki' ? "RCT · SILVASSA" : "RCT · BARDOLI",          body: "I'd been postponing this for two years. The microscope feed, the explanations, the absence of pain — it changed how I think about dental work entirely." },
+    { name: "PRIYA N.",    title: clinic.id === 'janki' ? "IMPLANT · SILVASSA" : "IMPLANT · SURAT",        body: "Three previous quotes — all of them vague, all of them higher. This one came in writing, in a single sheet, with materials specified. The implant has been in for eight months without a single issue." },
+    { name: "MEHUL R.",    title: clinic.id === 'janki' ? "VENEERS · SILVASSA" : "VENEERS · BARDOLI",      body: "They render the final result on screen, you approve every dimension, then the work matches the render. It is uncanny how exact the system is, and yet the doctor is the warmest part of it." },
+  ];
+
   return (
     <div className="font-display bg-[#f5f1e8] text-zinc-950 selection:bg-zinc-950 selection:text-[#f5f1e8]">
 
@@ -80,7 +84,7 @@ export const Template6: React.FC = () => {
           <div className="flex flex-wrap items-center justify-between gap-4 pb-5 border-b border-zinc-950 text-[10.5px] font-mono tracking-[0.2em] uppercase">
             <div className="flex items-center gap-6 text-zinc-700">
               <span>ISSUE №{year - 2015}</span>
-              <span>BARDOLI · IN</span>
+              <span>{clinic.id === 'janki' ? 'SILVASSA' : 'BARDOLI'} · IN</span>
               <span className="hidden md:inline">{new Date().toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })}</span>
             </div>
             <div className="flex items-center gap-2 text-zinc-700">
@@ -99,7 +103,7 @@ export const Template6: React.FC = () => {
             <p className="text-[14px] leading-[1.65] text-zinc-700 max-w-[260px]">
               A monograph on what dentistry, at its quietest and most competent,
               actually looks like — practiced in a single, deliberately small clinic
-              in Bardoli.
+              in {clinic.id === 'janki' ? 'Silvassa' : 'Bardoli'}.
             </p>
             <div className="mt-7 inline-flex items-center gap-2 px-3 py-1.5 border border-zinc-950">
               <Star className="w-3 h-3 fill-current" strokeWidth={0} />
@@ -232,7 +236,7 @@ export const Template6: React.FC = () => {
             <div className="text-[10.5px] font-mono tracking-[0.25em] uppercase text-blue-400 mb-5">— Portrait</div>
             <div className="aspect-[4/5] overflow-hidden bg-zinc-800">
               <img
-                src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=900&auto=format&fit=crop"
+                src={clinic.doctorImage || "https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=900&auto=format&fit=crop"}
                 alt={clinic.doctorName}
                 className="w-full h-full object-cover object-top filter grayscale contrast-110"
               />
@@ -250,20 +254,20 @@ export const Template6: React.FC = () => {
             <h2 className="font-display font-black uppercase text-[36px] md:text-[56px] lg:text-[72px] leading-[0.95] tracking-[-0.04em]">
               {clinic.doctorName.toUpperCase()},
               <br />
-              <span className="italic font-serif font-normal lowercase text-blue-400" style={{ fontFamily: "Playfair Display, serif" }}>in his own room.</span>
+              <span className="italic font-serif font-normal lowercase text-blue-400" style={{ fontFamily: "Playfair Display, serif" }}>in {clinic.id === 'janki' ? 'her' : 'his'} own room.</span>
             </h2>
 
             <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-14 text-[14.5px] leading-[1.8] text-zinc-300 columns-1 lg:columns-2">
               <p>
-                He trained for eight years before he opened his own door. He has never worked
+                {clinic.id === 'janki' ? 'She' : 'He'} trained for eight years before {clinic.id === 'janki' ? 'she' : 'he'} opened {clinic.id === 'janki' ? 'her' : 'his'} own door. {clinic.id === 'janki' ? 'She' : 'He'} has never worked
                 in a chain practice, never owned more than four chairs, and has refused, twice,
                 to franchise the name {clinic.name.split(" ")[0]} into the larger cities.
               </p>
               <p>
-                What he sells is not procedures but time. The hour you book with him includes
+                What {clinic.id === 'janki' ? 'she' : 'he'} sells is not procedures but time. The hour you book with {clinic.id === 'janki' ? 'her' : 'him'} includes
                 the four minutes of conversation before the photographs, the eleven minutes of
                 explanation between findings and plan, and the silences that follow if you ask
-                a difficult question and he wants to answer it well.
+                a difficult question and {clinic.id === 'janki' ? 'she' : 'he'} wants to answer it well.
               </p>
             </div>
 

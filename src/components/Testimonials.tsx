@@ -39,44 +39,76 @@ export const Testimonials = () => {
   const railRef = useRef<HTMLDivElement>(null);
   const [activeDot, setActiveDot] = useState(0);
 
-  const quotes: QuoteItem[] = [
-    {
-      comment:
-        `${clinic.doctorName} made me forget I was at a dentist. The entire experience was calm, professional, and completely pain-free.`,
-      name: "Ravi M.",
-      context: "Patient since 2019 · Bardoli",
-    },
-    {
-      comment:
-        `I was terrified of root canals until I visited ${clinic.name}. The patience and skill here changed my perspective entirely.`,
-      name: "Priya S.",
-      context: "Patient since 2021 · Bardoli",
-    },
-    {
-      comment:
-        "My whole family has been coming here for years. Honest pricing, modern tools, and a doctor who actually listens.",
-      name: "Amit P.",
-      context: "Family of four · Surat",
-    },
-    {
-      comment:
-        "Got my implants done here. The result looks and feels completely natural. Truly skilled hands.",
-      name: "Suresh T.",
-      context: "Patient since 2022 · Surat",
-    },
-    {
-      comment:
-        `Best dental clinic in Bardoli. My kids actually look forward to their visits — that says everything.`,
-      name: "Meera D.",
-      context: "Mother of two · Bardoli",
-    },
-    {
-      comment:
-        "From consultation to treatment everything was transparent. No hidden costs, no upselling — just good care.",
-      name: "Neha K.",
-      context: "Patient since 2020 · Bardoli",
-    },
-  ];
+  const getQuotes = (clinicId: string, clinicName: string, doctorName: string): QuoteItem[] => {
+    if (clinicId === 'janki') {
+      return [
+        {
+          comment: "Dr. Janki is incredibly gentle. The entire experience was calm, professional, and completely pain-free.",
+          name: "Priya Mehta",
+          context: "Patient since 2018 · Silvassa",
+        },
+        {
+          comment: `Best periodontist in Silvassa. The patience and skill at ${clinicName} changed my perspective entirely.`,
+          name: "Rohan Desai",
+          context: "Patient since 2021 · Silvassa",
+        },
+        {
+          comment: "My kids actually look forward to visiting Janki Dental Care. The staff is so warm and welcoming.",
+          name: "Anjali Patel",
+          context: "Mother of two · Silvassa",
+        },
+        {
+          comment: "Highly professional sterilization protocol and state-of-the-art clinic. Feel completely safe getting treatments here.",
+          name: "Kabir Shah",
+          context: "Patient since 2020 · Silvassa",
+        },
+        {
+          comment: "Excellent implant treatment. Honest pricing, modern tools, and a doctor who actually explains everything clearly.",
+          name: "Sanjay Patel",
+          context: "Patient since 2022 · Silvassa",
+        },
+        {
+          comment: "Highly recommended for anyone seeking quality dentistry in a clean, professional, and luxurious sanctuary.",
+          name: "Deepa Shah",
+          context: "Patient since 2019 · Silvassa",
+        },
+      ];
+    }
+    return [
+      {
+        comment: `${doctorName} made me forget I was at a dentist. The entire experience was calm, professional, and completely pain-free.`,
+        name: "Ravi M.",
+        context: "Patient since 2019 · Bardoli",
+      },
+      {
+        comment: `I was terrified of root canals until I visited ${clinicName}. The patience and skill here changed my perspective entirely.`,
+        name: "Priya S.",
+        context: "Patient since 2021 · Bardoli",
+      },
+      {
+        comment: "My whole family has been coming here for years. Honest pricing, modern tools, and a doctor who actually listens.",
+        name: "Amit P.",
+        context: "Family of four · Surat",
+      },
+      {
+        comment: "Got my implants done here. The result looks and feels completely natural. Truly skilled hands.",
+        name: "Suresh T.",
+        context: "Patient since 2022 · Surat",
+      },
+      {
+        comment: `Best dental clinic in Bardoli. My kids actually look forward to their visits — that says everything.`,
+        name: "Meera D.",
+        context: "Mother of two · Bardoli",
+      },
+      {
+        comment: "From consultation to treatment everything was transparent. No hidden costs, no upselling — just good care.",
+        name: "Neha K.",
+        context: "Patient since 2020 · Bardoli",
+      },
+    ];
+  };
+
+  const quotes = getQuotes(clinic.id, clinic.name, clinic.doctorName);
 
   useEffect(() => {
     const el = railRef.current;
@@ -88,7 +120,7 @@ export const Testimonials = () => {
     };
     el.addEventListener("scroll", onScroll, { passive: true });
     return () => el.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [quotes.length]);
 
   const scrollToCard = (i: number) => {
     const el = railRef.current;
@@ -119,7 +151,9 @@ export const Testimonials = () => {
             </div>
             <h2 className="font-display font-bold text-[32px] md:text-[44px] lg:text-[52px] leading-[1.1] tracking-[-0.02em] text-foreground">
               Trusted by{" "}
-              <span className="text-primary">families across Bardoli.</span>
+              <span className="text-primary">
+                {clinic.id === 'janki' ? 'families in Silvassa.' : 'families across Bardoli.'}
+              </span>
             </h2>
           </div>
           <div className="flex items-center gap-3 px-4 py-2.5 rounded-full bg-foreground/[0.03] border border-foreground/10 shrink-0">
@@ -135,9 +169,11 @@ export const Testimonials = () => {
             </div>
             <div>
               <div className="text-[13px] font-semibold text-foreground leading-none">
-                {clinic.rating} · {clinic.reviewsCount} reviews
+                {clinic.rating} · {clinic.id === 'janki' ? 'Patient Rating' : `${clinic.reviewsCount} reviews`}
               </div>
-              <div className="text-[10px] text-foreground/55 mt-0.5">on Google</div>
+              <div className="text-[10px] text-foreground/55 mt-0.5">
+                {clinic.id === 'janki' ? 'Verified Feedback' : 'on Google'}
+              </div>
             </div>
           </div>
         </motion.div>

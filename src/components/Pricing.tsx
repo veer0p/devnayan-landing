@@ -4,16 +4,6 @@ import { useClinic } from "../context/ClinicContext";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
-const schedule = [
-  { day: "Monday",    time: "9:00 AM – 1:00 PM · 3:00 – 8:00 PM" },
-  { day: "Tuesday",   time: "9:00 AM – 1:00 PM · 3:00 – 8:00 PM" },
-  { day: "Wednesday", time: "9:00 AM – 1:00 PM · 3:00 – 8:00 PM" },
-  { day: "Thursday",  time: "9:00 AM – 1:00 PM · 3:00 – 8:00 PM" },
-  { day: "Friday",    time: "9:00 AM – 1:00 PM · 3:00 – 8:00 PM" },
-  { day: "Saturday",  time: "9:00 AM – 1:00 PM · 3:00 – 8:00 PM" },
-  { day: "Sunday",    time: "Closed" },
-];
-
 const dayNames = [
   "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",
 ];
@@ -21,6 +11,24 @@ const dayNames = [
 export const Pricing = () => {
   const { clinic } = useClinic();
   const today = dayNames[new Date().getDay()];
+
+  const schedule = clinic.id === 'janki' ? [
+    { day: "Monday",    time: "9:00 AM – 8:00 PM" },
+    { day: "Tuesday",   time: "9:00 AM – 8:00 PM" },
+    { day: "Wednesday", time: "9:00 AM – 8:00 PM" },
+    { day: "Thursday",  time: "9:00 AM – 8:00 PM" },
+    { day: "Friday",    time: "9:00 AM – 8:00 PM" },
+    { day: "Saturday",  time: "9:00 AM – 8:00 PM" },
+    { day: "Sunday",    time: "Closed" },
+  ] : [
+    { day: "Monday",    time: "9:00 AM – 1:00 PM · 3:00 – 8:00 PM" },
+    { day: "Tuesday",   time: "9:00 AM – 1:00 PM · 3:00 – 8:00 PM" },
+    { day: "Wednesday", time: "9:00 AM – 1:00 PM · 3:00 – 8:00 PM" },
+    { day: "Thursday",  time: "9:00 AM – 1:00 PM · 3:00 – 8:00 PM" },
+    { day: "Friday",    time: "9:00 AM – 1:00 PM · 3:00 – 8:00 PM" },
+    { day: "Saturday",  time: "9:00 AM – 1:00 PM · 3:00 – 8:00 PM" },
+    { day: "Sunday",    time: "Closed" },
+  ];
 
   return (
     <section id="contact" className="relative py-20 sm:py-28 bg-foreground/[0.02]">

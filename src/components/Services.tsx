@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
+import { useClinic } from "../context/ClinicContext";
 
 import imgChair from "@/assets/images/dental-chair.jpg";
 import imgWhitening from "@/assets/images/whitening.jpg";
@@ -18,52 +19,96 @@ interface Service {
   img: string;
 }
 
-const services: Service[] = [
-  {
-    num: "01",
-    title: "General Checkup & Cleaning",
-    description:
-      "Thorough examination, scaling and preventive care for lasting dental health.",
-    img: imgChair,
-  },
-  {
-    num: "02",
-    title: "Teeth Whitening",
-    description:
-      "Professional-grade whitening that brightens without damaging enamel.",
-    img: imgWhitening,
-  },
-  {
-    num: "03",
-    title: "Painless Root Canal",
-    description:
-      "Modern rotary endodontics — faster, cleaner, virtually pain-free.",
-    img: imgTools,
-  },
-  {
-    num: "04",
-    title: "Dental Implants",
-    description:
-      "Permanent tooth replacement that looks and feels completely natural.",
-    img: imgClinic,
-  },
-  {
-    num: "05",
-    title: "Braces & Aligners",
-    description:
-      "Discreet teeth straightening with traditional braces or clear aligners.",
-    img: imgSmile,
-  },
-  {
-    num: "06",
-    title: "Kids & Family Dentistry",
-    description:
-      "Gentle care designed for children and the whole family, under one roof.",
-    img: imgFamily,
-  },
-];
+const getServices = (clinicId: string): Service[] => {
+  if (clinicId === 'janki') {
+    return [
+      {
+        num: "01",
+        title: "Dental Implants",
+        description: "Permanent, premium tooth replacement that functions, feels, and looks like a natural tooth.",
+        img: imgClinic,
+      },
+      {
+        num: "02",
+        title: "Cosmetic Dentistry",
+        description: "Smile makeovers, veneers, and aesthetic bonding designed to enhance your smile's natural beauty.",
+        img: imgSmile,
+      },
+      {
+        num: "03",
+        title: "Periodontics",
+        description: "Advanced gum care, laser therapy, and treatments for periodontal disease to protect your teeth's support structure.",
+        img: imgTools,
+      },
+      {
+        num: "04",
+        title: "Root Canal Treatment",
+        description: "Virtually painless rotary endodontic therapy to rescue damaged or infected teeth and alleviate pain.",
+        img: imgChair,
+      },
+      {
+        num: "05",
+        title: "Orthodontics",
+        description: "Discreet alignment solutions, clear aligners, and modern braces for children, teens, and adults.",
+        img: imgSmile,
+      },
+      {
+        num: "06",
+        title: "Pediatric Dentistry",
+        description: "Gentle, non-frightening, and patient dental visits specifically customized for children's developmental needs.",
+        img: imgFamily,
+      },
+      {
+        num: "07",
+        title: "Teeth Whitening",
+        description: "Safe, professional-grade whitening treatments for a visibly brighter and stain-free smile.",
+        img: imgWhitening,
+      },
+    ];
+  }
+  return [
+    {
+      num: "01",
+      title: "General Checkup & Cleaning",
+      description: "Thorough examination, scaling and preventive care for lasting dental health.",
+      img: imgChair,
+    },
+    {
+      num: "02",
+      title: "Teeth Whitening",
+      description: "Professional-grade whitening that brightens without damaging enamel.",
+      img: imgWhitening,
+    },
+    {
+      num: "03",
+      title: "Painless Root Canal",
+      description: "Modern rotary endodontics — faster, cleaner, virtually pain-free.",
+      img: imgTools,
+    },
+    {
+      num: "04",
+      title: "Dental Implants",
+      description: "Permanent tooth replacement that looks and feels completely natural.",
+      img: imgClinic,
+    },
+    {
+      num: "05",
+      title: "Braces & Aligners",
+      description: "Discreet teeth straightening with traditional braces or clear aligners.",
+      img: imgSmile,
+    },
+    {
+      num: "06",
+      title: "Kids & Family Dentistry",
+      description: "Gentle care designed for children and the whole family, under one roof.",
+      img: imgFamily,
+    },
+  ];
+};
 
 export const Services = () => {
+  const { clinic } = useClinic();
+  const services = getServices(clinic.id);
   const [active, setActive] = useState(0);
 
   return (

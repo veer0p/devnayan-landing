@@ -34,7 +34,7 @@ export const Template1: React.FC = () => {
               <div className="mt-8 space-y-4">
                 <div className="flex items-center gap-3 text-sm text-foreground/80">
                   <span className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs shrink-0">✓</span>
-                  <span>Many years in clinical practice in Bardoli</span>
+                  <span>{clinic.id === 'janki' ? '15+ Years of professional care in Silvassa' : 'Many years in clinical practice in Bardoli'}</span>
                 </div>
                 <div className="flex items-center gap-3 text-sm text-foreground/80">
                   <span className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs shrink-0">✓</span>

@@ -1,7 +1,11 @@
+import devnayanDrImage from "../assets/dr.png";
+import jankiDrImage from "../assets/janki-dr.png";
+
 export interface Clinic {
   id: string;
   name: string;
   doctorName: string;
+  doctorImage?: string;
   address: string;
   phone: string;
   phoneRaw: string;
@@ -32,6 +36,7 @@ export const clinics: Record<string, Clinic> = {
     id: "devnayan",
     name: "Devnayan Dental Clinic",
     doctorName: "Dr. Chintan Sayania",
+    doctorImage: devnayanDrImage,
     address: "6-7, Lal Bahadur Shastri Rd, Rushikesh Nagar, Bardoli – 394601",
     phone: "+91 99135 20707",
     phoneRaw: "919913520707",
@@ -126,5 +131,20 @@ export const clinics: Record<string, Clinic> = {
     website: "https://www.sudantdental.com",
     mapEmbedUrl: "https://maps.google.com/maps?q=Sudant+Dental+Clinic,+Anand-Vidyanagar+Rd,+Anand,+Gujarat+388001&t=&z=15&ie=UTF8&iwloc=&output=embed",
     placeId: "Sudant Dental Clinic, Anand, Gujarat"
+  },
+  "janki": {
+    id: "janki",
+    name: "Janki Dental Care",
+    doctorName: "Dr. Janki Matroja",
+    doctorImage: jankiDrImage,
+    address: "Matru Krupa, 101, Naroli Rd, opposite Collector's Bungalow, Silvassa, Athal, Dadra and Nagar Haveli and Daman and Diu 396230",
+    phone: "+91 87801 49165",
+    phoneRaw: "918780149165",
+    hours: "Mon–Sat: 9:00 AM – 2:00 PM, 4:30 PM – 8:30 PM",
+    rating: "4.9",
+    reviewsCount: "85",
+    website: "https://www.instagram.com/jankidentalcare/",
+    mapEmbedUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3742.676017647562!2d72.9994421!3d20.272267!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be0cb0046d2a161%3A0x1d5f8ac2aaa0459a!2sJANKI%20DENTAL%20CARE!5e0!3m2!1sen!2sin!4v1780113057322!5m2!1sen!2sin",
+    placeId: "ChIJYaHSpQDL4DsRmiWgqvKKXx0"
   }
 };

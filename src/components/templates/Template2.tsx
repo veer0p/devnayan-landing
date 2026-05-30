@@ -47,10 +47,6 @@ const quotes = [
   { name: "Vihaan T.",   role: "Whitening · 2025",      text: "Eight shades brighter in under an hour and zero sensitivity afterwards. Not what I was expecting from a whitening appointment." },
 ];
 
-const press = [
-  "Featured in Vogue India", "Surat Times — Best Cosmetic Practice 2024", "Indian Dental Excellence Award", "Smile India 100",
-];
-
 const schedule = [
   { day: "Monday — Saturday", time: "By appointment · 10 AM – 7 PM" },
   { day: "Sunday",            time: "Closed (private appointments on request)" },
@@ -68,6 +64,10 @@ export const Template2: React.FC = () => {
   const { clinic } = useClinic();
   const [slide, setSlide] = useState(0);
   const [activeSvc, setActiveSvc] = useState(0);
+
+  const press = [
+    "Featured in Vogue India", clinic.id === 'janki' ? "Gujarat Times — Best Cosmetic Practice 2024" : "Surat Times — Best Cosmetic Practice 2024", "Indian Dental Excellence Award", "Smile India 100",
+  ];
 
   const heroSlides = [
     { src: imgClinic, alt: `${clinic.name} interior` },
@@ -105,7 +105,7 @@ export const Template2: React.FC = () => {
             >
               <Sparkles className="w-3 h-3 text-amber-300" />
               <span className="text-[11px] tracking-[0.2em] uppercase text-amber-200/90 font-medium">
-                Private cosmetic atelier · Bardoli
+                Private cosmetic atelier · {clinic.id === 'janki' ? 'Silvassa' : 'Bardoli'}
               </span>
             </motion.div>
 
@@ -126,7 +126,7 @@ export const Template2: React.FC = () => {
             >
               An unhurried, by-appointment-only cosmetic practice. Hand-layered veneers,
               digital smile previews, and a five-year guarantee on every aesthetic case
-              completed in our Bardoli studio.
+              completed in our {clinic.id === 'janki' ? 'Silvassa' : 'Bardoli'} studio.
             </motion.p>
 
             <motion.div
@@ -192,10 +192,10 @@ export const Template2: React.FC = () => {
               <div className="absolute bottom-4 left-4 w-7 h-7 border-l border-b border-amber-300/60" />
               <div className="absolute bottom-4 right-4 w-7 h-7 border-r border-b border-amber-300/60" />
 
-              <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-emerald-950/90 via-emerald-950/30 to-transparent" />
+              <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-emerald-950/90 via-emerald-950/30 to-transparent pointer-events-none" />
               <div className="absolute bottom-7 left-7 right-7 font-sans">
                 <div className="text-[10px] tracking-[0.3em] uppercase text-amber-200/80">{clinic.name}</div>
-                <div className="font-serif text-2xl text-stone-50 mt-2 leading-none">Bardoli, Gujarat</div>
+                <div className="font-serif text-2xl text-stone-50 mt-2 leading-none">{clinic.id === 'janki' ? 'Silvassa' : 'Bardoli, Gujarat'}</div>
               </div>
             </div>
           </motion.div>
@@ -299,7 +299,7 @@ export const Template2: React.FC = () => {
           >
             <div className="relative aspect-[4/5] overflow-hidden bg-emerald-900/30">
               <img
-                src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=900&auto=format&fit=crop"
+                src={clinic.doctorImage || "https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=900&auto=format&fit=crop"}
                 alt={clinic.doctorName}
                 className="w-full h-full object-cover object-top filter grayscale-[40%] hover:grayscale-0 transition-all duration-1000"
               />
@@ -328,7 +328,7 @@ export const Template2: React.FC = () => {
             <div className="mt-8 space-y-5 max-w-[560px] text-[15px] md:text-[16px] leading-[1.8] text-stone-300/85 font-sans">
               <p>
                 {clinic.doctorName} trained in cosmetic and prosthodontic dentistry over a decade of clinical
-                practice, eventually founding the {clinic.name} atelier in Bardoli — a deliberately small studio
+                practice, eventually founding the {clinic.name} atelier in {clinic.id === 'janki' ? 'Silvassa' : 'Bardoli'} — a deliberately small studio
                 that takes on only two patients a day.
               </p>
               <p>
@@ -338,9 +338,9 @@ export const Template2: React.FC = () => {
             </div>
             <div className="mt-10 pt-8 border-t border-stone-100/15 grid grid-cols-3 gap-6 font-sans max-w-[480px]">
               {[
-                { v: <CountUp end={500} suffix="+" />, l: "Cosmetic cases" },
+                { v: <CountUp end={clinic.id === 'janki' ? 800 : 500} suffix="+" />, l: "Cosmetic cases" },
                 { v: <CountUp end={4.9} decimals={1} />, l: "Patient rating" },
-                { v: "2014", l: "Atelier founded" },
+                { v: clinic.id === 'janki' ? "2010" : "2014", l: "Atelier founded" },
               ].map((s, i) => (
                 <div key={i}>
                   <div className="font-serif text-[30px] text-amber-300 leading-none">{s.v}</div>

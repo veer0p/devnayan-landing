@@ -39,13 +39,6 @@ const visitSteps = [
   { num: "04", title: "Treatment, your way",      body: "Music, breaks, hand-raise pauses — you stay in charge the whole time." },
 ];
 
-const quotes = [
-  { name: "Reena & family",  role: "Family of 5 · Bardoli",     text: "Three kids, three different fears, and the team handled all of them with patience. My eldest now asks when the next visit is." },
-  { name: "Aakash patel",    role: "Father · Bardoli",          text: "First time I've taken my son to the dentist without bribes or tears. The play corner alone is worth the visit." },
-  { name: "Sneha M.",        role: "Mom of twins · Surat",      text: "They scheduled both twins back-to-back, gave them matching toothbrushes, and turned the whole thing into a small adventure." },
-  { name: "Vinod K.",        role: "Adult patient",             text: "Was terrified of dentists since childhood. They actually paused four times during my filling because I asked. I came back. Twice." },
-];
-
 const schedule = [
   { day: "Monday",    time: "9 AM – 1 PM  ·  3 – 8 PM" },
   { day: "Tuesday",   time: "9 AM – 1 PM  ·  3 – 8 PM" },
@@ -60,7 +53,7 @@ const dayNames = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","S
 const faqs = [
   { q: "What age can my child first visit?",            a: "Anytime after the first tooth pokes through — usually around six months. The first visit is just a friendly look-around, no instruments unless your baby is fully comfortable." },
   { q: "Will it hurt my child?",                        a: "We use child-strength numbing gel before any injection, and most paediatric work needs no needle at all. Children stay in charge: hand up to pause, always." },
-  { q: "Is the first consultation free?",               a: `Yes — your first family consultation with ${("dentist") /* placeholder */} is on the house. No card, no commitment, no obligation to book treatment afterwards.` },
+  { q: "Is the first consultation free?",               a: `Yes — your first family consultation with dentist is on the house. No card, no commitment, no obligation to book treatment afterwards.` },
   { q: "How do you handle anxious kids?",               a: "Slow pace, demonstrations on a toy first, lots of explaining, snack breaks if needed, and stickers at the end. We never start anything until your child says yes." },
   { q: "Do you accept cards / UPI / cash?",             a: "All of them. Larger plans for braces or implants can be split across the treatment — we'll quote everything upfront." },
 ];
@@ -69,6 +62,13 @@ export const Template3: React.FC = () => {
   const { clinic } = useClinic();
   const today = dayNames[new Date().getDay()];
   const [slide, setSlide] = useState(0);
+
+  const quotes = [
+    { name: "Reena & family",  role: `Family of 5 · ${clinic.id === 'janki' ? 'Silvassa' : 'Bardoli'}`,     text: "Three kids, three different fears, and the team handled all of them with patience. My eldest now asks when the next visit is." },
+    { name: "Aakash patel",    role: `Father · ${clinic.id === 'janki' ? 'Silvassa' : 'Bardoli'}`,          text: "First time I've taken my son to the dentist without bribes or tears. The play corner alone is worth the visit." },
+    { name: "Sneha M.",        role: `Mom of twins · ${clinic.id === 'janki' ? 'Silvassa' : 'Surat'}`,      text: "They scheduled both twins back-to-back, gave them matching toothbrushes, and turned the whole thing into a small adventure." },
+    { name: "Vinod K.",        role: "Adult patient",             text: "Was terrified of dentists since childhood. They actually paused four times during my filling because I asked. I came back. Twice." },
+  ];
 
   const heroSlides = [
     { src: imgFamily, alt: "A family at the clinic" },
@@ -100,7 +100,7 @@ export const Template3: React.FC = () => {
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border-2 border-orange-200 shadow-[0_4px_0_0_rgba(254,215,170,0.4)] mb-8"
             >
               <span className="text-lg">👋</span>
-              <span className="text-[12px] font-bold text-stone-700">Hello, Bardoli families</span>
+              <span className="text-[12px] font-bold text-stone-700">Hello, {clinic.id === 'janki' ? 'Silvassa' : 'Bardoli'} families</span>
             </motion.div>
 
             <motion.h1
@@ -124,7 +124,7 @@ export const Template3: React.FC = () => {
               transition={{ duration: 0.9, delay: 0.4, ease }}
               className="mt-7 max-w-[520px] text-[16px] md:text-[17px] leading-[1.65] text-stone-600"
             >
-              {clinic.name} is a small, family-first dental clinic in Bardoli — gentle hands,
+              {clinic.name} is a small, family-first dental clinic in {clinic.id === 'janki' ? 'Silvassa' : 'Bardoli'} — gentle hands,
               soft lights, sticker drawers, and a doctor who never starts anything before
               you say it's OK.
             </motion.p>
@@ -262,7 +262,7 @@ export const Template3: React.FC = () => {
           >
             <div className="relative aspect-[4/5] rounded-[2rem] overflow-hidden bg-orange-200 border-[6px] border-white shadow-[0_20px_50px_-15px_rgba(0,0,0,0.15)]">
               <img
-                src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=900&auto=format&fit=crop"
+                src={clinic.doctorImage || "https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=900&auto=format&fit=crop"}
                 alt={clinic.doctorName} className="w-full h-full object-cover object-top"
               />
             </div>
@@ -285,7 +285,7 @@ export const Template3: React.FC = () => {
             </h2>
             <div className="mt-7 space-y-5 max-w-[560px] text-[15px] md:text-[16px] leading-[1.75] text-stone-700">
               <p>
-                A decade of looking after Bardoli's families — toddlers with their first tooth,
+                {clinic.id === 'janki' ? '15+ Years' : 'A decade'} of looking after {clinic.id === 'janki' ? 'Silvassa' : 'Bardoli'}'s families — toddlers with their first tooth,
                 teenagers with braces, parents who'd been postponing that root canal, and grandparents
                 getting back the smile they thought was lost.
               </p>
@@ -298,10 +298,10 @@ export const Template3: React.FC = () => {
 
             <div className="mt-9 grid grid-cols-2 sm:grid-cols-4 gap-4">
               {[
-                { v: <CountUp end={10} suffix="+" />, l: "Years caring", c: "bg-orange-100" },
+                { v: <CountUp end={clinic.id === 'janki' ? 15 : 10} suffix="+" />, l: "Years caring", c: "bg-orange-100" },
                 { v: <CountUp end={5000} suffix="+" />, l: "Smiles", c: "bg-teal-100" },
                 { v: <CountUp end={4.9} decimals={1} />, l: "Rating", c: "bg-rose-100" },
-                { v: "2014", l: "Since", c: "bg-amber-100" },
+                { v: clinic.id === 'janki' ? "2010" : "2014", l: "Since", c: "bg-amber-100" },
               ].map((s, i) => (
                 <div key={i} className={`${s.c} p-5 rounded-2xl text-center`}>
                   <div className="text-[28px] font-extrabold text-stone-900 leading-none tabular-nums">{s.v}</div>
@@ -454,7 +454,7 @@ export const Template3: React.FC = () => {
                 <span className="text-[11px] font-bold uppercase tracking-wider text-rose-700">From real families</span>
               </div>
               <h2 className="font-extrabold text-[34px] md:text-[46px] lg:text-[54px] leading-[1.05] tracking-[-0.02em] text-stone-900">
-                Bardoli families on what <br /> a visit <span className="text-rose-600">feels like</span>.
+                {clinic.id === 'janki' ? 'Silvassa' : 'Bardoli'} families on what <br /> a visit <span className="text-rose-600">feels like</span>.
               </h2>
             </div>
             <div className="inline-flex items-center gap-3 px-5 py-3 rounded-full bg-orange-100 border border-orange-200 self-start md:self-end">

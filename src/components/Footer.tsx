@@ -35,7 +35,11 @@ export const Footer = () => {
               </span>
             </div>
             <p className="text-[15px] leading-[1.65] text-background/65 max-w-[380px]">
-              Painless dentistry for the whole family, run by {clinic.doctorName}.
+              {clinic.id === 'janki' ? (
+                `Professional dental studio in Silvassa, run by ${clinic.doctorName}.`
+              ) : (
+                `Painless dentistry for the whole family, run by ${clinic.doctorName}.`
+              )}
             </p>
             <a
               href={`https://wa.me/${clinic.phoneRaw}?text=Hello%20${encodeURIComponent(clinic.doctorName)}%2C%20I%20would%20like%20to%20book%20an%20appointment.`}

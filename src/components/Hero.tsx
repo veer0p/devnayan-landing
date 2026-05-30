@@ -10,16 +10,27 @@ import { MagneticButton } from "./ui/MagneticButton";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
-const trust = [
-  { icon: Star, value: "4.9 ★", label: "200+ Google reviews" },
-  { icon: ShieldCheck, value: "10+ yrs", label: "in practice" },
-  { icon: Users, value: "5,000+", label: "families cared for" },
-  { icon: Sparkles, value: "Same-day", label: "emergencies welcome" },
-];
+const getTrust = (clinicId: string) => {
+  if (clinicId === 'janki') {
+    return [
+      { icon: Star, value: "4.9 ★", label: "Patient Rating" },
+      { icon: ShieldCheck, value: "15+ yrs", label: "of Care" },
+      { icon: Users, value: "5,000+", label: "Smiles Crafted" },
+      { icon: Sparkles, value: "Painless", label: "care by design" },
+    ];
+  }
+  return [
+    { icon: Star, value: "4.9 ★", label: "200+ Google reviews" },
+    { icon: ShieldCheck, value: "10+ yrs", label: "in practice" },
+    { icon: Users, value: "5,000+", label: "families cared for" },
+    { icon: Sparkles, value: "Same-day", label: "emergencies welcome" },
+  ];
+};
 
 export const Hero = () => {
   const { clinic } = useClinic();
   const [slide, setSlide] = useState(0);
+  const trust = getTrust(clinic.id);
 
   const slides = [
     { src: imgFamily, alt: "Modern dental clinic interior" },
@@ -63,7 +74,15 @@ export const Hero = () => {
               ))}
             </span>
             <span className="text-[12px] text-foreground/80">
-              <span className="font-semibold text-foreground">4.9</span> · 200+ Google reviews · Bardoli
+              {clinic.id === 'janki' ? (
+                <>
+                  <span className="font-semibold text-foreground">4.9</span> · Patient Rating · Silvassa
+                </>
+              ) : (
+                <>
+                  <span className="font-semibold text-foreground">4.9</span> · 200+ Google reviews · Bardoli
+                </>
+              )}
             </span>
           </motion.div>
 
@@ -74,18 +93,36 @@ export const Hero = () => {
             transition={{ duration: 0.85, delay: 0.25, ease }}
             className="font-display font-bold tracking-[-0.025em] leading-[1.04] text-foreground text-[40px] sm:text-[52px] md:text-[60px] lg:text-[68px] xl:text-[74px]"
           >
-            Painless dentistry
-            <br />
-            for the whole{" "}
-            <span className="relative inline-block">
-              <span className="relative z-10 text-primary">family.</span>
-              <motion.span
-                initial={{ scaleX: 0 }}
-                animate={{ scaleX: 1 }}
-                transition={{ duration: 0.9, delay: 1.05, ease }}
-                className="absolute left-0 right-0 bottom-1 h-[6px] md:h-[10px] bg-primary/20 rounded-sm origin-left -z-0"
-              />
-            </span>
+            {clinic.id === 'janki' ? (
+              <>
+                Crafting Confident
+                <br />
+                <span className="relative inline-block">
+                  <span className="relative z-10 text-primary">Smiles.</span>
+                  <motion.span
+                    initial={{ scaleX: 0 }}
+                    animate={{ scaleX: 1 }}
+                    transition={{ duration: 0.9, delay: 1.05, ease }}
+                    className="absolute left-0 right-0 bottom-1 h-[6px] md:h-[10px] bg-primary/20 rounded-sm origin-left -z-0"
+                  />
+                </span>
+              </>
+            ) : (
+              <>
+                Painless dentistry
+                <br />
+                for the whole{" "}
+                <span className="relative inline-block">
+                  <span className="relative z-10 text-primary">family.</span>
+                  <motion.span
+                    initial={{ scaleX: 0 }}
+                    animate={{ scaleX: 1 }}
+                    transition={{ duration: 0.9, delay: 1.05, ease }}
+                    className="absolute left-0 right-0 bottom-1 h-[6px] md:h-[10px] bg-primary/20 rounded-sm origin-left -z-0"
+                  />
+                </span>
+              </>
+            )}
           </motion.h1>
 
           {/* Subheadline */}
@@ -95,12 +132,18 @@ export const Hero = () => {
             transition={{ duration: 0.85, delay: 0.4, ease }}
             className="mt-7 max-w-[520px] text-[16px] md:text-[17px] leading-[1.65] text-foreground/65"
           >
-            {clinic.name}, run by{" "}
-            <span className="text-foreground font-medium">
-              {clinic.doctorName}
-            </span>{" "}
-            in Bardoli — gentle hands, modern equipment, and treatment plans
-            explained in plain words.
+            {clinic.id === 'janki' ? (
+              "A modern dental sanctuary in Silvassa — where professional dentistry meets unhurried, deeply personal care. Designed around you."
+            ) : (
+              <>
+                {clinic.name}, run by{" "}
+                <span className="text-foreground font-medium">
+                  {clinic.doctorName}
+                </span>{" "}
+                in Bardoli — gentle hands, modern equipment, and treatment plans
+                explained in plain words.
+              </>
+            )}
           </motion.p>
 
           {/* CTAs */}
@@ -196,7 +239,7 @@ export const Hero = () => {
                   {clinic.name}
                 </div>
                 <div className="text-[13px] font-semibold text-foreground mt-0.5">
-                  Bardoli, Gujarat
+                  {clinic.id === 'janki' ? 'Silvassa' : 'Bardoli, Gujarat'}
                 </div>
               </div>
               {/* Slide dots */}

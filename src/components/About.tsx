@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
 import { Award, Heart, ShieldCheck, Smile } from "lucide-react";
-import drImage from "../assets/dr.png";
 import { CountUp } from "./ui/CountUp";
 import { useClinic } from "../context/ClinicContext";
 
@@ -10,15 +9,26 @@ type Stat =
   | { kind: "count"; icon: typeof Award; end: number; decimals?: number; prefix?: string; suffix?: string; label: string }
   | { kind: "static"; icon: typeof Award; text: string; label: string };
 
-const stats: Stat[] = [
-  { kind: "count",  icon: Award,       end: 10,    suffix: "+",   label: "Years in practice" },
-  { kind: "count",  icon: Smile,       end: 5000,  suffix: "+",   label: "Smiles cared for" },
-  { kind: "count",  icon: Heart,       end: 4.9,   decimals: 1,   suffix: " ★", label: "Google rating" },
-  { kind: "static", icon: ShieldCheck, text: "2014",              label: "Established" },
-];
+const getStats = (clinicId: string): Stat[] => {
+  if (clinicId === 'janki') {
+    return [
+      { kind: "count",  icon: Award,       end: 15,    suffix: "+",   label: "Years of Care" },
+      { kind: "count",  icon: Smile,       end: 5000,  suffix: "+",   label: "Smiles Crafted" },
+      { kind: "count",  icon: Heart,       end: 4.9,   decimals: 1,   suffix: " ★", label: "Patient rating" },
+      { kind: "static", icon: ShieldCheck, text: "2010",              label: "Established" },
+    ];
+  }
+  return [
+    { kind: "count",  icon: Award,       end: 10,    suffix: "+",   label: "Years in practice" },
+    { kind: "count",  icon: Smile,       end: 5000,  suffix: "+",   label: "Smiles cared for" },
+    { kind: "count",  icon: Heart,       end: 4.9,   decimals: 1,   suffix: " ★", label: "Google rating" },
+    { kind: "static", icon: ShieldCheck, text: "2014",              label: "Established" },
+  ];
+};
 
 export const About = () => {
   const { clinic } = useClinic();
+  const stats = getStats(clinic.id);
   
   return (
     <section id="about" className="relative py-20 sm:py-28 bg-foreground/[0.02]">
@@ -54,7 +64,7 @@ export const About = () => {
             <div className="relative">
               <div className="aspect-[4/5] overflow-hidden rounded-2xl bg-foreground/[0.04] shadow-xl shadow-foreground/5">
                 <motion.img
-                  src={clinic.id === "devnayan" ? drImage : "https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=800&auto=format&fit=crop"}
+                  src={clinic.doctorImage || "https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=800&auto=format&fit=crop"}
                   alt={clinic.doctorName}
                   initial={{ scale: 1.06 }}
                   whileInView={{ scale: 1 }}
@@ -76,10 +86,10 @@ export const About = () => {
                 </div>
                 <div>
                   <div className="text-[13px] font-semibold text-foreground">
-                    B.D.S.
+                    {clinic.id === 'janki' ? 'M.D.S. (Periodontics)' : 'B.D.S.'}
                   </div>
                   <div className="text-[11px] text-foreground/55">
-                    Practising since 2014
+                    Practising since {clinic.id === 'janki' ? '2010' : '2014'}
                   </div>
                 </div>
               </motion.div>
@@ -95,21 +105,43 @@ export const About = () => {
             className="lg:col-span-7"
           >
             <div className="space-y-5 max-w-[560px] text-[15px] md:text-[16px] leading-[1.7] text-foreground/70">
-              <p>
-                For over a decade, {clinic.doctorName} has cared for families
-                across Bardoli. What started as a single chair has grown into
-                {clinic.name} — a calm, modern practice built on a simple promise:
-                every patient leaves feeling{" "}
-                <span className="text-foreground font-medium">
-                  listened to, not rushed.
-                </span>
-              </p>
-              <p>
-                The work spans the everyday and the complex — routine cleanings
-                and family hygiene through to implants, root canals, and
-                full-smile rehabilitation. The tools are modern. The approach is
-                unhurried. Prices are quoted before any procedure begins.
-              </p>
+              {clinic.id === 'janki' ? (
+                <>
+                  <p>
+                    For over 15 years, Dr. Janki Matroja has cared for families
+                    across Silvassa. What started as a single chair has grown into{" "}
+                    <span className="text-foreground font-semibold">Janki Dental Care</span> — a calm, modern practice built on a simple promise:
+                    every patient leaves feeling{" "}
+                    <span className="text-foreground font-medium">
+                      listened to, not rushed.
+                    </span>
+                  </p>
+                  <p>
+                    The work spans the everyday and the complex — routine cleanings
+                    and family hygiene through to implants, root canals, and
+                    specialized periodontics. The tools are modern. The approach is
+                    unhurried. Prices are quoted before any procedure begins.
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p>
+                    For over a decade, {clinic.doctorName} has cared for families
+                    across Bardoli. What started as a single chair has grown into
+                    {clinic.name} — a calm, modern practice built on a simple promise:
+                    every patient leaves feeling{" "}
+                    <span className="text-foreground font-medium">
+                      listened to, not rushed.
+                    </span>
+                  </p>
+                  <p>
+                    The work spans the everyday and the complex — routine cleanings
+                    and family hygiene through to implants, root canals, and
+                    full-smile rehabilitation. The tools are modern. The approach is
+                    unhurried. Prices are quoted before any procedure begins.
+                  </p>
+                </>
+              )}
             </div>
 
             {/* Stats */}

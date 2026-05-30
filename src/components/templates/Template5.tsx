@@ -97,7 +97,7 @@ export const Template5: React.FC = () => {
               className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full border border-[var(--olive)]/30 bg-[#FDF7EE]/70 backdrop-blur-sm mb-9"
             >
               <Leaf className="w-3.5 h-3.5 text-[#5E6B3A]" strokeWidth={1.5} />
-              <span className="text-[11.5px] tracking-[0.15em] uppercase font-medium text-[#5E6B3A]" style={{ fontFamily: "Inter, sans-serif" }}>Holistic dental wellness · Bardoli</span>
+              <span className="text-[11.5px] tracking-[0.15em] uppercase font-medium text-[#5E6B3A]" style={{ fontFamily: "Inter, sans-serif" }}>Holistic dental wellness · {clinic.id === 'janki' ? 'Silvassa' : 'Bardoli'}</span>
             </motion.div>
 
             <motion.h1
@@ -148,7 +148,7 @@ export const Template5: React.FC = () => {
               className="mt-14 pt-8 border-t border-stone-300/60 grid grid-cols-3 gap-6 max-w-[540px]" style={{ fontFamily: "Inter, sans-serif" }}
             >
               {[
-                { v: <CountUp end={10} suffix=" yrs" />, l: "Practising in Bardoli" },
+                { v: <CountUp end={clinic.id === 'janki' ? 15 : 10} suffix=" yrs" />, l: `Practising in ${clinic.id === 'janki' ? 'Silvassa' : 'Bardoli'}` },
                 { v: <CountUp end={4.9} decimals={1} suffix=" ★" />, l: "Patient rating" },
                 { v: "Mercury-free", l: "Materials" },
               ].map((s, i) => (
@@ -268,7 +268,7 @@ export const Template5: React.FC = () => {
           >
             <div className="relative aspect-[4/5] overflow-hidden bg-stone-300" style={{ borderRadius: "55% 45% 60% 40% / 45% 55% 50% 50%" }}>
               <img
-                src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=900&auto=format&fit=crop"
+                src={clinic.doctorImage || "https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=900&auto=format&fit=crop"}
                 alt={clinic.doctorName}
                 className="w-full h-full object-cover object-top filter saturate-[0.85]"
               />
@@ -286,7 +286,7 @@ export const Template5: React.FC = () => {
             <div className="mt-8 space-y-5 max-w-[560px] text-[16px] md:text-[17px] leading-[1.8] text-stone-100/85" style={{ fontFamily: "Inter, sans-serif" }}>
               <p>
                 {clinic.doctorName} has practiced for over a decade, building {clinic.name} into a
-                deliberately small, deliberately slow clinic in Bardoli — the kind of place where the
+                deliberately small, deliberately slow clinic in {clinic.id === 'janki' ? 'Silvassa' : 'Bardoli'} — the kind of place where the
                 first ten minutes are conversation and where treatment is something you and the
                 dentist agree on, not something prescribed.
               </p>
@@ -300,7 +300,7 @@ export const Template5: React.FC = () => {
               {[
                 { v: <CountUp end={5000} suffix="+" />, l: "Patients seen" },
                 { v: <CountUp end={4.9} decimals={1} />, l: "Patient rating" },
-                { v: "2014", l: "Practising since" },
+                { v: clinic.id === 'janki' ? "2010" : "2014", l: "Practising since" },
               ].map((s, i) => (
                 <div key={i}>
                   <div className="font-holistic text-[30px] leading-none" style={{ color: "#E5EAD8" }}>{s.v}</div>

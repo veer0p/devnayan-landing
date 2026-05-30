@@ -1,16 +1,18 @@
 import { Shield, Award, Clock, Heart, Users, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
-
-const badges = [
-  { icon: <Shield className="w-5 h-5" />, text: "10+ Years" },
-  { icon: <Users className="w-5 h-5" />, text: "5,000+ Patients" },
-  { icon: <Award className="w-5 h-5" />, text: "4.9 Rating" },
-  { icon: <Heart className="w-5 h-5" />, text: "Pain-Free" },
-  { icon: <Clock className="w-5 h-5" />, text: "Same Day" },
-  { icon: <Sparkles className="w-5 h-5" />, text: "Modern Tech" },
-];
+import { useClinic } from "../context/ClinicContext";
 
 export const Sponsors = () => {
+  const { clinic } = useClinic();
+
+  const badges = [
+    { icon: <Shield className="w-5 h-5" />, text: clinic.id === 'janki' ? "15+ Years" : "10+ Years" },
+    { icon: <Users className="w-5 h-5" />, text: clinic.id === 'janki' ? "5,000+ Smiles" : "5,000+ Patients" },
+    { icon: <Award className="w-5 h-5" />, text: "4.9 Rating" },
+    { icon: <Heart className="w-5 h-5" />, text: "Pain-Free" },
+    { icon: <Clock className="w-5 h-5" />, text: "Same Day" },
+    { icon: <Sparkles className="w-5 h-5" />, text: "Modern Tech" },
+  ];
   return (
     <section id="sponsors" className="container pt-12 pb-8">
       <div className="flex flex-wrap justify-center items-center gap-4 md:gap-8">

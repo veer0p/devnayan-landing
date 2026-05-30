@@ -1,4 +1,5 @@
 import { motion, type Variants } from "framer-motion";
+import { useClinic } from "../context/ClinicContext";
 
 const counterVariants: Variants = {
   initial: { opacity: 0, scale: 0.5 },
@@ -10,7 +11,13 @@ const counterVariants: Variants = {
 };
 
 export const Statistics = () => {
-  const stats = [
+  const { clinic } = useClinic();
+
+  const stats = clinic.id === 'janki' ? [
+    { quantity: "15+", description: "Years of Care" },
+    { quantity: "5,000+", description: "Smiles Crafted" },
+    { quantity: "4.9", description: "Patient Rating" },
+  ] : [
     { quantity: "10+", description: "Years Experience" },
     { quantity: "5,000+", description: "Happy Patients" },
     { quantity: "8,000+", description: "Treatments Done" },
