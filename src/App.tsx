@@ -3,7 +3,6 @@ import { Navbar } from "./components/Navbar";
 import { Footer } from "./components/Footer";
 import { ScrollToTop } from "./components/ScrollToTop";
 import { ScrollProgress } from "./components/ui/ScrollProgress";
-import { TemplateSwitcher } from "./components/TemplateSwitcher";
 import { useClinic } from "./context/ClinicContext";
 
 // Import Templates
@@ -77,12 +76,6 @@ function App() {
 
       <Footer />
       <ScrollToTop />
-      
-      {/* Floating interactive template selector for testing */}
-      <TemplateSwitcher
-        activeTemplate={template}
-        onChangeTemplate={handleTemplateChange}
-      />
     </>
   );
 }

@@ -13,10 +13,29 @@ export const ClinicProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   useEffect(() => {
     // Parse URL for ?clinic=id
     const params = new URLSearchParams(window.location.search);
-    const clinicId = params.get("clinic");
+    const clinicId = params.get("clinic") || "devnayan";
 
-    if (clinicId && clinics[clinicId]) {
-      setClinic(clinics[clinicId]);
+    if (clinics[clinicId]) {
+      const defaultClinic = clinics[clinicId];
+      setClinic(defaultClinic);
+
+      // Fetch local dynamic content if available (proxied to admin dev server on port 3000)
+      fetch(`/local-blob/content/${clinicId}.json`)
+        .then((r) => {
+          if (!r.ok) throw new Error("not found");
+          return r.json();
+        })
+        .then((data) => {
+          if (data && data.clinic) {
+            setClinic({
+              ...defaultClinic,
+              ...data.clinic,
+            });
+          }
+        })
+        .catch(() => {
+          // Keep default static clinic data
+        });
     }
   }, []);
 

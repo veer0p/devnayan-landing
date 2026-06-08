@@ -43,13 +43,15 @@ export const Navbar = () => {
       initial={{ opacity: 0, y: -16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled
-          ? "bg-background/85 backdrop-blur-md border-b border-border/60 shadow-sm"
-          : "bg-transparent"
-      }`}
+      className="fixed top-4 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none"
     >
-      <div className="container h-[72px] flex items-center justify-between gap-6">
+      <div 
+        className={`pointer-events-auto flex items-center justify-between gap-6 transition-all duration-500 ${
+          scrolled
+            ? "bg-background/70 backdrop-blur-xl border border-foreground/10 shadow-2xl shadow-foreground/5 rounded-full px-4 md:px-6 py-2 md:py-2.5 w-full max-w-5xl"
+            : "bg-transparent border border-transparent rounded-full px-2 md:px-4 py-4 w-full max-w-7xl"
+        }`}
+      >
         {/* Wordmark — sans, clean */}
         <a href="/" className="flex items-center gap-2.5 select-none shrink-0">
           <span className="w-9 h-9 rounded-xl bg-primary/15 flex items-center justify-center shrink-0">
