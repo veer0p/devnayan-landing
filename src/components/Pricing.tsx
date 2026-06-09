@@ -80,12 +80,12 @@ export const Pricing = () => {
                 return (
                   <li
                     key={row.day}
-                    className={`flex items-center justify-between py-2.5 ${
+                    className={`flex items-start justify-between py-2.5 gap-4 ${
                       isToday ? "bg-primary/[0.06] -mx-3 px-3 rounded-md" : ""
                     }`}
                   >
                     <span
-                      className={`text-[14px] ${
+                      className={`text-[14px] shrink-0 ${
                         isToday
                           ? "font-semibold text-primary"
                           : "text-foreground/80"
@@ -99,7 +99,7 @@ export const Pricing = () => {
                       )}
                     </span>
                     <span
-                      className={`text-[13px] ${
+                      className={`text-[13px] text-right ${
                         isClosed ? "text-foreground/40" : "text-foreground/65"
                       }`}
                     >

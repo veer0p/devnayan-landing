@@ -163,7 +163,7 @@ export const Services = () => {
                     />
                     <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-foreground/65 via-foreground/15 to-transparent" />
                     <div className="absolute top-3 left-3 text-[10px] font-semibold uppercase tracking-widest2 text-background/90 bg-foreground/40 backdrop-blur-sm px-2 py-1 rounded-full">
-                      {s.num} · Treatment
+                      {s.num} · {s.title}
                     </div>
                   </div>
                   <div className="p-5">

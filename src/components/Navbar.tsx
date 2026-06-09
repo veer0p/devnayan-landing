@@ -6,7 +6,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Menu, Phone, ArrowUpRight } from "lucide-react";
+import { Menu, Phone, ArrowUpRight, MessageCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import { useClinic } from "../context/ClinicContext";
 
@@ -91,7 +91,7 @@ export const Navbar = () => {
             href={`https://wa.me/${clinic.phoneRaw}?text=Hello%20${encodeURIComponent(clinic.doctorName)}%2C%20I%20would%20like%20to%20book%20an%20appointment.`}
             target="_blank"
             rel="noopener noreferrer"
-            className="group inline-flex items-center gap-1.5 pl-4 pr-3.5 py-2 rounded-full bg-primary text-primary-foreground text-[13.5px] font-semibold transition-transform duration-300 hover:scale-[1.03] shadow-md shadow-primary/20"
+            className="group inline-flex items-center gap-1.5 pl-4 pr-3.5 py-2 rounded-full bg-[#25D366] text-white text-[13.5px] font-semibold transition-transform duration-300 hover:scale-[1.03] shadow-md shadow-[#25D366]/20"
           >
             Book a Visit
             <ArrowUpRight
@@ -103,6 +103,15 @@ export const Navbar = () => {
 
         {/* Mobile */}
         <div className="lg:hidden flex items-center gap-2 shrink-0">
+          <a
+            href={`https://wa.me/${clinic.phoneRaw}?text=Hello%20${encodeURIComponent(clinic.doctorName)}%2C%20I%20would%20like%20to%20book%20an%20appointment.`}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="WhatsApp clinic"
+            className="w-9 h-9 rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-sm"
+          >
+            <MessageCircle className="w-4 h-4" strokeWidth={2} />
+          </a>
           <a
             href={`tel:+${clinic.phoneRaw}`}
             aria-label="Call clinic"
@@ -139,7 +148,7 @@ export const Navbar = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setIsOpen(false)}
-                className="mt-8 flex items-center justify-between px-5 py-3.5 rounded-full bg-primary text-primary-foreground text-[14px] font-semibold"
+                className="mt-8 flex items-center justify-between px-5 py-3.5 rounded-full bg-[#25D366] text-white text-[14px] font-semibold"
               >
                 Book on WhatsApp
                 <ArrowUpRight className="w-4 h-4" strokeWidth={2} />

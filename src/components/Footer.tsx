@@ -20,7 +20,7 @@ export const Footer = () => {
       viewport={{ once: true }}
       className="relative bg-foreground text-background"
     >
-      <div className="container pt-16 pb-12">
+      <div className="container pt-16 pb-28 md:pb-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 mb-12">
           {/* Brand */}
           <div className="lg:col-span-5">
