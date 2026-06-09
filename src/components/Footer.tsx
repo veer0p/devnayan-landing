@@ -126,18 +126,18 @@ export const Footer = () => {
         </div>
 
         {/* Bottom rail */}
-        <div className="pt-6 border-t border-background/10 flex flex-col md:flex-row items-center justify-between gap-2 text-[12px] text-background/55">
-          <span>© {year} {clinic.name} · All rights reserved</span>
-          <span>
-            Crafted by{" "}
+        <div className="pt-6 border-t border-background/10 flex flex-col md:flex-row items-center justify-between gap-4 text-[12px] text-background/55 md:pr-20">
+          <span className="text-center md:text-left">© {year} {clinic.name} · All rights reserved</span>
+          <span className="text-center md:text-right">
+            Developed & managed by{" "}
             <a
-              href="https://viransihq.com"
+              href="https://viransi.in"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-background/85 hover:text-background transition-colors"
+              className="text-background/85 hover:text-background transition-colors font-medium"
             >
-              Viransi HQ
-            </a>
+              Viransi
+            </a> 💖
           </span>
         </div>
       </div>

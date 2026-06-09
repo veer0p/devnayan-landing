@@ -48,8 +48,8 @@ export const Navbar = () => {
       <div 
         className={`pointer-events-auto flex items-center justify-between gap-6 transition-all duration-500 ${
           scrolled
-            ? "bg-background/70 backdrop-blur-xl border border-foreground/10 shadow-2xl shadow-foreground/5 rounded-full px-4 md:px-6 py-2 md:py-2.5 w-full max-w-5xl"
-            : "bg-transparent border border-transparent rounded-full px-2 md:px-4 py-4 w-full max-w-7xl"
+            ? "bg-background/70 backdrop-blur-xl border border-foreground/10 shadow-2xl shadow-foreground/5 rounded-full px-4 lg:px-6 py-2 lg:py-2.5 w-full max-w-5xl"
+            : "bg-transparent border border-transparent rounded-full px-2 lg:px-4 py-4 w-full max-w-7xl"
         }`}
       >
         {/* Wordmark — sans, clean */}
@@ -66,7 +66,7 @@ export const Navbar = () => {
         </a>
 
         {/* Center nav */}
-        <nav className="hidden md:flex items-center gap-1 shrink-0">
+        <nav className="hidden lg:flex items-center gap-1 shrink-0">
           {routeList.map((r) => (
             <a
               key={r.href}
@@ -79,7 +79,7 @@ export const Navbar = () => {
         </nav>
 
         {/* Right side */}
-        <div className="hidden md:flex items-center gap-3 shrink-0">
+        <div className="hidden lg:flex items-center gap-3 shrink-0">
           <a
             href={`tel:+${clinic.phoneRaw}`}
             className="flex items-center gap-2 px-4 py-2 rounded-full border border-foreground/15 text-[13.5px] font-medium text-foreground/80 hover:text-foreground hover:border-foreground/40 transition-colors"
@@ -102,7 +102,7 @@ export const Navbar = () => {
         </div>
 
         {/* Mobile */}
-        <div className="md:hidden flex items-center gap-2 shrink-0">
+        <div className="lg:hidden flex items-center gap-2 shrink-0">
           <a
             href={`tel:+${clinic.phoneRaw}`}
             aria-label="Call clinic"
