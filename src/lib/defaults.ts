@@ -39,7 +39,7 @@ export const clinicCores: Record<string, ClinicFields> = {
   devnayan: {
     id: "devnayan",
     name: "Devnayan Dental Clinic",
-    doctorName: "Dr. Chintan Sayania",
+    doctorName: "Dr. Chintan Sayani",
     address:
       "6-7, Lal Bahadur Shastri Rd, Rushikesh Nagar, Bardoli – 394601",
     phone: "+91 99135 20707",
@@ -55,7 +55,7 @@ export const clinicCores: Record<string, ClinicFields> = {
     heroHeadline: null,
     heroSubheadline: null,
     doctorImage: null,
-    aboutText: "For over a decade, Dr. Chintan Sayania has cared for families across Bardoli. What started as a single chair has grown into Devnayan Dental Clinic — a calm, modern practice built on a simple promise: every patient leaves feeling listened to, not rushed.",
+    aboutText: "For over a decade, Dr. Chintan Sayani has cared for families across Bardoli. What started as a single chair has grown into Devnayan Dental Clinic — a calm, modern practice built on a simple promise: every patient leaves feeling listened to, not rushed.",
   },
   phoenix: {
     id: "phoenix",

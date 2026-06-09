@@ -39,7 +39,7 @@ export const clinics: Record<string, Clinic> = {
   "devnayan": {
     id: "devnayan",
     name: "Devnayan Dental Clinic",
-    doctorName: "Dr. Chintan Sayania",
+    doctorName: "Dr. Chintan Sayani",
     doctorImage: devnayanDrImage,
     address: "6-7, Lal Bahadur Shastri Rd, Rushikesh Nagar, Bardoli – 394601",
     phone: "+91 99135 20707",
