@@ -105,7 +105,9 @@ export const About = () => {
             className="lg:col-span-7"
           >
             <div className="space-y-5 max-w-[560px] text-[15px] md:text-[16px] leading-[1.7] text-foreground/70">
-              {clinic.id === 'janki' ? (
+              {clinic.aboutText ? (
+                <p>{clinic.aboutText}</p>
+              ) : clinic.id === 'janki' ? (
                 <>
                   <p>
                     For over 15 years, Dr. Janki Matroja has cared for families

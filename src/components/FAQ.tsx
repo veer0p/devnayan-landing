@@ -17,7 +17,7 @@ interface FAQProps {
 }
 
 export const FAQ = () => {
-  const { clinic } = useClinic();
+  const { clinic, content } = useClinic();
 
   const FAQList: FAQProps[] = [
     {
@@ -58,6 +58,8 @@ export const FAQ = () => {
     },
   ];
 
+  const faqs = content.faqs || FAQList;
+
   return (
     <section id="faq" className="relative py-20 sm:py-28 bg-background">
       <div className="container">
@@ -95,10 +97,10 @@ export const FAQ = () => {
               defaultValue="item-1"
               className="w-full"
             >
-              {FAQList.map(({ question, answer, value }) => (
+              {faqs.map(({ question, answer }, i) => (
                 <AccordionItem
-                  key={value}
-                  value={value}
+                  key={`item-${i}`}
+                  value={`item-${i}`}
                   className="border border-foreground/10 rounded-xl mb-3 bg-background hover:border-foreground/20 data-[state=open]:border-primary/30 data-[state=open]:bg-primary/[0.02] transition-colors"
                 >
                   <AccordionTrigger className="px-5 py-4 text-left hover:no-underline">

@@ -1,43 +1,15 @@
 import { motion } from "framer-motion";
-import { MessageCircle, ClipboardCheck, Stethoscope, Smile } from "lucide-react";
+import * as LucideIcons from "lucide-react";
+import { useClinic } from "../context/ClinicContext";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
-interface StepProps {
-  icon: typeof MessageCircle;
-  num: string;
-  title: string;
-  body: string;
-}
-
-const steps: StepProps[] = [
-  {
-    icon: MessageCircle,
-    num: "01",
-    title: "Reach out",
-    body: "Send a WhatsApp, call us, or walk in. We'll find you a slot within the same day.",
-  },
-  {
-    icon: ClipboardCheck,
-    num: "02",
-    title: "Free consultation",
-    body: "A relaxed exam and a clear plan. We explain what's needed in plain words — and what isn't.",
-  },
-  {
-    icon: Stethoscope,
-    num: "03",
-    title: "Painless treatment",
-    body: "Modern tools, gentle pacing, and the work done well the first time. You set the pace.",
-  },
-  {
-    icon: Smile,
-    num: "04",
-    title: "Aftercare",
-    body: "A WhatsApp check-in 48 hours later. Follow-ups when your plan asks — nothing more.",
-  },
-];
+// Local defaults will be superseded by content.howItWorks
 
 export const HowItWorks = () => {
+  const { content } = useClinic();
+  const steps = content.howItWorks || [];
+
   return (
     <section id="howItWorks" className="relative py-20 sm:py-28 bg-foreground/[0.02]">
       <div className="container">
@@ -66,10 +38,11 @@ export const HowItWorks = () => {
           <div className="hidden lg:block absolute top-12 left-[8%] right-[8%] h-px border-t border-dashed border-foreground/15 -z-0" />
 
           {steps.map((s, i) => {
-            const Icon = s.icon;
+            const Icon = (LucideIcons as any)[s.icon] || LucideIcons.HelpCircle;
+            const numStr = String(i + 1).padStart(2, "0");
             return (
               <motion.div
-                key={s.num}
+                key={numStr}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
@@ -80,7 +53,7 @@ export const HowItWorks = () => {
                   <span className="relative w-14 h-14 rounded-2xl bg-background border border-foreground/10 flex items-center justify-center shadow-sm group-hover:border-primary/40 group-hover:bg-primary/[0.04] transition-colors">
                     <Icon className="w-5 h-5 text-primary" strokeWidth={2} />
                     <span className="absolute -top-1.5 -right-1.5 w-6 h-6 rounded-full bg-primary text-primary-foreground text-[10px] font-bold flex items-center justify-center">
-                      {s.num}
+                      {numStr}
                     </span>
                   </span>
                   <div>

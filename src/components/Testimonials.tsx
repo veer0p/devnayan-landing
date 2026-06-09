@@ -12,7 +12,7 @@ interface QuoteItem {
 }
 
 export const Testimonials = () => {
-  const { clinic } = useClinic();
+  const { clinic, content } = useClinic();
   
   // Single quote card — used both in marquee (desktop) and snap-rail (mobile)
   const QuoteCard = ({ q }: { q: QuoteItem }) => (
@@ -108,7 +108,8 @@ export const Testimonials = () => {
     ];
   };
 
-  const quotes = getQuotes(clinic.id, clinic.name, clinic.doctorName);
+  const fallbackQuotes = getQuotes(clinic.id, clinic.name, clinic.doctorName);
+  const quotes = (content?.testimonials || fallbackQuotes) as QuoteItem[];
 
   useEffect(() => {
     const el = railRef.current;
@@ -152,7 +153,7 @@ export const Testimonials = () => {
             <h2 className="font-display font-bold text-[32px] md:text-[44px] lg:text-[52px] leading-[1.1] tracking-[-0.02em] text-foreground">
               Trusted by{" "}
               <span className="text-primary">
-                {clinic.id === 'janki' ? 'families in Silvassa.' : 'families across Bardoli.'}
+                families {clinic.city ? `across ${clinic.city}` : clinic.id === 'janki' ? 'in Silvassa' : 'across Bardoli'}.
               </span>
             </h2>
           </div>

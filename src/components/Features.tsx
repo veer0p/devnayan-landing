@@ -1,42 +1,16 @@
 import { motion } from "framer-motion";
-import { ShieldCheck, HandHeart, Banknote, Clock, Stethoscope, Users } from "lucide-react";
+import * as LucideIcons from "lucide-react";
+import { useClinic } from "../context/ClinicContext";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
-interface FeatureProps {
-  icon: typeof ShieldCheck;
-  title: string;
-  body: string;
-}
-
-const features: FeatureProps[] = [
-  {
-    icon: ShieldCheck,
-    title: "Modern, sterile equipment",
-    body: "Digital X-rays, intra-oral cameras, rotary endodontics — precise, minimally invasive, and faster than the old way.",
-  },
-  {
-    icon: HandHeart,
-    title: "Painless procedures",
-    body: "Topical anesthesia before injections, gentle pacing, and music if you'd like it. Most patients tell us they barely felt a thing.",
-  },
-  {
-    icon: Banknote,
-    title: "Transparent pricing",
-    body: "Every treatment is quoted before it begins. Bigger plans can be split across payments — no surprises, no upselling.",
-  },
-];
-
-const promises = [
-  { icon: Clock,       text: "Same-day emergency slots" },
-  { icon: ShieldCheck, text: "Autoclaved instruments" },
-  { icon: Stethoscope, text: "Personalised treatment plans" },
-  { icon: HandHeart,   text: "Gentle care for anxious patients" },
-  { icon: Users,       text: "Children welcome" },
-  { icon: Banknote,    text: "Cards, UPI, cash accepted" },
-];
+// Local defaults will be superseded by content.features and content.promises
 
 export const Features = () => {
+  const { content } = useClinic();
+  const features = content.features || [];
+  const promises = content.promises || [];
+
   return (
     <section id="features" className="relative py-20 sm:py-28 bg-background">
       <div className="container">
@@ -62,7 +36,7 @@ export const Features = () => {
         {/* Bento Grid — Premium SaaS Layout */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6 mb-14 md:mb-16 auto-rows-[minmax(180px,auto)]">
           {features.map((f, i) => {
-            const Icon = f.icon;
+            const Icon = (LucideIcons as any)[f.icon] || LucideIcons.HelpCircle;
             const isLarge = i === 0;
             const bentoClass = isLarge 
               ? "md:col-span-2 md:row-span-2 p-8 md:p-12" 
@@ -114,7 +88,7 @@ export const Features = () => {
           </div>
           <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-3">
             {promises.map((p, i) => {
-              const Icon = p.icon;
+              const Icon = (LucideIcons as any)[p.icon] || LucideIcons.HelpCircle;
               return (
                 <motion.li
                   key={p.text}

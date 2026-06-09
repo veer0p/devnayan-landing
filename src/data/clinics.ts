@@ -5,7 +5,7 @@ export interface Clinic {
   id: string;
   name: string;
   doctorName: string;
-  doctorImage?: string;
+  doctorImage?: string | null;
   address: string;
   phone: string;
   phoneRaw: string;
@@ -15,6 +15,10 @@ export interface Clinic {
   website: string | null;
   mapEmbedUrl: string;
   placeId: string;
+  heroHeadline?: string | null;
+  heroSubheadline?: string | null;
+  city?: string | null;
+  aboutText?: string;
 }
 
 export const clinics: Record<string, Clinic> = {

@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { ScaleUp } from "@/lib/animation";
 import { Star } from "lucide-react";
+import { useClinic } from "../context/ClinicContext";
 import {
   Card,
   CardContent,
@@ -12,59 +13,7 @@ import imgKavita from "@/assets/doctors/dr-kavita.jpg";
 import imgRajesh from "@/assets/doctors/dr-rajesh.jpg";
 import imgPriya from "@/assets/doctors/dr-priya.jpg";
 
-interface DoctorProps {
-  name: string;
-  initials: string;
-  role: string;
-  description: string;
-  rating: string;
-  experience: string;
-  color: string;
-  img: string;
-}
-
-const doctors: DoctorProps[] = [
-  {
-    name: "Dr. Arun Mehta",
-    initials: "AM",
-    role: "MDS | Orthodontist",
-    description: "Specialist in braces, aligners, and smile correction with 12+ years of experience.",
-    rating: "4.9",
-    experience: "12+ yrs",
-    color: "from-primary/80 to-primary/40",
-    img: imgArun,
-  },
-  {
-    name: "Dr. Kavita Sharma",
-    initials: "KS",
-    role: "MDS | Endodontist",
-    description: "Expert in pain-free root canal therapy and advanced dental restorations.",
-    rating: "4.8",
-    experience: "9+ yrs",
-    color: "from-emerald-500/80 to-emerald-500/40",
-    img: imgKavita,
-  },
-  {
-    name: "Dr. Rajesh Patel",
-    initials: "RP",
-    role: "MDS | Implantologist",
-    description: "Pioneering dental implant solutions with precision and natural-looking results.",
-    rating: "4.9",
-    experience: "15+ yrs",
-    color: "from-blue-500/80 to-blue-500/40",
-    img: imgRajesh,
-  },
-  {
-    name: "Dr. Priya Nair",
-    initials: "PN",
-    role: "BDS | Pediatric Dentist",
-    description: "Gentle, compassionate dental care designed specifically for children and teens.",
-    rating: "4.8",
-    experience: "7+ yrs",
-    color: "from-rose-500/80 to-rose-500/40",
-    img: imgPriya,
-  },
-];
+// Local defaults will be superseded by content.team
 
 const Stars = () => (
   <div className="flex gap-0.5">
@@ -75,6 +24,13 @@ const Stars = () => (
 );
 
 export const Team = () => {
+  const { content } = useClinic();
+  const fallbackImages = [imgArun, imgKavita, imgRajesh, imgPriya];
+  const doctors = (content.team || []).map((t, i) => ({
+    ...t,
+    img: t.url || fallbackImages[i % fallbackImages.length]
+  }));
+
   return (
     <section id="team" className="container py-24 sm:py-32">
       <motion.div

@@ -107,8 +107,14 @@ const getServices = (clinicId: string): Service[] => {
 };
 
 export const Services = () => {
-  const { clinic } = useClinic();
-  const services = getServices(clinic.id);
+  const { clinic, content } = useClinic();
+  const fallbackServices = getServices(clinic.id);
+  const services = (content.services || fallbackServices).map((s, i) => ({
+    num: s.num,
+    title: s.title,
+    description: s.description,
+    img: s.url || fallbackServices[i % fallbackServices.length]?.img || imgClinic
+  }));
   const [active, setActive] = useState(0);
 
   return (

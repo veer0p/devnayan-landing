@@ -19,7 +19,7 @@ import "./App.css";
 
 function App() {
   // Initialize state from URL query parameter (e.g. ?template=t3), default to t1
-  const [template, setTemplate] = useState(() => {
+  const [template] = useState(() => {
     const params = new URLSearchParams(window.location.search);
     const tParam = params.get("template");
     return tParam ? tParam.toLowerCase() : "t1";
@@ -31,16 +31,7 @@ function App() {
     document.title = `${clinic.name} - Book Your Appointment Today`;
   }, [clinic.name]);
 
-  const handleTemplateChange = (templateId: string) => {
-    setTemplate(templateId);
-    // Dynamically update browser URL history without full page reload
-    const url = new URL(window.location.href);
-    url.searchParams.set("template", templateId);
-    window.history.pushState({}, "", url.toString());
-    
-    // Scroll to the top of the page instantly on template switch
-    window.scrollTo(0, 0);
-  };
+
 
   const renderTemplate = () => {
     switch (template) {

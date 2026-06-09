@@ -28,15 +28,15 @@ const getTrust = (clinicId: string) => {
 };
 
 export const Hero = () => {
-  const { clinic } = useClinic();
+  const { clinic, content } = useClinic();
   const [slide, setSlide] = useState(0);
   const trust = getTrust(clinic.id);
 
-  const slides = [
-    { src: imgFamily, alt: "Modern dental clinic interior" },
-    { src: imgChair, alt: "Treatment chair and equipment" },
-    { src: imgClinic, alt: `The ${clinic.name.split(' ')[0]} clinic` },
-  ];
+  const fallbackImages = [imgFamily, imgChair, imgClinic];
+  const slides = content.heroSlides.map((s, i) => ({
+    src: s.url || fallbackImages[i % fallbackImages.length],
+    alt: s.alt || `The ${clinic.name.split(" ")[0]} clinic`
+  }));
 
   // Cycle hero images every 5 s — gives the right-side photo a soft "video" feel
   useEffect(() => {
