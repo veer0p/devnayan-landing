@@ -26,7 +26,7 @@ export const ClinicProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
       // Use VITE_BLOB_BASE_URL in production, otherwise proxy to local admin server
       const baseUrl = import.meta.env.VITE_BLOB_BASE_URL || "/local-blob";
-      fetch(`${baseUrl}/content/${clinicId}.json`)
+      fetch(`${baseUrl}/content/${clinicId}.json?t=${Date.now()}`, { cache: "no-store" })
         .then((r) => {
           if (!r.ok) throw new Error("not found");
           return r.json();
